@@ -1,0 +1,5 @@
+pics/*
+images/*
+cache/*
+*.pyc
+*.db

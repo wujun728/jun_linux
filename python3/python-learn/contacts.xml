@@ -1,0 +1,66 @@
+<peoples num="5">
+    <people istared="0" displayname="tonggj" givenname="tonggj">
+        <phones num="1">
+            <phone type="2" primary="1" super_primary="1">15609910174</phone>
+        </phones>
+        <accounts num="1">
+            <account type="com.htc.sync.provider.weather">Weather</account>
+        </accounts>
+        <groups num="1">
+            <group id="5" name="System Group: Coworkers" />
+        </groups>
+        <nicknames num="1">
+            <nickname type="0" />
+        </nicknames>
+    </people>
+    <people istared="0" displayname="wuzb" givenname="wuzb">
+        <phones num="1">
+            <phone type="2" primary="1" super_primary="1">18654118892</phone>
+        </phones>
+        <accounts num="1">
+            <account type="com.htc.sync.provider.weather">Weather</account>
+        </accounts>
+        <groups num="1">
+            <group id="5" name="System Group: Coworkers" />
+        </groups>
+        <nicknames num="1">
+            <nickname type="0" />
+        </nicknames>
+    </people>
+    <people istared="0" displayname="yudg" givenname="yudg">
+        <phones num="1">
+            <phone type="2" primary="1" super_primary="1">18656560903</phone>
+        </phones>
+        <accounts num="1">
+            <account type="com.htc.sync.provider.weather">Weather</account>
+        </accounts>
+        <groups num="1">
+            <group id="5" name="System Group: Coworkers" />
+        </groups>
+        <nicknames num="1">
+            <nickname type="0" />
+        </nicknames>
+    </people>
+    <people istared="0" displayname="虫虫" givenname="虫" familyname="虫">
+        <phones num="1">
+            <phone type="2" primary="1" super_primary="1">15099505609</phone>
+        </phones>
+        <accounts num="1">
+            <account type="com.htc.android.pcsc">pcsc</account>
+        </accounts>
+        <groups num="1">
+            <group id="8" accounttype="com.htc.android.pcsc" accountname="pcsc" name="她" />
+        </groups>
+    </people>
+    <people istared="0" displayname="卓悦" givenname="悦" familyname="卓">
+        <phones num="1">
+            <phone type="2" primary="1" super_primary="1">15292428057</phone>
+        </phones>
+        <accounts num="1">
+            <account type="com.htc.android.pcsc">pcsc</account>
+        </accounts>
+        <groups num="1">
+            <group id="10" accounttype="com.htc.android.pcsc" accountname="pcsc" name="System Group: Friends" />
+        </groups>
+    </people>
+</peoples>

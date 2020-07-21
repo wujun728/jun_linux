@@ -1,0 +1,15 @@
+{{- define "index" -}}
+    {{template "header" .}}
+
+    {{- if .Content -}}
+    <article>
+        {{.Content|nl2br|html}}
+    </article>
+    {{- end -}}
+
+    {{- range .Group -}}
+        {{template "api" .}}
+    {{- end -}}
+
+    {{template "footer" .}}
+{{- end -}}

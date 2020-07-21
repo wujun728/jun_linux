@@ -1,0 +1,27 @@
+{
+  "name": "flag-icon-css",
+  "main": [
+    "css/flag-icon.min.css",
+    "less/flag-icon.less",
+    "sass/_flag-icon.sass"
+  ],
+  "ignore": [
+    "**/.*",
+    "assets",
+    "Gruntfile.coffee",
+    "index.html",
+    "LICENSE",
+    "package.json"
+  ],
+  "homepage": "https://github.com/lipis/flag-icon-css",
+  "version": "2.6.0",
+  "_release": "2.6.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "2.6.0",
+    "commit": "8a8b0eb53106d9d49c800d6abe106ba0ffd7604f"
+  },
+  "_source": "https://github.com/lipis/flag-icon-css.git",
+  "_target": "^2.3.1",
+  "_originalSource": "flag-icon-css"
+}

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>语音播报</title>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="static/js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="static/iview/vue.min.js"></script>
+    <link   rel="stylesheet" href="static/iview/iview.css">
+    <link   rel="stylesheet" href="static/css/index.css">
+    <link rel="shortcut icon" href="static/image/favicon.ico">
+    <script type="text/javascript" src="static/iview/iview.min.js"></script>
+    <script>
+        $(function () {
+            var vm = new Vue({
+                el: '#app',
+                data:{
+                    switch1: false,
+                    title:'百度语音合成',
+                    message: '当一个代码的工匠回首往事时，不因虚度年华而悔恨，也不因碌碌无为而羞愧，这样，当他老的时候，可以很自豪告诉世人，我曾经将代码注入生命去打造互联网的浪潮之巅，那是个很疯狂的时代，我在一波波的浪潮上留下了或重如泰山或轻如鸿毛的几笔。'
+                },
+                methods: {
+                    convert: function () {
+                        if(vm.message===""){vm.open("请输入文字");return}
+                        $.ajax({
+                            url : "convert/",
+                            async : false,
+                            type : 'post',
+                            data : {'time' : (new Date()).toString(),'message':vm.message,'switch':vm.switch1},
+                            success : function(result) {
+                                $("#audio").attr("src","static/audio/"+result);
+                                document.getElementById("audio").play();
+                            },
+                            error : function() {
+                                alert("网络异常");
+                            }
+                        });
+                    },open: function (nodesc) {
+                        this.$Notice.open({
+                            title: '温馨提示',
+                            desc: nodesc
+                        });
+                    },reset : function(){
+                        vm.message="";
+                    }
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+<div id="app" v-cloak>
+	<div>
+		<h1 v-text="title"></h1>
+		<i-input v-model="message" maxlength="200"  type="textarea" :autosize="{minRows: 8,maxRows: 20}" placeholder="请输入..."></i-input>
+	</div>
+	<div style="margin-top:10px;">
+        <i-switch v-model="switch1" size="large">
+            <span slot="open">男声</span>
+            <span slot="close">女声</span>
+        </i-switch>
+	    <i-button @click="convert" type="primary">合成播放</i-button>
+
+        <i-button @click="reset" type="primary">重置</i-button>
+	</div>
+
+    <div style="margin-top:10px;">
+        <template>
+            <Collapse>
+
+                <Panel name="1">
+                    但行好事莫问前程
+                    <p slot="content">
+                           <img src="static/image/wechat.png"/>
+                    </p>
+                </Panel>
+            </Collapse>
+        </template>
+    </div>
+	<div style="display: none">
+	   <audio id="audio" controls="controls" ></audio>
+	</div>
+</div>
+</body>
+</html>

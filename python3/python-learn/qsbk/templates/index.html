@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script type="text/javascript" src="$config.static/scripts/jquery-2.1.0.min.js"></script>
+<script type="text/javascript" src="$config.static/scripts/mousetrap.min.js"></script>
+<title>你的糗百</title>
+</head>
+<body>
+<div id = "info">按键盘上H右边的那个键看一条糗事</div>
+<img id="pic" src="$config.static/images/default.jpg" alt="2050-01-01 23:59:59" />
+</body>
+</html>
+
+<script type="text/javascript">
+    Mousetrap.bind('j', function() {
+            $$("#pic").attr("src", "$config.static/images/loading.gif");
+            $$.ajax({
+                url:"/" + $$("#pic").attr("alt"),
+                type:'GET',
+                dataType:"html",
+                success:function(data){
+                    var obj = $$.parseJSON(data);
+                    if(obj.status != 200){
+                        $$('#info').html('error.');
+                        return false;
+                    }
+                    $$.each(obj.data, function(index, value){
+                        $$("#pic").attr("src", value.img_src);
+                        $$("#pic").attr("alt", value.created);
+                        if(!$$("#pic").attr("src")){
+                            $$("#pic").hide();
+                        }
+                        else{
+                            $$("#pic").show();
+                        }
+                        $$("#info").html(value.content);
+                    });
+                }
+            });
+    });
+</script>

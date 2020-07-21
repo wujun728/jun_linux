@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>评论页面</title>
+</head>
+<body>
+<div align="center">评论页面</div>
+
+<form action="../userprofile" method="post">
+    {% for field in Remark %}
+    {% csrf_token %}
+    <div>
+        {{ field.label_tag }}:{{ field }}
+        {{ field.errors }}
+    </div>
+    {% endfor %}
+<div>
+    <input type="submit" value="评论">
+</div>
+</form>
+
+<hr>
+{% for tie in ties %}
+<div>
+    <ul>
+        <li>{{ tie.subject }}</li>
+        <li>{{ tie.mail }}</li>
+        <li>{{ tie.topic }}</li>
+        <li>{{ tie.message }}</li>
+        <li>{{ tie.cc_myself }}</li>
+    </ul>
+    <hr>
+</div>
+{% endfor %}
+</body>
+</html>

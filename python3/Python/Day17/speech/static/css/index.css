@@ -1,0 +1,13 @@
+[v-cloak] {
+              display: none;
+            }
+    body{background:url(../image/meizi.jpg)no-repeat fixed top;text-align:center;}
+    div{width:778px;margin:0 auto}
+    .container {
+         max-width: 32rem;
+         margin-left: auto;
+         margin-right: auto;
+    }
+    .aplayer .aplayer-info .aplayer-music .aplayer-author{
+        color: #fff;
+    }

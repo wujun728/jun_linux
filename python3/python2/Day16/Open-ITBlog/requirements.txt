@@ -1,0 +1,3 @@
+django
+django_password_reset
+markdown

@@ -1,0 +1,40 @@
+<!-- extends表明此页面继承自 base.html 文件 -->
+{% extends "base.html" %}
+{% load staticfiles %}
+<!-- 写入 base.html 中定义的 title -->
+{% block title %}
+    首页
+{% endblock title %}
+<!-- 写入 base.html 中定义的 content -->
+{% block content %}
+<link href="{% static 'bootstrap/css/mlist.css' %}?v1.0.1" rel="stylesheet" type="text/css" />
+<!-- 定义放置文章标题的div容器 -->
+<div class="container">
+    <div class="row mt-2">
+        {% for article in articles %}
+        <!-- 文章内容 -->
+        <div class="col-4 mb-4">
+        <!-- 卡片容器 -->
+            <div class="card h-100">
+                <!-- 标题 -->
+                <h4 class="card-header">{{ article.title }}</h4>
+                <!-- 摘要 -->
+                <div class="card-body">
+                    <p class="card-text">{{ article.body|slice:'100' }}...</p>
+                </div>
+                <div>
+                      <span class="box3" >Time:{{ article.created |date:"Y /m /d"}}</span> &nbsp;&nbsp;
+                    {% if article.category%}
+                        <a class="post-category post-category-js" href="{% url 'article:searchtag' article.category %}">{{ article.category}}</a>
+                    {% endif %}
+                </div>
+                <!-- 注脚 -->
+                <div class="card-footer">
+                    <a href="{% url 'article:article_detail' article.id %}" class="btn btn-primary">阅读本文</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

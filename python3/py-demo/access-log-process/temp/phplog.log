@@ -1,0 +1,133 @@
+
+
+
+[cp][DEBUG][2015-01-12 10:03:25.795862 +0800][192.168.1.38][cp.sudongdong.xqzuche.com][192.168.1.72][44033][d530103bdfa208c81fa3e39d4162879a][GET][/cp][219.40803527832][4.1420459747314][/ho
+me/work/website/sudongdong/modules/Account.php:298][9.1mb][][][521665] the_user_type, uid=521665, hr=admin
+#0 /home/work/website/sudongdong/modules/Account.php(316): Account::the_user_type(0)
+#1 /home/work/website/sudongdong/site/cp/actions/CP_Home.php(56): Account::is_admin()
+#2 nofile(noline): CP_Home->beforeRoute()
+#3 /home/work/website/sudongdong/lib/base.php(1274): call_user_func([{},"beforeRoute"])
+#4 /home/work/website/sudongdong/lib/base.php(1422): F3::call("CP_Home->index", true)
+#5 /home/work/website/sudongdong/site/cp/index-test.php(99): F3::run()
+
+[cp][DEBUG][2015-01-12 10:03:25.802203 +0800][192.168.1.38][cp.sudongdong.xqzuche.com][192.168.1.72][44033][d530103bdfa208c81fa3e39d4162879a][GET][/cp][225.74901580811][6.3409805297852][/ho
+me/work/website/sudongdong/lib/ndb/MysqlDb.php:59][9.25mb][][][521665] [DB:icars_sx][SQL:SELECT cua.city    FROM cp_ugroup_user AS cuu LEFT JOIN cp_ugroup_access AS cua     ON cuu.gid=cua.g
+id    WHERE cuu.uid=521665    ORDER BY cua.city    ]
+#0 /home/work/website/sudongdong/lib/ndb/MysqlDb.php(59): call_user_func("Logger::debug", "[DB:icars_sx][SQL:SELECT cua.city    FROM cp_ugroup_user AS cuu LEFT JOIN cp_ugroup_access AS cua 
+    ON cuu.gid=cua.gid    WHERE cuu.uid=521665    ORDER BY cua.city    ]")
+#1 /home/work/website/sudongdong/lib/ndb/MysqlDb.php(263): MysqlDb->writeLog(["SELECT cua.city\n\t\t\t\tFROM cp_ugroup_user AS cuu LEFT JOIN cp_ugroup_access AS cua \n\t\t\t\tON cuu.gid=cua
+.gid\n\t\t\t\tWHERE cuu.uid=521665\n\t\t\t\tORDER BY cua.city\n\t\t\t\t"])
+#2 /home/work/website/sudongdong/lib/ndb/DbImpl.php(698): MysqlDb->query(["SELECT cua.city\n\t\t\t\tFROM cp_ugroup_user AS cuu LEFT JOIN cp_ugroup_access AS cua \n\t\t\t\tON cuu.gid=cua.gid
+\n\t\t\t\tWHERE cuu.uid=521665\n\t\t\t\tORDER BY cua.city\n\t\t\t\t",[]])
+#3 /home/work/website/sudongdong/lib/db.php(150): DbImpl->queryBySql("SELECT cua.city    FROM cp_ugroup_user AS cuu LEFT JOIN cp_ugroup_access AS cua     ON cuu.gid=cua.gid    WHERE cuu.uid
+=521665    ORDER BY cua.city", [])
+#4 /home/work/website/sudongdong/lib/db.php(238): DB->exec("SELECT cua.city    FROM cp_ugroup_user AS cuu LEFT JOIN cp_ugroup_access AS cua     ON cuu.gid=cua.gid    WHERE cuu.uid=521665   
+ ORDER BY cua.city", null)
+#5 /home/work/website/sudongdong/modules/CpUgroup.php(90): DB::sql("SELECT cua.city    FROM cp_ugroup_user AS cuu LEFT JOIN cp_ugroup_access AS cua     ON cuu.gid=cua.gid    WHERE cuu.uid=5
+21665    ORDER BY cua.city")
+#6 /home/work/website/sudongdong/modules/CP.php(80): CpUgroup::get_available_cities()
+#7 /home/work/website/sudongdong/site/cp/actions/CP_Home.php(72): CP::init_city()
+#8 nofile(noline): CP_Home->beforeRoute()
+#9 /home/work/website/sudongdong/lib/base.php(1274): call_user_func([{},"beforeRoute"])
+#10 /home/work/website/sudongdong/lib/base.php(1422): F3::call("CP_Home->index", true)
+#11 /home/work/website/sudongdong/site/cp/index-test.php(99): F3::run()
+
+[cp][DEBUG][2015-01-12 10:03:25.990321 +0800][192.168.1.38][cp.sudongdong.xqzuche.com][192.168.1.72][38700][466e94b8e877df3218af492d055c83de][GET][/cp/welcome][161.02480888367][161.02480888
+367][/home/work/website/sudongdong/lib/ndb/MysqlDb.php:59][8.75mb][][{"admin_city_code":110100}][521665] [DB:icars_sx][SQL:SELECT * FROM identity WHERE uid=521665 LIMIT 1]
+#0 /home/work/website/sudongdong/lib/ndb/MysqlDb.php(59): call_user_func("Logger::debug", "[DB:icars_sx][SQL:SELECT * FROM identity WHERE uid=521665 LIMIT 1]")
+#1 /home/work/website/sudongdong/lib/ndb/MysqlDb.php(263): MysqlDb->writeLog(["SELECT * FROM identity WHERE uid=521665 LIMIT 1"])
+#2 /home/work/website/sudongdong/lib/ndb/DbImpl.php(698): MysqlDb->query(["SELECT * FROM identity WHERE uid=521665 LIMIT 1",[]])
+#3 /home/work/website/sudongdong/lib/db.php(150): DbImpl->queryBySql("SELECT * FROM identity WHERE uid=521665 LIMIT 1", [])
+#4 /home/work/website/sudongdong/lib/db.php(558): DB->exec("SELECT * FROM identity WHERE uid=521665 LIMIT 1;")
+#5 /home/work/website/sudongdong/lib/db.php(603): Axon->select("*", "uid=521665", null, null, 1, 0, true)
+#6 /home/work/website/sudongdong/lib/db.php(629): Axon->find("uid=521665", null, 1, 0)
+#7 /home/work/website/sudongdong/lib/db.php(691): Axon->findone("uid=521665", null, 0)
+#8 /home/work/website/sudongdong/modules/Account.php(251): Axon->load("uid=521665")
+#9 /home/work/website/sudongdong/site/cp/index-test.php(92): Account::is_can_login()
+
+[cp][DEBUG][2015-01-12 10:03:26.006241 +0800][192.168.1.38][cp.sudongdong.xqzuche.com][192.168.1.72][38700][466e94b8e877df3218af492d055c83de][GET][/cp/welcome][176.94497108459][15.920162200
+928][/home/work/website/sudongdong/lib/ndb/MysqlDb.php:59][9.09mb][][{"admin_city_code":110100}][521665] [DB:icars_sx][SQL:SELECT * FROM user WHERE id = '521665' LIMIT 1]
+#0 /home/work/website/sudongdong/lib/ndb/MysqlDb.php(59): call_user_func("Logger::debug", "[DB:icars_sx][SQL:SELECT * FROM user WHERE id = '521665' LIMIT 1]")
+#1 /home/work/website/sudongdong/lib/ndb/MysqlDb.php(263): MysqlDb->writeLog(["SELECT * FROM user WHERE id = '521665' LIMIT 1"])
+#2 /home/work/website/sudongdong/lib/ndb/DbImpl.php(698): MysqlDb->query(["SELECT * FROM user WHERE id = '521665' LIMIT 1",[]])
+#3 /home/work/website/sudongdong/lib/db.php(150): DbImpl->queryBySql("SELECT * FROM user WHERE id = '521665' LIMIT 1", [])
+#4 /home/work/website/sudongdong/lib/db.php(558): DB->exec("SELECT * FROM user WHERE id = '521665' LIMIT 1;")
+#5 /home/work/website/sudongdong/lib/db.php(603): Axon->select("*", "id = '521665'", null, null, 1, 0, true)
+#6 /home/work/website/sudongdong/lib/db.php(629): Axon->find("id = '521665'", null, 1, 0)
+#7 /home/work/website/sudongdong/lib/db.php(691): Axon->findone("id = '521665'", null, 0)
+#8 /home/work/website/sudongdong/modules/Account.php(290): Axon->load("id = '521665'")
+#9 /home/work/website/sudongdong/modules/Account.php(316): Account::the_user_type(0)
+#10 /home/work/website/sudongdong/site/cp/actions/CP_Home.php(56): Account::is_admin()
+#11 nofile(noline): CP_Home->beforeRoute()
+#12 /home/work/website/sudongdong/lib/base.php(1274): call_user_func([{},"beforeRoute"])
+#13 /home/work/website/sudongdong/lib/base.php(1422): F3::call("CP_Home->welcome", true)
+#14 /home/work/website/sudongdong/site/cp/index-test.php(99): F3::run()
+
+[cp][DEBUG][2015-01-12 10:03:26.009813 +0800][192.168.1.38][cp.sudongdong.xqzuche.com][192.168.1.72][38700][466e94b8e877df3218af492d055c83de][GET][/cp/welcome][180.51695823669][3.5719871520
+996][/home/work/website/sudongdong/modules/Account.php:298][9.09mb][][{"admin_city_code":110100}][521665] the_user_type, uid=521665, hr=admin
+#0 /home/work/website/sudongdong/modules/Account.php(316): Account::the_user_type(0)
+#1 /home/work/website/sudongdong/site/cp/actions/CP_Home.php(56): Account::is_admin()
+#2 nofile(noline): CP_Home->beforeRoute()
+#3 /home/work/website/sudongdong/lib/base.php(1274): call_user_func([{},"beforeRoute"])
+#4 /home/work/website/sudongdong/lib/base.php(1422): F3::call("CP_Home->welcome", true)
+#5 /home/work/website/sudongdong/site/cp/index-test.php(99): F3::run()
+
+[cp][DEBUG][2015-01-12 10:03:26.016235 +0800][192.168.1.38][cp.sudongdong.xqzuche.com][192.168.1.72][38700][466e94b8e877df3218af492d055c83de][GET][/cp/welcome][186.93900108337][6.4220428466
+797][/home/work/website/sudongdong/lib/ndb/MysqlDb.php:59][9.26mb][][{"admin_city_code":110100}][521665] [DB:icars_sx][SQL:SELECT cu.id, cu.title FROM cp_ugroup_user AS cuu    LEFT JOIN cp_
+ugroup AS cu ON cuu.gid=cu.id    WHERE cuu.uid=521665   ]
+#0 /home/work/website/sudongdong/lib/ndb/MysqlDb.php(59): call_user_func("Logger::debug", "[DB:icars_sx][SQL:SELECT cu.id, cu.title FROM cp_ugroup_user AS cuu    LEFT JOIN cp_ugroup AS cu O
+N cuu.gid=cu.id    WHERE cuu.uid=521665   ]")
+#1 /home/work/website/sudongdong/lib/ndb/MysqlDb.php(263): MysqlDb->writeLog(["SELECT cu.id, cu.title FROM cp_ugroup_user AS cuu \n\t\t\tLEFT JOIN cp_ugroup AS cu ON cuu.gid=cu.id \n\t\t\tW
+HERE cuu.uid=521665\n\t\t\t"])
+#2 /home/work/website/sudongdong/lib/ndb/DbImpl.php(698): MysqlDb->query(["SELECT cu.id, cu.title FROM cp_ugroup_user AS cuu \n\t\t\tLEFT JOIN cp_ugroup AS cu ON cuu.gid=cu.id \n\t\t\tWHERE
+ cuu.uid=521665\n\t\t\t",[]])
+#3 /home/work/website/sudongdong/lib/db.php(150): DbImpl->queryBySql("SELECT cu.id, cu.title FROM cp_ugroup_user AS cuu    LEFT JOIN cp_ugroup AS cu ON cuu.gid=cu.id    WHERE cuu.uid=521665
+", [])
+#4 /home/work/website/sudongdong/lib/db.php(238): DB->exec("SELECT cu.id, cu.title FROM cp_ugroup_user AS cuu    LEFT JOIN cp_ugroup AS cu ON cuu.gid=cu.id    WHERE cuu.uid=521665", null)
+#5 /home/work/website/sudongdong/modules/CpUgroup.php(10): DB::sql("SELECT cu.id, cu.title FROM cp_ugroup_user AS cuu    LEFT JOIN cp_ugroup AS cu ON cuu.gid=cu.id    WHERE cuu.uid=521665")
+#6 /home/work/website/sudongdong/site/cp/actions/CP_Home.php(159): CpUgroup::get_user_groups()
+#7 nofile(noline): CP_Home->welcome()
+#8 /home/work/website/sudongdong/lib/base.php(1284): call_user_func([{},"welcome"])
+#9 /home/work/website/sudongdong/lib/base.php(1422): F3::call("CP_Home->welcome", true)
+#10 /home/work/website/sudongdong/site/cp/index-test.php(99): F3::run()
+
+[cp][DEBUG][2015-01-12 10:03:26.019365 +0800][192.168.1.38][cp.sudongdong.xqzuche.com][192.168.1.72][38700][466e94b8e877df3218af492d055c83de][GET][/cp/welcome][190.06896018982][3.1299591064
+453][/home/work/website/sudongdong/lib/ndb/MysqlDb.php:59][9.26mb][][{"admin_city_code":110100}][521665] [DB:icars_sx][SQL:SELECT cua.city, cua.controller, cua.action, cua.can_export, cui.a
+vailable_ips    FROM cp_ugroup_user AS cuu     LEFT JOIN cp_ugroup_access AS cua ON cuu.gid=cua.gid    LEFT JOIN cp_ugroup_ip AS cui ON cuu.gid=cui.gid    WHERE cuu.uid=521665    ]
+#0 /home/work/website/sudongdong/lib/ndb/MysqlDb.php(59): call_user_func("Logger::debug", "[DB:icars_sx][SQL:SELECT cua.city, cua.controller, cua.action, cua.can_export, cui.available_ips  
+  FROM cp_ugroup_user AS cuu     LEFT JOIN cp_ugroup_access AS cua ON cuu.gid=cua.gid    LEFT JOIN cp_ugroup_ip AS cui ON cuu.gid=cui.gid    WHERE cuu.uid=521665    ]")
+#1 /home/work/website/sudongdong/lib/ndb/MysqlDb.php(263): MysqlDb->writeLog(["SELECT cua.city, cua.controller, cua.action, cua.can_export, cui.available_ips\n\t\t\t\tFROM cp_ugroup_user AS
+ cuu \n\t\t\t\tLEFT JOIN cp_ugroup_access AS cua ON cuu.gid=cua.gid\n\t\t\t\tLEFT JOIN cp_ugroup_ip AS cui ON cuu.gid=cui.gid\n\t\t\t\tWHERE cuu.uid=521665\n\t\t\t\t"])
+#2 /home/work/website/sudongdong/lib/ndb/DbImpl.php(698): MysqlDb->query(["SELECT cua.city, cua.controller, cua.action, cua.can_export, cui.available_ips\n\t\t\t\tFROM cp_ugroup_user AS cuu
+ \n\t\t\t\tLEFT JOIN cp_ugroup_access AS cua ON cuu.gid=cua.gid\n\t\t\t\tLEFT JOIN cp_ugroup_ip AS cui ON cuu.gid=cui.gid\n\t\t\t\tWHERE cuu.uid=521665\n\t\t\t\t",[]])
+#3 /home/work/website/sudongdong/lib/db.php(150): DbImpl->queryBySql("SELECT cua.city, cua.controller, cua.action, cua.can_export, cui.available_ips    FROM cp_ugroup_user AS cuu     LEFT J
+OIN cp_ugroup_access AS cua ON cuu.gid=cua.gid    LEFT JOIN cp_ugroup_ip AS cui ON cuu.gid=cui.gid    WHERE cuu.uid=521665", [])
+#4 /home/work/website/sudongdong/lib/db.php(238): DB->exec("SELECT cua.city, cua.controller, cua.action, cua.can_export, cui.available_ips    FROM cp_ugroup_user AS cuu     LEFT JOIN cp_ugr
+oup_access AS cua ON cuu.gid=cua.gid    LEFT JOIN cp_ugroup_ip AS cui ON cuu.gid=cui.gid    WHERE cuu.uid=521665", null)
+#5 /home/work/website/sudongdong/modules/CpUgroup.php(51): DB::sql("SELECT cua.city, cua.controller, cua.action, cua.can_export, cui.available_ips    FROM cp_ugroup_user AS cuu     LEFT JOI
+N cp_ugroup_access AS cua ON cuu.gid=cua.gid    LEFT JOIN cp_ugroup_ip AS cui ON cuu.gid=cui.gid    WHERE cuu.uid=521665")
+#6 /home/work/website/sudongdong/modules/CpUgroup.php(63): CpUgroup::get_user_access(0)
+#7 /home/work/website/sudongdong/site/cp/actions/CP_Home.php(161): CpUgroup::has_access(110100, "CP_Message", "show_list", 0)
+#8 nofile(noline): CP_Home->welcome()
+#9 /home/work/website/sudongdong/lib/base.php(1284): call_user_func([{},"welcome"])
+#10 /home/work/website/sudongdong/lib/base.php(1422): F3::call("CP_Home->welcome", true)
+#11 /home/work/website/sudongdong/site/cp/index-test.php(99): F3::run()
+
+[cp][DEBUG][2015-01-12 10:03:26.024589 +0800][192.168.1.38][cp.sudongdong.xqzuche.com][192.168.1.72][38700][466e94b8e877df3218af492d055c83de][GET][/cp/welcome][195.29294967651][5.2239894866
+943][/home/work/website/sudongdong/lib/ndb/MysqlDb.php:59][9.3mb][][{"admin_city_code":110100}][521665] [DB:icars_sx][SQL:SELECT * FROM cp_ugroup_ip_whitelist WHERE uid=521665 LIMIT 1]
+#0 /home/work/website/sudongdong/lib/ndb/MysqlDb.php(59): call_user_func("Logger::debug", "[DB:icars_sx][SQL:SELECT * FROM cp_ugroup_ip_whitelist WHERE uid=521665 LIMIT 1]")
+#1 /home/work/website/sudongdong/lib/ndb/MysqlDb.php(263): MysqlDb->writeLog(["SELECT * FROM cp_ugroup_ip_whitelist WHERE uid=521665 LIMIT 1"])
+#2 /home/work/website/sudongdong/lib/ndb/DbImpl.php(698): MysqlDb->query(["SELECT * FROM cp_ugroup_ip_whitelist WHERE uid=? LIMIT 1",[521665]])
+#3 /home/work/website/sudongdong/lib/db.php(150): DbImpl->queryBySql("SELECT * FROM cp_ugroup_ip_whitelist WHERE uid=? LIMIT 1", [521665])
+#4 /home/work/website/sudongdong/lib/db.php(550): DB->exec("SELECT * FROM cp_ugroup_ip_whitelist WHERE uid=:uid LIMIT 1;", {":uid":521665})
+#5 /home/work/website/sudongdong/lib/db.php(603): Axon->select("*", ["uid=:uid",{":uid":521665}], null, null, 1, 0, true)
+#6 /home/work/website/sudongdong/lib/db.php(629): Axon->find(["uid=:uid",{":uid":521665}], null, 1, 0)
+#7 /home/work/website/sudongdong/lib/db.php(691): Axon->findone(["uid=:uid",{":uid":521665}], null, 0)
+#8 /home/work/website/sudongdong/modules/CpUgroup.php(178): Axon->load(["uid=:uid",{":uid":521665}])
+#9 /home/work/website/sudongdong/modules/CpUgroup.php(52): CpUgroup::in_ip_whitelist(521665)
+#10 /home/work/website/sudongdong/modules/CpUgroup.php(63): CpUgroup::get_user_access(0)
+#11 /home/work/website/sudongdong/site/cp/actions/CP_Home.php(161): CpUgroup::has_access(110100, "CP_Message", "show_list", 0)
+#12 nofile(noline): CP_Home->welcome()
+#13 /home/work/website/sudongdong/lib/base.php(1284): call_user_func([{},"welcome"])
+#14 /home/work/website/sudongdong/lib/base.php(1422): F3::call("CP_Home->welcome", true)
+#15 /home/work/website/sudongdong/site/cp/index-test.php(99): F3::run()

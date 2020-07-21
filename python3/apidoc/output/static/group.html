@@ -1,0 +1,7 @@
+{{- define "group" -}}
+    {{template "header" .}}
+    {{range .Group}}
+        {{template "api" .}}
+    {{end}}
+    {{template "footer" .}}
+{{- end -}}

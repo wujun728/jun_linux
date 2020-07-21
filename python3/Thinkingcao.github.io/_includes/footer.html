@@ -1,0 +1,81 @@
+
+<footer class="container">
+    <div class="site-footer">
+       <!--  <div class="site-footer-icons">
+            <a target="_blank" href="https://www.zhihu.com/people/ityouknow">
+               知乎
+            </a>
+            <a target="_blank" href="http://weibo.com/ityouknow">
+               微博
+            </a>
+            <a target="_blank" href="https://github.com/ityouknow">
+                GitHub
+            </a>
+        </div> -->
+          <div class="card text-center">
+            <ul class="list-inline" style="margin-left: 0;">
+               <li>
+                <a target="_blank" href="https://weibo.com/Thinging曹">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a target="_blank" href="https://blog.csdn.net/thinkingcao">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa  fa-stack-1x fa-inverse">C</i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a target="_blank" href="https://github.com/Thinkingcao">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+               <li>
+                <a target="_blank" href="https://gitee.com/Thinkingcao">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse">G</i>
+                  </span>
+                </a>
+              </li>
+          </ul>
+        </div>
+        <div class="site-footer-links mobile-hidden">
+            {% for nav in site.labels %}
+            <a href="{{ nav.href }}" title="{{ nav.label }}" target="{{ nav.target | default: _self }}">{{ nav.label }}</a>
+            {% endfor %}
+        </div>
+<!--         <div class="site-footer-icons">
+               京ICP备15067287号-3
+        </div> -->
+        <div class="scrolltop">
+            京ICP备15067287号-3
+            <a href="javascript:window.scrollTo(0,0)" >TOP</a>
+        </div>
+        <div class="rss">
+            <a href="{{ site.subscribe_rss }}"><span class="octicon octicon-rss" style="color:orange;"></span></a>
+            Power by <a href="https://github.com/DONGChuan/Yummy-Jekyll">Yummy Jekyll</a>
+        </div>
+    </div>
+    <!-- Third-Party JS -->
+    <script type="text/javascript" src="http://www.itmind.net/bower_components/geopattern/js/geopattern.min.js"></script>
+    <!-- My JS -->
+    <script type="text/javascript" src="http://www.itmind.net/assets/js/script.js"></script>
+    {% for javascript in page.javascript %}
+    <script src="http://www.itmind.net/assets/js/{{javascript}}"></script>
+    {% endfor %}
+     
+     <!-- Cnzz Analytics -->
+       <div style="display:none">
+         <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1260945749'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1260945749' type='text/javascript'%3E%3C/script%3E"));</script>
+       </div>
+     <!-- Cnzz Analytics -->
+</footer>

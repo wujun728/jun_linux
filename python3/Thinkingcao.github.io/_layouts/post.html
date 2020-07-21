@@ -1,0 +1,43 @@
+---
+layout: default
+css: ['sidebar-post-nav.css']
+---
+{% include jumbotron.html %}
+<article class="post container" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="row">
+
+        {% if page.no-post-nav %}
+        <div class="col-md-12 markdown-body">
+
+            {{ content }}
+
+            {% include copyright.html %}
+
+            <!-- Comments -->
+           <div class="comment">
+             {% include comments.html %}
+           </div>
+
+        </div>
+        {% else %}
+        <div class="col-md-9 markdown-body">
+
+            {{ content }}
+
+            {% include copyright.html %}
+
+            <!-- Comments -->
+            <div class="comment">
+             {% include comments.html %}
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            {% include sidebar-post-nav.html %}
+        </div>
+        {% endif %}
+
+    </div>
+
+</article>

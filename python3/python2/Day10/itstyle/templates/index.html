@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新闻</title>
+    {% load static %}
+    <script  type="text/javascript" charset="utf-8" src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+    <script>
+        function search(){
+            var content = $("#content").val();
+            $.ajax({
+                url:'searchPost',
+                type:"post",
+                dataType:"json",
+                data:{"content":content,"csrfmiddlewaretoken": '{{ csrf_token }}' },
+                success:function(result){
+                    alert(result)
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+   新闻: <input id="content" placeholder="请输入内容"/> <button onclick="search()">搜索</button>
+</body>
+</html>

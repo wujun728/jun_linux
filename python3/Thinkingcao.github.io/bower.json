@@ -1,0 +1,30 @@
+{
+  "name": "Yummy-Jekyll",
+  "description": "Jekyll Theme",
+  "main": "",
+  "keywords": [
+    "jekyll"
+  ],
+  "authors": [
+    "DONG Chuan"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.1.0",
+    "bootstrap": "^3.3.6",
+    "octicons": "^3.5.0",
+    "hover": "^2.0.2",
+    "geopattern": "^1.2.3",
+    "underscore": "^1.8.3",
+    "primer-markdown": "^2.5.1",
+    "flag-icon-css": "^2.3.1"
+  }
+}

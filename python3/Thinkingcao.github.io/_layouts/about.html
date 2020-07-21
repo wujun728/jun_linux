@@ -1,0 +1,21 @@
+---
+layout: default
+---
+{% include jumbotron.html %}
+<article class="post container" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="row">
+        <div class="col-md-12 markdown-body">
+
+            {{ content }}
+
+            <!-- Comments -->
+           <div class="comment">
+             {% include comments.html %}
+           </div>
+        </div>
+    
+
+    </div>
+
+</article>

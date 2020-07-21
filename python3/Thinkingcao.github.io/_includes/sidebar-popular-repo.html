@@ -1,0 +1,104 @@
+
+<div class="card text-center">
+    <ul class="list-inline" style="margin-left: 0;">
+       <li>
+        <a target="_blank" href="https://weibo.com/Thinging曹">
+          <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+          </span>
+        </a>
+      </li>
+      <li>
+        <a target="_blank" href="https://blog.csdn.net/thinkingcao">
+          <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa  fa-stack-1x fa-inverse">C</i>
+          </span>
+        </a>
+      </li>
+      <li>
+        <a target="_blank" href="https://github.com/Thinkingcao">
+          <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+          </span>
+        </a>
+      </li>
+       <li>
+        <a target="_blank" href="https://gitee.com/Thinkingcao">
+          <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-github fa-stack-1x fa-inverse">G</i>
+          </span>
+        </a>
+      </li>
+  </ul>
+</div>
+
+<h3 class="sidebar-title">精选文章</h3>
+
+{% for article in site.classes  %}
+<div class="card text-center">
+    <div class="thumbnail">
+        <div class="card-image geopattern" data-pattern-id="{{ article.name }}">
+            <div class="card-image-cell">
+                <h3 class="card-title">
+                    <a href="{{ article.href }}" target="_blank">{{ article.name }}</a>
+                </h3>
+            </div>
+        </div>
+        <div class="caption">
+            <div class="card-description">
+                <p class="card-text">{{ article.describe }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+<br/>
+<h3 class="sidebar-title">开源软件</h3>
+{% assign sorted_repos = (site.github.public_repositories | sort: 'stargazers_count') | reverse | where: "fork", "false" %}
+{% for repo in sorted_repos | limit: site.side_bar_repo_limit %}
+<div class="card text-center">
+    <div class="thumbnail">
+        <div class="card-image geopattern" data-pattern-id="{{ repo.name }}">
+            <div class="card-image-cell">
+                <h3 class="card-title">
+                    <a href="{{ repo.html_url }}" target="_blank">{{ repo.name }}</a>
+                </h3>
+            </div>
+        </div>
+        <div class="caption">
+            <div class="card-description">
+                <p class="card-text">{{ repo.description }}</p>
+            </div>
+            <div class="card-text">
+                <span data-toggle="tooltip" class="meta-info" title="{{ repo.stargazers_count }} stars">
+                    <span class="octicon octicon-star"></span> {{ repo.stargazers_count }}
+                </span>
+                <span data-toggle="tooltip" class="meta-info" title="{{ repo.forks_count }} forks">
+                    <span class="octicon octicon-git-branch"></span> {{ repo.forks_count }}
+                </span>
+                <span data-toggle="tooltip" class="meta-info" title="Last updated：{{ repo.updated_at }}">
+                    <span class="octicon octicon-clock"></span>
+                    <time datetime="{{ repo.updated_at }}" title="{{ repo.updated_at }}">{{ repo.updated_at | date: '%Y-%m-%d' }}</time>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+<script>
+    $(document).ready(function(){
+
+        // Enable bootstrap tooltip
+        $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+
+        $('.geopattern').each(function(){
+            $(this).geopattern($(this).data('pattern-id'));
+        });
+
+    });
+</script>
