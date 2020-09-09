@@ -1,0 +1,15 @@
+apache_sample:
+  image: eboraas/apache
+  volumes:
+    - ./log/apache:/var/log/apache2
+  ports:
+    - "8080:80"
+    - "8443:443"
+logstash-forwarder:
+  build: ../logstash-forwarder
+  volumes:
+    - ../logstash-forwarder/sample_config:/etc/logstash-forwarder/conf.d:ro
+    - ../certs:/var/certs:ro
+    - ./log/apache:/var/log/apache-server:ro
+  net: "host"
+  command: /etc/logstash-forwarder/conf.d/logstash-forward-config.json

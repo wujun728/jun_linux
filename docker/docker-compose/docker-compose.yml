@@ -1,0 +1,53 @@
+version: "3"
+services:
+        nginx:
+                image: nginx:1.15.0-alpine
+                volumes:
+                        - ./conf/nginx/:/etc/nginx/conf.d/
+                        - ./html:/usr/share/nginx/html:cached
+                ports:
+                        - "8081:80"
+                depends_on:
+                        - php
+                restart: always
+
+        php:
+                image: nixus/php-7.1.19-fpm-alpine:3.7
+                volumes:
+                        - ./conf/php:/usr/local/etc/php/conf.d
+                        - ./html:/usr/share/nginx/html:cached
+                        - ./files:/usr/share/nginx/files:cached
+                ports:
+                        - "9000:9000"
+                depends_on:
+                        - mysql
+                        - redis
+                environment:
+                        - DB_PORT=3306
+                        - DB_HOST=mysql
+                restart: always
+
+        mysql:
+                image: mysql:5.7.22
+                volumes:
+                        - ./db:/var/lib/mysql
+                        - ./conf/mysql/mysql.cnf:/etc/mysql/conf.d/mysql.cnf
+                environment:
+                        - MYSQL_ROOT_PASSWORD=root
+                        - MYSQL_DATABASE=lumen
+                        - TZ=Asia/Shanghai
+                ports:
+                        - "3306:3306"
+                        - "3307:3306"
+                expose:
+                        - "3307"
+                restart: always
+        redis:
+                image: redis:4.0.10-alpine
+                volumes:
+                        - ./redis:/data:cached
+                        - ./conf/redis/redis.conf:/home/redis/redis.conf
+                ports: 
+                        - "6379:6379"
+                command: ["redis-server", "/home/redis/redis.conf"]
+                restart: always

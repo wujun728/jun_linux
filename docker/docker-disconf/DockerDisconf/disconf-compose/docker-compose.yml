@@ -1,0 +1,33 @@
+disconf-redis:
+    image: redis:3.0
+disconf-mysql:
+    image: mysql:5.7
+    volumes:
+        - ../disconf-mysql/files/sql:/docker-entrypoint-initdb.d
+        - ../disconf-mysql/data:/var/lib/mysql
+    environment:
+        - MYSQL_ROOT_PASSWORD=passw0rd
+disconf-zoo:
+    build: ../disconf-zoo
+    ports:
+        - "2181:2181"
+disconf-app:
+    build: ../disconf-app
+    links:
+        - disconf-redis
+        - disconf-mysql
+        - disconf-zoo
+    volumes:
+        - ../disconf-build/working/war:/home/work/dsp/disconf-rd/war
+disconf-nginx:
+    image: nginx:1.9
+    links:
+        - disconf-app
+    volumes:
+        - ../disconf-nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+        - ../disconf-build/working/war/html:/home/work/dsp/disconf-rd/war/html:ro
+        - ../disconf-nginx/logs:/home/work/var/logs/disconf
+    ports:
+        - "8081:8081"
+
+

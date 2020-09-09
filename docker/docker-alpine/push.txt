@@ -1,0 +1,10 @@
+# push
+docker push myharbor.com/base/alpine:sshd
+docker push myharbor.com/base/alpine:java-1.8
+docker push myharbor.com/base/alpine:java-1.8.181
+docker push myharbor.com/base/alpine:singleapp-1.0
+docker push myharbor.com/base/alpine:singleapp-1.0.2
+docker push myharbor.com/base/alpine:tomcatapp-8.0
+docker push myharbor.com/base/alpine:tomcatapp-8.0.52
+docker push myharbor.com/base/alpine:tomcatapp-8.5
+docker push myharbor.com/base/alpine:tomcatapp-8.5.31

@@ -1,0 +1,8 @@
+version: '2'
+services:
+  kafka:
+    build: .
+    ports:
+      - "9092"
+    volumes:
+      - /tmp/kafka:/kafka

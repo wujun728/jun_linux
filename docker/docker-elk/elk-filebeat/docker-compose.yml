@@ -1,0 +1,35 @@
+elastic:
+  image: elasticsearch:2.3
+  volumes:
+    - ./esdata:/usr/share/elasticsearch/data
+  ports:
+    - "9200:9200"
+  command: -Des.network.bind_host=0.0.0.0
+logstash:
+  image: logstash:2.3
+  ports:
+    - "5044:5044"
+  volumes:
+    - ./logstash/conf.d:/etc/logstash/conf.d:ro
+  net: "host"
+  command: logstash -f /etc/logstash/conf.d
+kibana:
+  image: kibana:4.5
+  ports:
+    - "5601:5601"
+  net: "host"
+  environment:
+    - ELASTICSEARCH_URL=http://localhost:9200
+nginx_sample:
+  image: nginx:1.8
+  ports:
+    - "8080:80"
+  volumes:
+    - ./log/nginx:/var/log/nginx
+filebeat:
+  image: olinicola/filebeat:1.1.2
+  volumes_from:
+    - nginx_sample:ro
+  volumes:
+    - ./filebeat:/etc/filebeat:ro
+  net: "host"

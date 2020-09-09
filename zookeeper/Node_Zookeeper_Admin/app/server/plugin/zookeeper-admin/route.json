@@ -1,0 +1,37 @@
+{
+    "/":{
+        "view": "index.html",
+		"action":"index.js",
+		"method":"index"
+    },
+	"/zookeeper-directory":{
+		"request":"post",
+        "view": "",
+		"action":"index.js",
+		"method":"directory"
+    },
+	"/zookeeper-create":{
+		"request":"post",
+        "view": "",
+		"action":"index.js",
+		"method":"create"
+    },
+	"/zookeeper-data":{
+		"request":"post",
+        "view": "",
+		"action":"index.js",
+		"method":"data"
+    },"/zookeeper-set-data":{
+		"request":"post",
+        "view": "",
+		"action":"index.js",
+		"method":"set_data"
+    },"/zookeeper-delete-node":{
+		"request":"post",
+        "view": "",
+		"action":"index.js",
+		"method":"delete_node"
+    }
+	
+	
+}

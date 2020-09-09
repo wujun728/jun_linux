@@ -1,4 +1,0 @@
-2014-12-19 15:46:47,420 - network-server - ERROR - bind failed
-2014-12-19 15:47:25,949 - network-server - ERROR - QuickHTTPRequest instance has no attribute 'action'  File "server.py", line 207, in process
-    action = action_dic.get(request.action, None)
-

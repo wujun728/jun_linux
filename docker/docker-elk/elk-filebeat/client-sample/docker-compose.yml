@@ -1,0 +1,13 @@
+nginx_sample:
+  image: nginx:1.8
+  ports:
+    - "8080:80"
+  volumes:
+    - ./log/nginx:/var/log/nginx
+filebeat:
+  image: olinicola/filebeat:1.1.2
+  volumes_from:
+    - nginx_sample:ro
+  volumes:
+    - ./filebeat:/etc/filebeat:ro
+  net: "host"
