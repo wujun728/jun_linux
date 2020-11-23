@@ -12,7 +12,7 @@ import org.apache.zookeeper.data.Stat;
 
 /**
  * 使用curator做节点增删改查
- * @author shenzhanwang
+ * @author Wujun
  *
  */
 public class CrudZookeeper {

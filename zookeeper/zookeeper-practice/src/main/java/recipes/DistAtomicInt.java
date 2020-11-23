@@ -9,7 +9,7 @@ import org.apache.curator.retry.RetryNTimes;
 /**
  * 使用Curator实现分布式计数器
  * 把计数结果写入某个节点中，在分布式环境下做原子化的叠加
- * @author shenzhanwang
+ * @author Wujun
  *
  */
 

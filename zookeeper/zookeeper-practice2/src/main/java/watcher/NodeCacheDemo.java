@@ -11,7 +11,7 @@ import org.apache.zookeeper.CreateMode;
 
 /**
  * cache是curator对事件监听的包装，对事件的监听看做本地缓存与服务器的对比
- * @author shenzhanwang
+ * @author Wujun
  * NodeCache用于监听指定节点的变化（被修改）
  */
 public class NodeCacheDemo {

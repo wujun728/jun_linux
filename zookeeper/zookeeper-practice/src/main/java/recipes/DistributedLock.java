@@ -17,7 +17,7 @@ import org.apache.curator.retry.ExponentialBackoffRetry;
  * 字由uuid + 递增序列组成。而通过对比自身的序列数是否在所有子节点的第一位，来判断是
  * 否成功获取到了锁。当获取锁失败时，它会添加watcher来监听前一个节点的变动情况，然后
  * 进行等待状态。直到watcher的事件生效将自己唤醒，或者超时时间异常返回。
- * @author shenzhanwang
+ * @author Wujun
  *
  */
 public class DistributedLock {

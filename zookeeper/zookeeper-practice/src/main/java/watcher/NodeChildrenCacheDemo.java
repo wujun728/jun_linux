@@ -12,7 +12,7 @@ import org.apache.zookeeper.CreateMode;
 /**
  * PathChildrenCache用于监听指定节点的子节点的变化，包括子节点的新增、修改和删除
  * 这种监听只适用于直接下属节点，对于间接下属无法监听
- * @author shenzhanwang
+ * @author Wujun
  *
  */
 public class NodeChildrenCacheDemo {

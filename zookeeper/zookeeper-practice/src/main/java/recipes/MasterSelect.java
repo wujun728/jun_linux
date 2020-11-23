@@ -16,7 +16,7 @@ import org.apache.curator.utils.CloseableUtils;
 /**
  * master选举，每个客户端同时向zookeeper发起同一节点的创建请求，只有一个客户端可以创建成功，成为master执行任务
  * 功能类似于乐观锁，它是非阻塞的
- * @author shenzhanwang
+ * @author Wujun
  *
  */
 public class MasterSelect {
