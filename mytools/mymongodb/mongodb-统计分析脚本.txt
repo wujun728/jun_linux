@@ -1,0 +1,186 @@
+﻿db.runCommand({"distinct" : "weblogs", "key" : "remote_addr"})
+db.weblogs.count({"time" : {$gt:ISODate("2013-11-12T11:17:18.0Z")}})
+db.weblogs.find({"time" : {$lte:ISODate("2013-11-12T11:17:18.0Z")}}).limit(2);
+> db.runCommand({"group" : {
+ "ns" : "weblogs",
+ "key" : "remote_user",
+ "initial" : {"time" : 0},
+ "$reduce" : function(doc, prev) {
+ 　　if (doc.time > prev.time) {
+ 　　　　prev.remote_addr = doc.remote_addr;
+ 　　　　prev.time = doc.time;
+ 　　}
+ }}}) 
+ 
+db.posts.save({"title" : "java sun", "author" : "jk", "day" : "2012-12-14", "tags" : ["java", "nosql", "spring"]})
+db.posts.save({"title" : "SSH2的整合", "author" : "cj", "day" : "2012-5-10", "tags" : ["struts2", "hibernate", "spring"]})
+db.posts.save({"title" : "C#的高级用法", "author" : "zt", "day" : "2012-4-3", "tags" : ["C#", "SQL"]})
+db.posts.save({"title" : "PHP Mongo", "author" : "lx", "day" : "2012-12-14", "tags" : ["PHP", "nosql", "mongo"]})
+
+…
+db.runCommand({"distinct" : "posts", "key" : "tags"})
+
+ 统计最热点的标签
+ >db.posts.group({
+   "key" : {"day" : true},
+   "initial" : {"tags" : {}},
+   "$reduce" : function (doc, prev) {
+       for (i in doc.tags) {
+                if (doc.tags[i] in prev.tags) {
+                         prev.tags[doc.tags[i]]++;
+                }
+                else
+                {
+                         prev.tags[doc.tags[i]] = 1;
+                }
+       }
+   },
+   
+  "finalize" : function (prev) {
+       var mostPopular = 0;
+       for (i in prev.tags) {
+                if (prev.tags[i] > mostPopular) {
+                         prev.tag = i;
+                         mostPopular = prev.tags[i];
+                }
+       }
+       delete prev.tags;
+   }
+})
+
+db.posts.group({
+   "initial" : {"tags" : {}},
+   "$reduce" : function (doc, prev) {
+       for (i in doc.tags) {
+                if (doc.tags[i] in prev.tags) {
+                         prev.tags[doc.tags[i]]++;
+                }
+                else
+                {
+                         prev.tags[doc.tags[i]] = 1;
+                }
+       }
+   },
+  "finalize" : function (prev) {
+       var mostPopular = 0;
+       for (i in prev.tags) {
+                if (prev.tags[i] > mostPopular) {
+                         prev.tag = i;
+                         mostPopular = prev.tags[i];
+                }
+       }
+       delete prev.tags;
+   }
+   
+})
+db.students.save({ "_id" : ObjectId("50f0c0ca323365ec0c000006"), "username" : "大胖", "age" : 23, "birthday" : ISODate("1989-10-29T16:00:00Z"), "interest" : [ "篮球", "足球", "乒乓球", "高尔夫球" ] })
+db.students.save({ "_id" : ObjectId("50f35b6f323365f00c000001"), "username" : "六福", "age" : 24, "birthday" : ISODate("1988-05-05T15:00:00Z"), "interest" : [ "乒乓球", "篮球" ] })
+db.students.save({ "_id" : ObjectId("50f37257323365ec0c000000"), "username" : "七喜", "age" : 30, "birthday" : ISODate("1984-09-30T16:00:00Z"), "interest" : [ "足球", "橄榄球" ] })
+
+#当我们没有指定分组依据的键名时，那么集合中所有文档被认为属于同一组。
+ >db.students.group({
+   "initial" : {"interests" : {}},
+   "$reduce" : function (doc, prev) {
+       for (i in doc.interest) {
+                if (doc.interest[i] in prev.interests) {
+                         prev.interests[doc.interest[i]]++;
+                }
+                else
+                {
+                         prev.interests[doc.interest[i]] = 1;
+                }
+       }
+   }
+})
+
+
+按日期、行为、用户统计行为表
+由于行为表是分片表，不能使用group，只能采用MapReduce进行分组统计：
+db.runCommand({
+mapreduce:"pmhuseraction",
+map:function() { emit({date:this.statustime.getFullYear() + "-" +this.statustime.getMonth() + "-" +this.statustime.getDate(),writetype:this.writetype,userid:this.userid}, 1); },
+reduce:function (key, values) { var x = 0; values.forEach(function (v) {x += v;}); return x; },
+out:"pmhuseraction_stat_tmp",
+finalize:function (key, value) {return {date:key.date,writetype:key.writetype, userid:key.userid, count:value}}
+})
+
+db.article.save( {
+    title : "this is your title" ,
+    author : "dave" ,
+    posted : new Date(4121381470000) ,
+    pageViews : 7 ,
+    tags : [ "fun" , "nasty" ] ,
+    comments : [
+        { author :"barbara" , text : "this is interesting" } ,
+        { author :"jenny" , text : "i like to play pinball", votes: 10 }
+    ],
+    other : { bar : 14 }
+});
+db.runCommand({ aggregate : "article", pipeline : [
+    { $unwind : "$tags" }
+]});
+db.article.save( {
+    title : "this is some other title" ,
+    author : "jane" ,
+    posted : new Date(978239834000) ,
+    pageViews : 6 ,
+    tags : [ "nasty" , "filthy" ] ,
+    comments : [
+        { author :"will" , text : "i don't like the color" } ,
+        { author :"jenny" , text : "can i get that in green?" }
+    ],
+    other : { bar : 14 }
+});
+db.runCommand({ aggregate : "article", pipeline : [
+    { $unwind : "$tags" },
+    { $group : {
+	_id : "$tags",
+        count : { $sum : 1 },
+	authors : { $addToSet : "$author" }
+    }}
+]});
+
+/////////////////////////////// 自定义函数进行计算，报错。。。。。。
+db.sales.save({ "_id" : ObjectId("4f7be0d3e37b457077c4b13e"), "_class" : "com.infosys.mongo.Sales", "orderId" : 1, "orderDate" : "26/03/2011",
+"quantity" : 20, "salesAmt" : 200, "profit" : 150, "customerName" : "CUST1", "productCategory" : "IT", "productSubCategory" : "software", 
+"productName" : "Grad", "productId" : 1 });
+db.sales.save({ "_id" : ObjectId("4f7be0d3e37b457077c4b13f"), "_class" : "com.infosys.mongo.Sales", "orderId" : 2, "orderDate" : "23/05/2011", 
+"quantity" : 30, "salesAmt" : 200, "profit" : 40, "customerName" : "CUST2", "productCategory" : "IT", "productSubCategory" : "hardware",
+ "productName" : "HIM", "productId" : 1 });
+db.sales.save({ "_id" : ObjectId("4f7be0d3e37b457077c4b140"), "_class" : "com.infosys.mongo.Sales", "orderId" : 3, "orderDate" : "22/09/2011",
+ "quantity" : 40, "salesAmt" : 200, "profit" : 80, "customerName" : "CUST1", "productCategory" : "BT", "productSubCategory" : "services",
+ "productName" : "VOCI", "productId" : 2 });
+db.sales.save({ "_id" : ObjectId("4f7be0d3e37b457077c4b141"), "_class" : "com.infosys.mongo.Sales", "orderId" : 4, "orderDate" : "21/10/2011", 
+"quantity" : 30, "salesAmt" : 200, "profit" : 20, "customerName" : "CUST3", "productCategory" : "BT", "productSubCategory" : "hardware", 
+"productName" : "CRUD", "productId" : 2 });
+db.sales.save({ "_id" : ObjectId("4f7be0d3e37b457077c4b142"), "_class" : "com.infosys.mongo.Sales", "orderId" : 5, "orderDate" : "21/06/2011", 
+"quantity" : 50, "salesAmt" : 200, "profit" : 20, "customerName" : "CUST3", "productCategory" : "BT", "productSubCategory" : "hardware", 
+"productName" : "CRUD", "productId" : 1 });
+
+> db.system.js.save( { _id : "Sum" ,
+value : function(key,values)
+{
+    var total = 0;
+    for(var i = 0; i < values.length; i++)
+        total += values[i];
+    return total;
+}}); 
+
+> db.sales.runCommand(
+{
+mapreduce : "sales" ,
+map:function()
+{
+emit(
+{key0:this.ProductCategory,
+key1:this.ProductSubCategory,
+key2:this.ProductName},
+this.SalesAmt);
+},
+reduce:function(key,values)
+{
+    var result = Sum(key, values);
+    return result;
+}
+out : { inline : 1 } 
+});

@@ -1,0 +1,89 @@
+<div class="row">
+
+    <div class="col-md-12">
+        <!-- START DEFAULT DATATABLE -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">用户列表</h3>
+                <ul class="panel-controls">
+                    <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span></a></li>
+                    <li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>
+                    <!--<li><a href="#" class="panel-remove"><span class="fa fa-times"></span></a></li>-->
+                </ul>
+            </div>
+            <div class="panel-body">
+
+                {# 根据变量自动生成表格
+                <table class="table datatable">
+                    <thead>
+                    <tr>
+                        {% for i, v in pairs(formvalue[formvalue.params.query]._embedded.user[1]) do%}
+                        <td>
+                            {{i}}
+                        </td>
+                        {% end %}
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for _, line in ipairs(formvalue[formvalue.params.query]._embedded.user) do %}
+                    <tr>
+                        {% for i, v in pairs(line) do%}
+                        <td>
+                            {{v}}
+                        </td>
+                        {% end %}
+                    </tr>
+                    {% end %}
+                    </tbody>
+                </table>
+                #}
+                <table id="rest-example"  class="display hover strip">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>用户名</th>
+                    <th>中文名</th>
+                    <th>电话</th>
+                    <th>EMail</th>
+                    <th>QQ</th>
+                    <th>微信</th>
+                    <th>是否有效</th>
+                    <!--<th>创建时间</th>-->
+                    <!--<th>创建者</th>-->
+                    <!--<th>更新时间</th>-->
+                    <!--<th>更新者</th>-->
+                    <th>头像</th>
+                </tr>
+                </thead>
+                    <tbody>
+
+                    {% for _, line in ipairs(formvalue['users']._embedded.user) do %}
+                    <tr>
+                        <td>{{line.pkId}}</td>
+                        <td>{{line.username}}</td>
+                        <td>{{line.namecn}}</td>
+                        <td>{{line.tel}}</td>
+                        <td>{{line.email}}</td>
+                        <td>{{line.qq}}</td>
+                        <td>{{line.weixin}}</td>
+                        <td>{{line.enabled}}</td>
+                        <!--<td>{ {line.createDate} }</td>-->
+                        <!--<td>{ {line.createBy} }</td>-->
+                        <!--<td>{ {line.updateDate} }</td>-->
+                        <!--<td>{ {line.updateBy} }</td>-->
+                        <td>{{isempty(line.avatar) and '' or line.avatar.webpath }}</td>
+
+                    </tr>
+                    {% end %}
+                    </tbody>
+
+
+                </table>
+
+            </div>
+        </div>
+        <!-- END DEFAULT DATATABLE -->
+    </div>
+
+</div>

@@ -1,0 +1,77 @@
+ngx.log(ngx.DEBUG, "body filter start ...... 进行格式转换或者增加代码,如果有数据调用两次 ")
+--local b = ngx.arg[1]
+--ngx.arg[1] = string.gsub( b, "(<head>)", "%1 <link type=\\"text/css\\" rel=\'stylesheet\' href=\'/sqlite/css.css\'/>")
+--#再通过
+--- -echo_after_body
+-- #就可以方便地在结束之后，附加js代码:
+-- #  set $append_js "<script src='/bootstrap/js/sqlite.js'></script>";
+-- #echo_after_body $append_js;
+
+--
+----转换为标准化格式，方便 Extjs 接收识别
+--totalElements = 20
+--
+--if ngx.arg[1] ~= '' then
+--
+--    --    local resp_body = string.sub(ngx.arg[1], 1, 1000)
+--    --    ngx.ctx.buffered = (ngx.ctx.buffered or "") .. resp_body
+--    ngx.log(ngx.DEBUG, "body filter start ...... " .. ngx.arg[1])
+--    local resp_body = ngx.arg[1]
+--
+--
+--    --- 按规则获取data-path = channel_auth
+--    local url = ngx.var.uri
+--    local valuepath = string.match(url, "([%w_]+)")
+--    local valuepath1 = string.match(url, "([%w_]+)", #valuepath + 2)
+--    local valuekey = string.match(url, "([%w_]+)",#valuepath1+ #valuepath + 4)
+--
+--    ngx.log(ngx.DEBUG, valuekey)
+--
+--    ngx.ctx.domain = valuekey
+--
+--    -- spring-rest 数据格式转换
+--    ngx.log(ngx.DEBUG,resp_body)
+--
+--    if not isempty(resp_body) then
+--
+--        local result = {};
+--
+--        local jsonvalue = cjson.decode(resp_body);
+--
+--        --更新总记录数
+--        if (not isempty(jsonvalue.page)) then
+--            totalElements = jsonvalue.page.totalElements
+--        end
+--
+--        if (isempty(jsonvalue._embedded[ngx.ctx.domain])) then
+--            --单条记录数据
+--            result["DATA"] = jsonvalue
+--        else
+--            --多条记录数据
+--            result["DATA"] = jsonvalue._embedded[ngx.ctx.domain]
+--        end
+--
+--        --无page 数据情况处理
+--        if (isempty(jsonvalue.page)) then
+--            result["PAGE"] = cjson.decode('{ "page": { "totalElements": ' .. totalElements .. ' } }')
+--        else
+--            result["PAGE"] = jsonvalue.page
+--        end
+--
+--        --        ngx.say(cjson.encode(result));
+--        ngx.arg[1] = cjson.encode(result)
+--    end
+--end
+--
+--
+----
+----if isempty(ngx.ctx.buffered) then
+----    ngx.ctx.buffered = ''
+----end
+----ngx.ctx.buffered = ngx.ctx.buffered..ngx.arg[1]
+----
+----
+----if ngx.arg[2] then
+----    ngx.log(ngx.DEBUG, "body filter start ...... arg[2] ")
+----
+---- end

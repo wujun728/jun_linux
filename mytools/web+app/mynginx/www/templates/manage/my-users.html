@@ -1,0 +1,47 @@
+{% layout = "/layouts/mylayout.html" %}
+
+
+{-sidebar-}
+
+{-sidebar-}
+
+
+{-content-}
+<!-- START BREADCRUMB -->
+<ul class="breadcrumb">
+    <li><a href="#">首页</a></li>
+    <li class="active">用户列表</li>
+</ul>
+<!-- END BREADCRUMB -->
+
+
+<!-- PAGE CONTENT WRAPPER -->
+<div class="page-content-wrap">
+
+    {(manage/my-users-content-wrap-list.html)}
+
+</div>
+<!-- END PAGE CONTENT WRAPPER -->
+{-content-}
+
+
+
+{-page_css-}
+<link rel="stylesheet" type="text/css" id="editor" href="js/plugins/datatables/jquery.dataTables.min.css"/>
+<link rel="stylesheet" type="text/css" id="editor" href="js/plugins/datatables/editor/css/buttons.dataTables.min.css"/>
+<link rel="stylesheet" type="text/css" id="editor" href="js/plugins/datatables/editor/css/select.dataTables.min.css"/>
+<link rel="stylesheet" type="text/css" id="editor" href="js/plugins/datatables/editor/css/dataTables.editor.css"/>
+
+<link rel="stylesheet" type="text/css" id="editor" href="js/plugins/datatables/dataTables.bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" id="editor" href="js/plugins/datatables/editor/css/buttons.bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" id="editor" href="js/plugins/datatables/editor/css/select.bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" id="editor" href="js/plugins/datatables/editor/css/editor.bootstrap.min.css"/>
+{-page_css-}
+
+{-page_js-}
+{(manage/my-users-footer-plugins.html,{page=formvalue["users"].page})}
+{-page_js-}
+
+{-page_demo_js-}
+<script type="text/javascript" src="js/demo_dashboard.js"></script>
+{-page_demo_js-}

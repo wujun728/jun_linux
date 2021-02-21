@@ -1,0 +1,58 @@
+#docker pull supermy/docker-myredis:3.5
+
+myredis4master:
+  image: supermy/docker-myredis:3.5
+  volumes_from:
+    - data4master
+  ports:
+      - "6379:6379"
+
+myredis4slave1:
+  image: supermy/docker-myredis:3.5
+  links:
+      - myredis4master
+  volumes_from:
+    - data4slave
+  ports:
+      - "6379"
+
+myredis4slave2:
+  image: supermy/docker-myredis:3.5
+  links:
+      - myredis4master
+  volumes_from:
+    - data4slave
+  ports:
+      - "6379"
+
+myredis4slave3:
+  image: supermy/docker-myredis:3.5
+  links:
+      - myredis4master
+  volumes_from:
+    - data4slave
+  ports:
+      - "6379"
+
+
+#常用工具集合
+data4master:
+  image: busybox
+  command: /bin/true
+  volumes:
+      - /Users/moyong/project/env-myopensource/3-tools/mytools/common/myredis/redis-master.conf:/etc/redis.conf
+
+data4slave:
+  image: busybox
+  command: /bin/true
+  volumes:
+      - /Users/moyong/project/env-myopensource/3-tools/mytools/common/myredis/redis-slave.conf:/etc/redis.conf
+
+
+#docker build -t supermy/docker-myredis:3.5  . && fig stop && fig rm --force && fig up -d && fig ps && fig logs
+#docker pull supermy/docker-myredis
+
+#export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.7.0_60.jdk/Contents/Home/"
+#build spring app use jdk1.7
+#spring app 源代码 :https://github.com/supermy/docker-gs-messaging-redis
+#redis-benchmark -h 192.168.59.103

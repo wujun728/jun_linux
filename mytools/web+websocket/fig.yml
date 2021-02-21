@@ -1,0 +1,23 @@
+#启动rabbitmq
+#部署spring独立应用，启动应用程序，应用程序调用rabbitmq
+#web界面查看消息队列；http://192.168.59.103:15762/#/  guest/guest
+#spring 源代码编译为jar： https://github.com/supermy/docker-gs-messaging-stomp-websocket
+
+#    docker run -d -P -m 1g redis
+#    docker run --name some-redis -p 6379 -d redis
+
+#myredis:
+#  image: redis:latest
+#  ports:
+#    - "6379:6379"
+#  environment:
+#    m: 1g
+
+
+app:
+  image: spring_websocket
+  ports:
+    - "8080:8080"
+
+#  links:
+#    - myredis

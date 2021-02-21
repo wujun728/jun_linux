@@ -1,0 +1,71 @@
+{% layout = "/layouts/mylayout.html" %}
+
+
+{-sidebar-}
+<!-- 侧面导航，所有管理页面一致 -->
+{-sidebar-}
+
+
+
+{-content-}
+<!-- START BREADCRUMB -->
+<ul class="breadcrumb">
+    <li><a href="#">首页</a></li>
+    <li class="active">仪表盘</li>
+</ul>
+<!-- END BREADCRUMB -->
+
+
+<!-- PAGE CONTENT WRAPPER -->
+<div class="page-content-wrap">
+
+    <!-- START WIDGETS -->
+    {(manage/my-index-content-wrap-widget.html)}
+    <!-- END WIDGETS -->
+
+    <!-- 销售、项目信息 -->
+    {(manage/my-index-content-wrap-sale-project.html)}
+    <!-- 销售事件 用户回访 最近一个月的游客-->
+
+    {(manage/my-index-content-wrap-sales-users-visitors.html)}
+
+
+    <!-- START DASHBOARD CHART -->
+    {(manage/my-index-content-wrap-dashboardchart.html)}
+    <!-- END DASHBOARD CHART -->
+
+</div>
+<!-- END PAGE CONTENT WRAPPER -->
+
+{-content-}
+
+
+
+{-page_css-}
+
+{-page_css-}
+
+
+{-page_js-}
+<!-- START THIS PAGE PLUGINS-->
+<script type='text/javascript' src='js/plugins/icheck/icheck.min.js'></script>
+<script type="text/javascript" src="js/plugins/mcustomscrollbar/jquery.mCustomScrollbar.min.js"></script>
+<script type="text/javascript" src="js/plugins/scrolltotop/scrolltopcontrol.js"></script>
+
+<script type="text/javascript" src="js/plugins/morris/raphael-min.js"></script>
+<script type="text/javascript" src="js/plugins/morris/morris.min.js"></script>
+<script type="text/javascript" src="js/plugins/rickshaw/d3.v3.js"></script>
+<script type="text/javascript" src="js/plugins/rickshaw/rickshaw.min.js"></script>
+<script type='text/javascript' src='js/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js'></script>
+<script type='text/javascript' src='js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js'></script>
+<script type='text/javascript' src='js/plugins/bootstrap/bootstrap-datepicker.js'></script>
+<script type="text/javascript" src="js/plugins/owl/owl.carousel.min.js"></script>
+
+<script type="text/javascript" src="js/plugins/moment.min.js"></script>
+<script type="text/javascript" src="js/plugins/daterangepicker/daterangepicker.js"></script>
+<!-- END THIS PAGE PLUGINS-->
+{-page_js-}
+
+{-page_demo_js-}
+<script type="text/javascript" src="js/demo_dashboard.js"></script>
+{-page_demo_js-}

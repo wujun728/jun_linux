@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>渠道认证管理</title>
+
+    <link href="/webjars/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet"/>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+
+    <h2>渠道列表</h2>
+
+    <table id="owners" class="table table-striped">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>名称</th>
+            <th>编码</th>
+            <th>秘钥</th>
+            <th>秘钥有效期</th>
+            <th>ip 地址</th>
+            <th>封禁时长</th>
+            <th>访问间隔</th>
+            <th>访问峰值</th>
+            <th>带宽</th>
+            <th>是否上线</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for _, channel in ipairs(channels) do %}
+            {(channel.html, channel)}
+        {% end %}
+        </tbody>
+    </table>
+
+    {(channel-pagenav.html, page)}
+
+    {(channel-pageupdown.html, page)}
+
+
+
+    <script src="/webjars/jquery/2.1.4/jquery.js"></script>
+    <script src="/webjars/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+
+
+</div>
+
+</body>
+
+</html>

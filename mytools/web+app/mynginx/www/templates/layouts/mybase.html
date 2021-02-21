@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+
+    <!-- META SECTION -->
+    {* blocks.head_base *}
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <!-- END META SECTION -->
+
+    <!-- CSS INCLUDE -->
+    <link rel="stylesheet" type="text/css" id="theme" href="css/theme-default.css"/>
+
+
+    <!-- EOF CSS INCLUDE -->
+
+    {* blocks.page_css *}
+
+
+    <style>
+        /*--双栏目目视*/
+        div.DTE_Body div.DTE_Body_Content div.DTE_Field {
+            float: left;
+            width: 50%;
+            padding: 5px 20px;
+            clear: none;
+            box-sizing: border-box;
+        }
+
+        div.DTE_Body div.DTE_Form_Content:after {
+            content: ' ';
+            display: block;
+            clear: both;
+        }
+        /*大窗口模式*/
+        div.DTED_Lightbox_Wrapper {
+            left: 1em;
+            right: 1em;
+            margin-left: 0;
+            width: auto;
+        }
+    </style>
+
+</head>
+<body>
+
+<!-- START PAGE CONTAINER -->
+<div class="page-container">
+
+    {* blocks.main *}
+
+</div>
+<!-- END PAGE CONTAINER -->
+
+<!-- MESSAGE BOX-->
+<div class="message-box animated fadeIn" data-sound="alert" id="mb-signout">
+    <div class="mb-container">
+        <div class="mb-middle">
+            <div class="mb-title"><span class="fa fa-sign-out"></span> Log <strong>Out</strong> ?</div>
+            <div class="mb-content">
+                <p>您确定要退出?</p>
+                <p>如果你想继续工作选择否，选择是注销当前用户.</p>
+            </div>
+            <div class="mb-footer">
+                <div class="pull-right">
+                    <a href="pages-login.html" class="btn btn-success btn-lg">是</a>
+                    <button class="btn btn-default btn-lg mb-control-close">否</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END MESSAGE BOX-->
+
+<!-- START PRELOADS -->
+<audio id="audio-alert" src="audio/alert.mp3" preload="auto"></audio>
+<audio id="audio-fail" src="audio/fail.mp3" preload="auto"></audio>
+<!-- END PRELOADS -->
+
+<!-- START SCRIPTS -->
+
+<!-- START PLUGINS -->
+<script type="text/javascript" src="js/plugins/jquery/jquery.min.js"></script>
+<!--<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>-->
+
+<script type="text/javascript" src="js/plugins/jquery/jquery-ui.min.js"></script>
+<script type="text/javascript" src="js/plugins/bootstrap/bootstrap.min.js"></script>
+<!-- END PLUGINS -->
+
+<!-- START THIS PAGE PLUGINS-->
+
+{* blocks.page_js *}
+
+<!-- END THIS PAGE PLUGINS-->
+
+<!-- START TEMPLATE -->
+<script type="text/javascript" src="js/settings.js"></script>
+<script type="text/javascript" src="js/plugins.js"></script>
+<script type="text/javascript" src="js/actions.js"></script>
+
+{* blocks.page_demo_js *}
+
+
+<!-- END TEMPLATE -->
+<!-- END SCRIPTS -->
+</body>
+</html>
+
+
+
+
+

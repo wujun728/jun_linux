@@ -1,0 +1,64 @@
+db:
+  image: mysql
+  environment:
+    MYSQL_USER: java
+    MYSQL_PASSWORD: java
+    MYSQL_DATABASE: javatest
+    MYSQL_ROOT_PASSWORD: mysql
+  ports:
+    - "3306:3306"
+
+#数据初始化
+dbinit:
+  image: mysql
+  volumes:
+    - .:/host
+  command: /bin/bash -c "sleep 18; mysql -u java --password=java -h mysql javatest < /host/init.sql; exit 0"
+  links:
+    - db:mysql
+
+myredis:
+  image: supermy/docker-myredis:3.5
+  ports:
+      - "6379:6379"
+  environment:
+    ulimit: nofile=20480:40960
+
+
+app1:
+  image: supermy/docker-tomcat-redis:7
+  links:
+    - dbinit
+    - db:mysql
+    - myredis:myredis
+  environment:
+    TOMCAT_PASS: admin
+  ports:
+    - "8080"
+  volumes_from:
+    - data
+
+app2:
+  image: supermy/docker-tomcat-redis:7
+  links:
+    - db:mysql
+    - myredis:myredis
+  environment:
+    TOMCAT_PASS: admin
+  ports:
+    - "8080"
+  volumes_from:
+    - data
+
+#影响内置的webapps/dbtest/,copy2/Users/moyong/docker-share/app/
+data:
+  image: busybox
+  command: /bin/true
+  volumes:
+      - /Users/moyong/docker-share/app/:/tomcat/webapps/ #影响内置的应用程序，去掉可以恢复
+      - /Users/moyong/docker-share/logs/app/:/tomcat/logs/
+      #- /Users/moyong/docker-share/conf/tomcat/:/tomcat/conf/ #影响内置的配置文件,调试时候可用
+
+# fig -f fig-redis.yml  up -d && fig -f fig-redis.yml ps
+
+#todo  redis 对于给出的连接名称，拒绝

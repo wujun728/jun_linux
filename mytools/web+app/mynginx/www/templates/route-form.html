@@ -1,0 +1,70 @@
+<hr>
+第一步 配置查询语句与参数
+<br>
+/lua.d/0-config-db-query.json
+/form/route-form.html
+<br>
+{
+"name": "表单查询路由列表",
+"desc": "query 传入查询语句的id,结果返回到key;参数全部收集到param;",
+"list": {
+"q1": {"url" : "http://133.224.220.66/formapi/rest/pro", "param":{"procode":"PK","code":"BK"}},
+"q2": {"url" : "http://133.224.220.66/formapi/rest/pro", "param":{} },
+"q3": {"url" : "http://133.224.220.66/formapi/rest/pro", {"procode":"PK"} }
+}
+}
+<br>
+
+实际执行的时候执行的查询,在Spring-Boot
+<br>
+http://133.224.220.66/formapi/rest/pro?procode=PK&code=BK
+
+<hr>
+第二步查询测试
+<br>
+执行q1,q2,q3查询语句
+<br>
+http://192.168.99.101/formroutequery?html=route-form&query=q1&query=q4&PK=abc&BK=123&XXX=%E7%9F%B3%E6%B2%B9&PId=dllx0000
+
+<hr>
+第三步查看查询结果
+
+<hr/>
+所有参数<BR/>
+{{formvalue.paramsText}}
+<hr/>
+formvalue.params.html:{{formvalue.params.html}}
+
+<hr/>
+查询语句<br>
+
+{{formvalue.methodsValue}}<br>
+{{formvalue.querylistText}}<br>
+{{formvalue.paramsValue}}<br>
+
+<hr>
+常用语法
+<hr>
+{-raw-}如果abc变量为空,则显示 cde {{ (Abc or 'Cde'):lower() }}{-raw-}<br>
+
+{{ (Abc or 'Cde'):lower() }}<br>
+{-raw-}如果abc变量为空,则显示 cde {{ (Abc and 'Cde' or 'Ijk'):lower() }} {-raw-}<br>
+{{ (Abc and 'Cde' or 'Ijk'):lower() }}
+
+{-raw-}{* (Abc and 'Cde' or '<input type="text" value="男" size="5"/>') *} {-raw-}<br>
+{* (Abc and 'Cde' or '<input type="text" value="男" size="5"/>') *}
+
+<hr/>
+ES 查询结果<br>
+
+{{cjson.encode(formvalue.q5)}}
+<br/>
+{{cjson.encode(formvalue.q6)}}
+<hr/>
+
+<hr/>
+Spring-Boot 查询结果
+formvalue.q1._embedded.pro
+
+
+<hr/>

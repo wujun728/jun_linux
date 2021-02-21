@@ -1,0 +1,10 @@
+<html>
+<head>模板嵌套</head>
+<body>
+<ul>
+    {% for _, user in ipairs(users) do %}
+    {(user.html, user)}
+    {% end %}
+</ul>
+</body>
+</html>

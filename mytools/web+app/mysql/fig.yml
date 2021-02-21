@@ -1,0 +1,17 @@
+db:
+  image: mysql:latest
+  environment:
+    MYSQL_USER: java
+    MYSQL_PASSWORD: java
+    MYSQL_DATABASE: javatest
+    MYSQL_ROOT_PASSWORD: mysql
+  ports:
+    - "3306:3306"
+
+dbinit:
+  image: mysql:latest
+  volumes:
+    - .:/host
+  command: /bin/bash -c "sleep 8; mysql -ujava -pjava -hmysql_base javatest < /host/init.sql; exit 0"
+  links:
+    - db:mysql_base

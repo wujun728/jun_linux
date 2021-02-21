@@ -1,0 +1,34 @@
+<!--<ul class="pagination pagination-lg">-->
+<!--<ul class="pagination">-->
+<!--<ul class="pagination pagination-sm">-->
+
+<!--翻页导航模板-->
+
+<ul class="pagination">
+
+
+    {% if (number-1) < 0 then %}
+        <li><a href="#">&laquo;</a></li>
+    {% end %}
+
+    {% if (number-1) >= 0 then %}
+     <li><a href="channel-manage?page={{number-1}}&start={{size*(number-1)}}&size={{size}}">&laquo;</a></li>
+    {% end %}
+
+
+    {% for i = 1, totalPages,1 do %}
+    <li><a href="channel-manage?page={{i-1}}&start={{size*number}}&size={{size}}">{{i}}</a></li>
+    {% end %}
+
+
+
+    {% if (number+1) >= totalPages then %}
+        <li><a href="#">&laquo;</a></li>
+    {% end %}
+
+    {% if (number+1) < totalPages then %}
+        <li><a href="channel-manage?page={{number+1}}&start={{size*(number+1)}}&size={{size}}">&raquo;</a></li>
+    {% end %}
+
+
+</ul>

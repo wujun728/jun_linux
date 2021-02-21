@@ -1,0 +1,409 @@
+<!-- THIS PAGE PLUGINS -->
+<script type='text/javascript' src='js/plugins/icheck/icheck.min.js'></script>
+<script type="text/javascript" src="js/plugins/mcustomscrollbar/jquery.mCustomScrollbar.min.js"></script>
+
+<script type="text/javascript" src="js/plugins/datatables/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="js/plugins/datatables/editor/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="js/plugins/datatables/editor/js/dataTables.select.min.js"></script>
+<script type="text/javascript" src="js/plugins/datatables/editor/js/dataTables.editor.min.js"></script>
+
+<script type="text/javascript" src="js/plugins/datatables/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript" src="js/plugins/datatables/editor/js/buttons.bootstrap.min.js"></script>
+<script type="text/javascript" src="js/plugins/datatables/editor/js/dataTables.select.min.js"></script>
+<script type="text/javascript" src="js/plugins/datatables/editor/js/editor.bootstrap.min.js"></script>
+
+
+<script type="text/javascript" src="js/json2.js"></script>
+
+<!--<script type="text/javascript" src="http://cdn.datatables.net/plug-ins/1.10.12/i18n/Chinese.json"></script>-->
+
+
+<!--<script type="text/javascript" src="js/plugins/datatables/editor/js/editor.bootstrap.min.js"></script>-->
+
+<script type="text/javascript">
+    var editor;
+    var table;
+
+    $(document).ready(function () {
+
+        //编辑器-完成记录的增删改，支持restful 定制;spring-boot rest的json数据支持；patch 支持部分数据更新；
+        //如果有关联对象的保存，需要单独定制api
+        editor = new $.fn.dataTable.Editor({
+
+            ajax: {
+                create: {
+                    contentType: 'application/json',
+                    data: function (d) {
+                        var key, value;
+                        for (var p in d.data) {
+                            key = p;
+                            value = d.data[p];
+                            console.log(JSON.stringify(value));
+                        }
+                        return JSON.stringify(value);
+                    },
+                    type: 'POST',
+                    url: '/extjsform/proxy/user'
+                },
+                edit: {
+                    contentType: 'application/json',
+                    data: function (d) {
+                        var key, value;
+                        for (var p in d.data) {
+                            key = p;
+                            value = d.data[p];
+                            console.log(JSON.stringify(value));
+                        }
+                        return JSON.stringify(value);
+                    },
+                    type: 'PATCH',
+                    url: '/extjsform/proxy/user/_id_'
+                },
+                remove: {
+                    contentType: 'application/json',
+                    data: function (d) {
+                        return {};
+                    },
+                    type: 'DELETE',
+                    url: '/extjsform/proxy/user/_id_'
+                }
+            },
+            idSrc: 'id',
+            table: "#rest-example",
+            fields: [
+                {
+                    //支持spring-boot  POST upload 文件上传
+                    //必须先删除照片才能重新上传成功；或者单独的实现一个spring 关联关系处理 的api
+                    label: "图片:",
+                    name: "avatar.id",
+                    type: "upload",
+                    ajax: {
+                        url: "/extjsform/proxy/singleSave",
+                        type: 'POST'
+                    },
+                    display: function (file_id) {
+                        //需要翻页，数据加载一次；
+                        //file_id 传入的头像的数据id;
+
+                        console.log(file_id);
+                        //更新到用户库
+                        //console.log(table.file('files',file_id));
+                        var oTable = $('#rest-example').dataTable();
+                        var oSettings = oTable.fnSettings();
+                        console.log("===datatable editor upload:");
+                        console.log(oSettings.aoData);
+                        var paramMap = {};
+                        for (var i = 0; i < oSettings.aoData.length; i++) {
+//                            console.log(oSettings.aoData[i]._aData.avatar);
+                            if(oSettings.aoData[i]._aData){
+                                paramMap[oSettings.aoData[i]._aData.avatar.id] = oSettings.aoData[i]._aData.avatar.webpath;}
+                        }
+                        var webpath = paramMap[file_id];
+
+                        console.log(webpath);
+
+                        if(webpath)
+                        {
+                            return '<img src="/' + webpath + '"/>'
+                        }
+                        else {
+                            return '<img src="/' + table.file('files', file_id).webpath + '"/>'
+                        }
+
+                    },
+                    clearText: "Clear",
+                    noImageText: 'No image'
+
+                },
+
+                {
+                    label: "名称:", name: "username"
+                }
+                , {label: "口令:",        name: "password",     type: 'password'}
+                , {label: "中文名:",      name: "namecn"}
+                , {label: "电话:",        name: "tel" }
+                , {label: "电邮:",        name: "email"}
+                , {label: " QQ:",        name: "qq"}
+                , {label: "WEIXIN:",     name: "weixin"}
+                , {label: "有效:",        name: "enabled",     type: "radio",
+                    options: [
+                        {label: "是", value: true},
+                        {label: "否", value: false}
+                    ],def: 0
+                }
+            ]
+        });
+
+        //restful 翻页支持
+        var datatable2Rest = function (sSource, aoData, fnCallback) {
+            //extract name/value pairs into a simpler map for use later
+            var paramMap = {};
+            for (var i = 0; i < aoData.length; i++) {
+//                console.log(aoData[i].name + "=" + aoData[i].value);
+                paramMap[aoData[i].name] = aoData[i].value;
+            }
+            // page calculations
+            //console.log('page size:' + paramMap.iDisplayLength);
+
+            var pageSize = paramMap.iDisplayLength;
+            var start = paramMap.iDisplayStart;
+            // var pageNum = (start == 0) ? 1 : (start / pageSize) + 1;
+            var pageNum = (start == 0) ? 0 : (start / pageSize);
+            // pageNum is 1 based
+            //extract sort information
+            var sortCol = paramMap.iSortCol_0;
+            var sortDir = paramMap.sSortDir_0;
+            var sortName = paramMap['mDataProp_' + sortCol];
+
+//            var searchText = paramMap.sSearch;
+
+            //create new json structure for parameters for REST request
+            var restParams = new Array();
+            restParams.push({"name": "size", "value": pageSize});
+            restParams.push({"name": "page", "value": pageNum});
+
+//            restParams.push({"name": "filter", "value": searchText});
+
+            restParams.push({"name": "sort", "value": sortName});
+            restParams.push({"name": sortName + ".dir", "value": sortDir});
+            //if we are searching by name, override the url and add the name parameter
+            var url = sSource;
+            if (paramMap.sSearch != '') {
+                url = "/extjsform/proxy/user";
+                restParams.push({"name": "name", "value": paramMap.sSearch});
+            }
+            //finally, make the request
+            $.ajax({
+                "dataType": 'json',
+                "type": "GET",
+                "url": url,
+                "data": restParams,
+                "success": function (data) {
+                    //console.log(data.page);
+                    console.log("======data2rest:");
+                    console.log(data);
+
+
+                    data.iTotalRecords = data.page.totalElements;
+                    data.iTotalDisplayRecords = data.page.totalElements;
+                    fnCallback(data);
+                }
+            });
+        };
+
+
+        //http://127.0.0.1:88/formroutequery?html=route-json&query=users&limit=1000
+        //users._embedded.user
+        ///extjsform/proxy/user?page=1&size=10
+        var pagesize = 0{{page.size}};
+        var rtotal = 0{{page.totalElements}} ;
+        //var pagenum=formvalue.params.query}};
+
+        table = $('#rest-example').DataTable({
+            dom: "Bfrtip",
+            rowId: "id",
+
+//            ajax: {
+//                url:'/extjsform/proxy/user',
+//                dataSrc: "_embedded.user"
+//            },
+//            columns: [
+//                { data: "id"},
+//                { data: "username" },
+//                { data: "namecn" },
+//                { data: "enabled" },
+//                { data: "createDate" },
+//                { data: "createBy" },
+//                { data: "updateDate" },
+//                { data: "updateBy" },
+//                { data: "avatar.webpath",
+//                    render: function (file_id) {
+////                        console.log(table.settings);
+////                        console.log($.fn.dataTableSettings);
+////                        console.log(table.fnSettings());
+//                        return file_id ?'<img width="60" src="/'+file_id+'"/>' : null;
+//                    },
+//                    defaultContent: "No image",
+//                    title: "头像"
+//                }
+//            ],
+//            提交的时候增加参数数据
+//            "data": function ( d ) {
+            //d.myKey = "myValue";
+            // console.log(d);
+            // d.custom = $('#myInput').val();
+            // etc
+//            },
+
+            //支持spring-boot restful 数据源
+            "sAjaxSource": '/extjsform/proxy/user',
+            "sAjaxDataProp": function (result) {
+                //这里result和上面jquery的ajax的代码类似，也是可以得到data.json的数据，
+                //console.log(result);
+                return result._embedded.user;
+            },
+
+            "aoColumns": [
+                {
+                    mDataProp: 'id'
+                }, {
+                    mDataProp: 'username'
+                }
+                , {
+                    mDataProp: 'namecn'
+                }, {
+                    mDataProp: 'tel'
+                }, {
+                    mDataProp: 'email'
+                }, {
+                    mDataProp: 'qq'
+                }, {
+                    mDataProp: 'weixin'
+                }, {
+                    mDataProp: 'enabled'
+                }
+//                ,
+//                {mDataProp: 'createDate'
+//                }, {
+//                    mDataProp: 'createBy'
+//                }, {
+//                    mDataProp: 'updateDate'
+//                }, {
+//                    mDataProp: 'updateBy'
+//                }
+                , {
+                    //data: "avatar.webpath",
+                    mDataProp: 'avatar.webpath',
+                    render: function (file_id) {
+                        return file_id ? '<img width="60" src="/' + file_id + '"/>' : null;
+                    },
+                    defaultContent: "No image",
+                    title: "头像"
+                }
+            ],
+//
+            "bProcessing": true,
+            "bServerSide": true,
+            select: true,
+            //支持首页预加载记录条数
+            deferLoading: rtotal,
+            //页面记录数
+            pageLength: pagesize,
+            "order": [[2, "desc"]],
+            //数据增删改按钮定义；
+            buttons: [
+                {
+                    extend: "create", editor: editor,
+                    text: '创建',
+                    formTitle: '新建',
+                    //formMessage: '输入新的数据，然后点击"Save" 按钮保存数据.',
+                    formButtons: [
+                        {
+                            label: '取消',
+                            fn: function () {
+                                this.close();
+                            }
+                        },
+                        '保存'
+                    ]
+                },
+                {
+                    extend: "edit", editor: editor,
+                    text: '编辑',
+                    formTitle: function (editor, dt) {
+                        var rowData = dt.row({selected: true}).data();
+
+                        return '你确定编辑' + rowData.username + '这条数据么？';
+                    },
+                    formButtons: [
+                        {
+                            label: '取消',
+                            fn: function () {
+                                this.close();
+                            }
+                        },
+                        '更新'
+                    ]
+                },
+                {
+                    extend: "selectedSingle",
+                    text: '复制',
+                    action: function ( e, dt, node, config ) {
+                        // Place the selected row into edit mode (but hidden),
+                        // then get the values for all fields in the form
+                        var values = editor.edit(
+                                table.row( { selected: true } ).index(),
+                                false
+                                )
+                                .val();
+
+                        // Create a new entry (discarding the previous edit) and
+                        // set the values from the read values
+                        editor
+                                .create( {
+                                    title: '复制记录',
+                                    buttons: '从现有记录中'
+                                } )
+                                .set( values );
+                    }
+                },
+                {
+                    extend: "remove", editor: editor,
+                    text: '删除',
+                    formTitle: '删除',
+                    formMessage: '确认你希望删除此行记录？',
+                    formButtons: [
+                        {
+                            label: '取消',
+                            fn: function () {
+                                this.close();
+                            }
+                        },
+                        '删除'
+                    ]
+                }
+            ]
+            ,
+            "language": {
+                "sProcessing": "处理中...",
+                "sLengthMenu": "显示 _MENU_ 项结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "表中数据为空",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
+            },
+            "fnServerData": datatable2Rest
+
+        });
+
+
+        var oTable = $('#rest-example').dataTable();
+        var oSettings = oTable.fnSettings();
+        console.log(oSettings);
+        console.log(oSettings.aoData);
+
+//        $('#rest-example').on( 'click', 'tbody td', function () {
+//            editor.inline( this );
+//        } );
+
+    });
+
+
+</script>
+<!-- END PAGE PLUGINS -->

@@ -1,0 +1,31 @@
+<!--<ul class="pagination pagination-lg">-->
+<!--<ul class="pagination">-->
+<!--<ul class="pagination pagination-sm">-->
+
+<!--翻页导航模板-->
+
+<ul class="pager">
+
+
+    {% if (number-1) < 0 then %}
+    <li><a href="#">上一页</a></li>
+    {% end %}
+
+    {% if (number-1) >= 0 then %}
+     <li><a href="channel-manage?page={{number-1}}&start={{size*(number-1)}}&size={{size}}">上一页</a></li>
+    {% end %}
+
+
+
+
+
+    {% if (number+1) >= totalPages then %}
+    <li><a href="#">下一页</a></li>
+    {% end %}
+
+    {% if (number+1) < totalPages then %}
+        <li><a href="channel-manage?page={{number+1}}&start={{size*(number+1)}}&size={{size}}">下一页</a></li>
+    {% end %}
+
+
+</ul>

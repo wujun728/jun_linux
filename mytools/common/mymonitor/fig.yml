@@ -1,0 +1,23 @@
+cacti:
+  image: quantumobject/docker-cacti
+  ports:
+    - "88:80"
+    - "161:161"
+#  volumes_from:
+#    - data
+
+nagios:
+  image: cpuguy83/nagios
+  ports:
+    - "89:80"
+    - "25:25"
+#  volumes_from:
+#    - data
+
+
+#常用工具集合
+data:
+  image: busybox
+  command: /bin/true
+  volumes:
+      - /Users/moyong/docker-share/data/rabbitmq/:/var/lib/rabbitmq

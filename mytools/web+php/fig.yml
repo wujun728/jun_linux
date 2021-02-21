@@ -1,0 +1,26 @@
+#nginx+php-fpm
+##mysql/memcached的配置和初始化参见mytomcat
+##刷新：http://192.168.59.103/java/manager/status?org.apache.catalina.filters.CSRF_NONCE=66179530393A7744F81BD1EDAE5E6DF2
+##观察：Hostname的值与IP每次刷新都变动，说明集群成功。
+
+web:
+  image: mynginx_web
+  links:
+    - myphp
+  ports:
+    - "80:80"
+  volumes_from:
+    - data
+
+#常用工具集合
+data:
+  image: busybox
+  command: /bin/true
+  volumes:
+      - /Users/moyong/docker-share/www/:/data/www/
+
+#启动tomcat
+myphp:
+  image: php:5.6-fpm
+  ports:
+    - "9000:9000"

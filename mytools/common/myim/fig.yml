@@ -1,0 +1,10 @@
+#及时消息
+openfire:
+  image: mdouglas/openfire
+  ports:
+  - "5222:5222"
+  - "5223:5223"
+  - "9091:9091"
+  - "9090:9090"
+
+#Openfire XMPP  ==> http://192.168.59.103:9090/

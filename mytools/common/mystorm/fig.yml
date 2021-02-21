@@ -1,0 +1,101 @@
+#单节点，高可用，节点只能是奇数
+zookeeper:
+  image: jplock/zookeeper
+  ports: 
+    - "2181:2181"
+
+#storm服务
+nimbus:
+  image: supermy/docker-storm-nimbus:0.9.3
+  ports:
+    - "3773:3773"
+    - "3772:3772"
+    - "6627:6627"
+  links: 
+    - zookeeper:zk
+
+#storm服务
+supervisor:
+  image: supermy/docker-storm-supervisor:0.9.3
+  ports:
+    - "8000:8000"
+  links: 
+    - nimbus:nimbus
+    - zookeeper:zk
+
+#storm服务
+ui:
+  image: supermy/docker-storm-ui:0.9.3
+  ports:
+    - "8088:8080"
+  links: 
+    - nimbus:nimbus
+    - zookeeper:zk
+
+#Supervisor Log ==> http://192.168.59.103:8000/log?file=supervisor.log
+#Storm UI ==> http://192.168.59.103:8088/index.html
+
+###+++++++++++++
+##消息队列，配置ip and port
+kafka1:
+  image: supermy/docker-kafka:0.8
+  ports:
+    - "9092:9092"
+  links:
+    - zookeeper:zk
+  environment:
+    KAFKA_BROKER_ID: 1
+    KAFKA_ADVERTISED_HOST_NAME: 192.168.59.103
+    KAFKA_ADVERTISED_PORT: 9092
+    #KAFKA_MESSAGE_MAX_BYTES: 2000000
+    KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'false'
+
+##消息队列，配置ip and port
+kafka2:
+  image: supermy/docker-kafka:0.8
+  ports:
+    - "9093:9092"
+  links:
+    - zookeeper:zk
+  environment:
+    KAFKA_BROKER_ID: 2
+    KAFKA_ADVERTISED_HOST_NAME: 192.168.59.103
+    KAFKA_ADVERTISED_PORT: 9093
+    #KAFKA_MESSAGE_MAX_BYTES: 2000000
+    KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'false'
+
+##消息队列，配置ip and port
+kafka3:
+  image: supermy/docker-kafka:0.8
+  ports:
+    - "9094:9092"
+  links:
+    - zookeeper:zk
+  environment:
+    KAFKA_BROKER_ID: 3
+    KAFKA_ADVERTISED_HOST_NAME: 192.168.59.103
+    KAFKA_ADVERTISED_PORT: 9094
+    #KAFKA_MESSAGE_MAX_BYTES: 2000000
+    KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'false'
+
+#注意端口
+#启动fig start/fig stop
+#fig scale kafka1=2
+#kafka-topics.sh --create --zookeeper 192.168.59.103:2181 --replication-factor 1 --partitions 1 --topic test
+#kafka-topics.sh --describe --topic test --zookeeper 192.168.59.103:2181
+#kafka-topics.sh --list --zookeeper 192.168.59.103:2181
+#kafka-console-producer.sh --broker-list 192.168.59.103:9092,192.168.59.103:9093,192.168.59.103:9094 --topic test
+#kafka-console-consumer.sh --zookeeper 192.168.59.103:2181 --topic test --from-beginning
+
+
+#采集数据，传输给kafka
+flume1:
+  image: myflume_base:latest
+  environment:
+    FLUME_AGENT_NAME: producer
+    FLUME_CONF_DIR: /opt/flume/conf
+    FLUME_CONF_FILE: /var/tmp/flume.conf.kafka-storm
+  ports:
+    - "44450:44444"
+  links:
+    - kafka1

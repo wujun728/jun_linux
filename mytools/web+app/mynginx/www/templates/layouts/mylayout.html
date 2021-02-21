@@ -1,0 +1,51 @@
+{% layout = "layouts/mybase.html" %}
+
+
+
+{-head_base-}
+    {%
+    local myconfig = ngx.shared.myconfig;
+    local cfgDbQuery = cjson.decode(myconfig:get("cfgDbQuery"));
+    local baseurl = cfgDbQuery.webbase.url;
+    %}
+    <base href="{* baseurl *}/manage/" />
+    <title>后端管理模板</title>
+{-head_base-}
+
+
+{-main-}
+
+<!-- START PAGE SIDEBAR -->
+<div class="page-sidebar">
+    <!-- START X-NAVIGATION -->
+    <ul class="x-navigation">
+
+        <li class="xn-logo">
+            <a href="index.html">后台管理</a>
+            <a href="#" class="x-navigation-control"></a>
+        </li>
+
+        {* blocks.sidebar *}
+`
+        {(layouts/mylayout-sidebar-profile.html)}
+        {(layouts/mylayout-sidebar-nav-page.html)}
+        {(layouts/mylayout-sidebar-nav-components.html)}
+
+    </ul>
+    <!-- END X-NAVIGATION -->
+</div>
+<!-- END PAGE SIDEBAR -->
+
+
+<!-- PAGE CONTENT -->
+<div class="page-content">
+    <!-- START X-NAVIGATION VERTICAL -->
+    {(layouts/mylayout-content-nav-panel.html)}
+    <!-- END X-NAVIGATION VERTICAL -->
+
+    {* blocks.content *}
+
+</div>
+<!-- END PAGE CONTENT -->
+
+{-main-}

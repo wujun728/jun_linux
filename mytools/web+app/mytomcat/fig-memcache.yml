@@ -1,0 +1,58 @@
+db:
+  image: mysql
+  environment:
+    MYSQL_USER: java
+    MYSQL_PASSWORD: java
+    MYSQL_DATABASE: javatest
+    MYSQL_ROOT_PASSWORD: mysql
+  ports:
+    - "3306:3306"
+
+dbinit:
+  image: mysql
+#  entrypoint: /bin/bash
+  volumes:
+    - .:/host
+  command: /bin/bash -c "sleep 18; mysql -u java --password=java -h mysql javatest < /host/init.sql; exit 0"
+  links:
+    - db:mysql
+
+memcache1:
+  image: sylvainlasnier/memcached
+  environment:
+    MAX_MEM: 1024
+    MAX_CONN: 10000
+  ports:
+    - "11211:11211"
+
+memcache2:
+  image: sylvainlasnier/memcached
+  environment:
+    MAX_MEM: 1024
+    MAX_CONN: 10000
+  ports:
+    - "11212:11211"
+
+
+app:
+  build: .
+  links:
+    - dbinit
+    - db:mysql
+    - memcache1
+    - memcache2
+  environment:
+    TOMCAT_PASS: admin
+  ports:
+    - "8080:8080"
+  volumes_from:
+    - data
+
+#影响内置的webapps/dbtest/,copy2/Users/moyong/docker-share/app/
+data:
+  image: busybox
+  command: /bin/true
+  volumes:
+      - /Users/moyong/docker-share/app/:/tomcat/webapps/ #影响内置的应用程序，去掉可以恢复
+      - /Users/moyong/docker-share/logs/app/:/tomcat/logs/
+      #- /Users/moyong/docker-share/conf/tomcat/:/tomcat/conf/ #影响内置的配置文件,调试时候可用

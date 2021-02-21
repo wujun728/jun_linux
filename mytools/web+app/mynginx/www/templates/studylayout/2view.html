@@ -1,0 +1,15 @@
+{% layout="studylayout/2layout.html" %}
+
+{% title="Testing lua-resty-template" %}
+{% message="Hello, World!" %}
+{% keywords={ "test", "lua", "template", "blocks" } %}
+
+
+<h1>{{message}}</h1>
+{-aside-}
+<ul>
+    {% for _, keyword in ipairs(keywords) do %}
+    <li>{{keyword}}</li>
+    {% end %}
+</ul>
+{-aside-}

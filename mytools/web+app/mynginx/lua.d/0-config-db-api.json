@@ -1,0 +1,16 @@
+{
+  "name": "api 规范查询 todo ing",
+  "desc": "用于微服务的调用",
+  "list": {
+    "q1": {
+      "desc": "示例1",
+      "url": "http://192.168.99.101/rest/getuser",
+      "param": {
+        "in": {
+          "user": "id"
+        },
+        "valuepath": "/a/b/c"
+      }
+    }
+  }
+}

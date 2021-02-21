@@ -1,0 +1,3 @@
+#启动web
+mongo:
+  build: .

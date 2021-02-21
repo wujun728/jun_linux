@@ -1,0 +1,116 @@
+#WAF 专用,安全防范框架
+#fig -f fig-waf.yml up && fig logs web
+
+#两条命令
+#docker run -i -t  -P  \
+#-v /Users/moyong/project/env-myopensource/3-tools/mytools/web+app/mynginx/www:/data/www/ \
+#-v /Users/moyong/project/env-myopensource/3-tools/mytools/web+app/mynginx/logs:/usr/local/nginx/logs/ \
+#-v /Users/moyong/project/env-myopensource/3-tools/mytools/web+app/mynginx/http.d/2-upstream.conf:/usr/local/nginx/conf/http.d/2-upstream.conf \
+#-v /Users/moyong/project/env-myopensource/3-tools/mytools/web+app/mynginx/server.d/4-java.conf:/usr/local/nginx/conf/server.d/4-java.conf \
+#-v /Users/moyong/project/env-myopensource/3-tools/mytools/web+app/mynginx/server.d/e-redis.conf:/usr/local/nginx/conf/server.d/e-redis.conf \
+#-v /Users/moyong/project/env-myopensource/3-tools/mytools/web+app/mynginx/naxsi.d/:/usr/local/nginx/conf/naxsi.d/ \
+#--name data busybox
+#
+#docker run -i -t -p 80:80   --volumes-from data supermy/docker-mynginx:2.1
+
+#linux 下docker 单条命令
+#docker run -i -t  -p 80:80 \
+#-v /Users/moyong/project/env-myopensource/3-tools/mytools/web+app/mynginx/www:/data/www/ \
+#-v /Users/moyong/project/env-myopensource/3-tools/mytools/web+app/mynginx/logs:/usr/local/nginx/logs/ \
+#-v /Users/moyong/project/env-myopensource/3-tools/mytools/web+app/mynginx/http.d/2-upstream.conf:/usr/local/nginx/conf/http.d/2-upstream.conf \
+#-v /Users/moyong/project/env-myopensource/3-tools/mytools/web+app/mynginx/server.d/4-java.conf:/usr/local/nginx/conf/server.d/4-java.conf \
+#-v /Users/moyong/project/env-myopensource/3-tools/mytools/web+app/mynginx/server.d/e-redis.conf:/usr/local/nginx/conf/server.d/e-redis.conf \
+#-v /Users/moyong/project/env-myopensource/3-tools/mytools/web+app/mynginx/naxsi.d/:/usr/local/nginx/conf/naxsi.d/ \
+#supermy/docker-mynginx:2.1
+#
+##linux 下docker 单条命令
+#docker run -i -t  -p 80:80 \
+#-v /Users/moyong/docker-save/nginx-waf-deploy/www:/data/www/ \
+#-v /Users/moyong/docker-save/nginx-waf-deploy/logs:/usr/local/nginx/logs/ \
+#-v /Users/moyong/docker-save/nginx-waf-deploy/http.d/2-upstream.conf:/usr/local/nginx/conf/http.d/2-upstream.conf \
+#-v /Users/moyong/docker-save/nginx-waf-deploy/server.d/4-java.conf:/usr/local/nginx/conf/server.d/4-java.conf \
+#-v /Users/moyong/docker-save/nginx-waf-deploy/server.d/e-redis.conf:/usr/local/nginx/conf/server.d/e-redis.conf \
+#-v /Users/moyong/docker-save/nginx-waf-deploy/server.d/z-xss.conf:/usr/local/nginx/conf/server.d/z-xss.conf \
+#-v /Users/moyong/docker-save/nginx-waf-deploy/server.d/z-vaf.conf:/usr/local/nginx/conf/server.d/z-vaf.conf \
+#-v /Users/moyong/docker-save/nginx-waf-deploy/naxsi.d/:/usr/local/nginx/conf/naxsi.d/ \
+#supermy/docker-mynginx:2.1
+#
+#
+##windows 下docker
+#docker run -i -t  -p 80:80 \
+#-v //c/Users/moyong/nginx/www:/data/www/ \
+#-v //c/Users/moyong/nginx/logs:/usr/local/nginx/logs/ \
+#-v //c/Users/moyong/nginx/http.d/2-upstream.conf:/usr/local/nginx/conf/http.d/2-upstream.conf \
+#-v //c/Users/moyong/nginx/server.d/4-java.conf:/usr/local/nginx/conf/server.d/4-java.conf \
+#-v //c/Users/moyong/nginx/server.d/e-redis.conf:/usr/local/nginx/conf/server.d/e-redis.conf \
+#-v //c/Users/moyong/nginx/server.d/z-xss.conf:/usr/local/nginx/conf/server.d/z-xss.conf \
+#-v //c/Users/moyong/nginx/server.d/z-vaf.conf:/usr/local/nginx/conf/server.d/z-vaf.conf \
+#-v //c/Users/moyong/nginx/naxsi.d/:/usr/local/nginx/conf/naxsi.d/ \
+#supermy/docker-mynginx:2.1
+
+#目录说明
+#- www:/data/www/  #静态文件主目录
+#- logs:/usr/local/nginx/logs/  #日志目录
+#- http.d/2-upstream.conf:/usr/local/nginx/conf/http.d/2-upstream.conf #配置文件集群
+#- server.d/4-java.conf:/usr/local/nginx/conf/server.d/4-java.conf #屏蔽文件反向代理,配置为自己的引用目录
+#- server.d/e-redis.conf:/usr/local/nginx/conf/server.d/e-redis.conf #屏蔽文件内存数据库
+#- naxsi.d/:/usr/local/nginx/conf/naxsi.d/ #防护规则配置文件,定期更新
+
+#
+
+#windows 语法
+#docker run -i -t -d -p 80:80  \
+#-v //c/Users/zzulixiaosa/fortres/ngxlua/www:/data/www/ \
+#-v //c/Users/zzulixiaosa/fortres/ngxlua/logs/:/usr/local/nginx/logs/ \
+#-v //c/Users/zzulixiaosa/fortres/ngxlua/http.d/:/usr/local/nginx/conf/http.d \
+#-v //c/Users/zzulixiaosa/fortres/ngxlua/nginx.conf:/usr/local/nginx/conf/nginx.conf \
+#-v //c/Users/zzulixiaosa/fortres/ngxlua/lua.d/:/usr/local/nginx/conf/lua.d/ \
+#-v //c/Users/zzulixiaosa/fortres/ngxlua/server.d/:/usr/local/nginx/conf/server.d/ \
+# supermy/docker-mynginx:2.1
+
+
+web:
+  image: supermy/docker-mynginx:2.1
+#  links:
+#    - myredis:myredis
+#    - mydb:mydb
+  ports:
+    - "80:80"
+  volumes_from:
+    - data
+
+#常用工具集合
+data:
+  image: busybox
+  command: /bin/true
+  volumes:
+      - ./www:/data/www/  #静态文件主目录
+      - ./logs:/usr/local/nginx/logs/  #日志目录
+      - ./http.d/2-upstream.conf:/usr/local/nginx/conf/http.d/2-upstream.conf #配置文件集群
+      - ./server.d/4-java.conf:/usr/local/nginx/conf/server.d/4-java.conf #屏蔽文件反向代理,配置为自己的引用目录
+      - ./server.d/e-redis.conf:/usr/local/nginx/conf/server.d/e-redis.conf #屏蔽文件内存数据库
+      - ./naxsi.d/:/usr/local/nginx/conf/naxsi.d/ #防护规则配置文件,定期更新
+
+
+
+#myredis:
+#  image: supermy/docker-myredis:3.5
+#  ports:
+#      - "6379:6379"
+#
+#
+#mydb:
+#  image: supermy/docker-mysql:latest
+#  environment:
+#    MYSQL_USER: java
+#    MYSQL_PASSWORD: java
+#    MYSQL_DATABASE: javatest
+#    MYSQL_ROOT_PASSWORD: mysql
+#  ports:
+#    - "3306:3306"
+
+# echo 'hello'>index.html
+#docker run -d -p 8080:80 --name testnginx -v /home/utgard/www/:/data/www/ mynginx_app
+#docker run -d -p 8080:80 --name testnginx -v /var/www/:/data/www/ mynginx_app
+
+

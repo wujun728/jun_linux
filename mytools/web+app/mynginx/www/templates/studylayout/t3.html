@@ -1,0 +1,30 @@
+{(header.html)}
+<body>
+{# 不转义变量输出 #}
+姓名：{* string.upper(name) *}<br/>
+{# 转义变量输出 #}
+简介：{{description}}<br/>
+{# 可以做一些运算 #}
+年龄: {* age + 1 *}<br/>
+{# 循环输出 #}
+爱好：
+{% for i, v in ipairs(hobby) do %}
+{% if i > 1 then %}，{% end %}
+{* v *}
+{% end %}<br/>
+
+成绩：
+{% local i = 1; %}
+{% for k, v in pairs(score) do %}
+{% if i > 1 then %}，{% end %}
+{* k *} = {* v *}
+{% i = i + 1 %}
+{% end %}<br/>
+成绩2：
+{% for i = 1, #score2 do local t = score2[i] %}
+{% if i > 1 then %}，{% end %}
+{* t.name *} = {* t.score *}
+{% end %}<br/>
+{# 中间内容不解析 #}
+{-raw-}{(file)}{-raw-}
+{(footer.html)}

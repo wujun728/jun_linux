@@ -1,0 +1,24 @@
+producer.sources = s
+producer.channels = c
+producer.sinks = r
+
+producer.sources.s.channels = c
+producer.sources.s.type= netcat
+producer.sources.s.bind= 0.0.0.0
+producer.sources.s.port= 44444
+
+producer.sinks.r.type = org.apache.flume.plugins.KafkaSink
+#kafka interface
+#docker link names
+producer.sinks.r.metadata.broker.list=kafka1:9092
+producer.sinks.r.serializer.class=kafka.serializer.StringEncoder
+producer.sinks.r.request.required.acks=1
+producer.sinks.r.max.message.size=1000000
+producer.sinks.r.custom.topic.name=storm-sentence
+producer.sinks.r.channel = c
+
+producer.channels.c.type = memory
+producer.channels.c.capacity = 1000
+
+#kafka-topics.sh --create --zookeeper 192.168.59.103:2181 --replication-factor 1 --partitions 1 --topic mykafka
+#bin/flume-ng agent --conf conf --conf-file conf/flume.conf.mykafka --name producer -Dflume.root.logger=INFO,console

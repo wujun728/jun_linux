@@ -1,0 +1,129 @@
+#单节点，高可用，节点只能是奇数
+#base:
+#  build: .
+
+zookeeper:
+  image: supermy/docker-zookeeper:ap
+  ports: 
+    - "2181:2181"
+
+##消息队列，配置ip and port
+kafka1:
+  image: supermy/docker-kafka:ap
+  ports:
+    - "9092:9092"
+  links:
+    - zookeeper:zk
+  environment:
+    KAFKA_BROKER_ID: 1
+    KAFKA_ADVERTISED_HOST_NAME: 192.168.99.101
+    KAFKA_ADVERTISED_PORT: 9092
+    #KAFKA_MESSAGE_MAX_BYTES: 2000000
+    KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'false'
+    #日志保留时间
+    KAFKA_LOG_RETENTION_HOURS: 1
+
+
+##消息队列，配置ip and port
+kafka2:
+  image: supermy/docker-kafka:ap
+  ports:
+    - "9093:9092"
+  links:
+    - zookeeper:zk
+  environment:
+    KAFKA_BROKER_ID: 2
+    KAFKA_ADVERTISED_HOST_NAME: 192.168.99.101
+    KAFKA_ADVERTISED_PORT: 9093
+    #KAFKA_MESSAGE_MAX_BYTES: 2000000
+    KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'false'
+    KAFKA_LOG_RETENTION_HOURS: 1
+
+##消息队列，配置ip and port
+kafka3:
+  image: supermy/docker-kafka:ap
+  ports:
+    - "9094:9092"
+  links:
+    - zookeeper:zk
+  environment:
+    KAFKA_BROKER_ID: 3
+    KAFKA_ADVERTISED_HOST_NAME: 192.168.99.101
+    KAFKA_ADVERTISED_PORT: 9094
+    #KAFKA_MESSAGE_MAX_BYTES: 2000000
+    KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'false'
+    KAFKA_LOG_RETENTION_HOURS: 1
+#    KAFKA_LOG_DIRS: /kafka-logs
+#  volumes_from:
+#    - datak3
+
+#IO 有问题
+#datak1:
+#  image: busybox
+#  command: /bin/true
+#  volumes:
+#      - /Users/moyong/docker-share/data/kafka/k1/:/kafka/kafka-logs-1
+#
+#datak2:
+#  image: busybox
+#  command: /bin/true
+#  volumes:
+#      - /Users/moyong/docker-share/data/kafka/k2/:/kafka/kafka-logs-2
+#datak3:
+#  image: busybox
+#  command: /bin/true
+#  volumes:
+#      - /Users/moyong/docker-share/data/kafka/k3/:/kafka-logs
+
+#注意端口
+#启动fig start/fig stop
+#fig scale kafka1=2
+#kafka-topics.sh --create --zookeeper 192.168.99.101:2181 --replication-factor 1 --partitions 1 --topic test
+#kafka-topics.sh --describe --topic test --zookeeper 192.168.99.101:2181
+#kafka-topics.sh --list --zookeeper 192.168.99.101:2181
+#kafka-console-producer.sh --broker-list 192.168.99.101:9092,192.168.99.101:9093,192.168.99.101:9094 --topic test
+#kafka-console-consumer.sh --zookeeper 192.168.99.101:2181 --topic test --from-beginning
+
+
+#采集数据，传输给kafka
+flume1:
+  image: supermy/docker-flume:ap
+#  image: supermy/docker-myflume:latest
+#  command: /bin/bash -c "kafka-topics.sh --create --zookeeper 192.168.99.101:2181 --replication-factor 1 --partitions 1 --topic channel1"
+  environment:
+    FLUME_AGENT_NAME: producer
+    FLUME_CONF_DIR: /opt/flume/conf
+    FLUME_CONF_FILE: /etc/flume/conf/mykafka-flume.conf
+  ports:
+    - "44447:44444"
+    - "5140:5140"
+
+  links:
+    - kafka1
+    - kafka2
+    - kafka3
+    - zookeeper:zk
+  volumes_from:
+    - dataflume
+
+#常用工具集合
+dataflume:
+  image: busybox
+  command: /bin/true
+  volumes:
+      - /Users/moyong/project/env-myopensource/3-tools/mytools/common/myflume/conf:/etc/flume/conf/
+
+#建立通道
+#kafka-topics.sh --create --zookeeper 192.168.99.101:2181 --replication-factor 1 --partitions 1 --topic mykafka
+#kafka-topics.sh --create --zookeeper 192.168.99.101:2181 --replication-factor 1 --partitions 1 --topic channel1
+#生产数据
+#telnet 192.168.99.101 44447
+#消费数据
+#kafka-console-consumer.sh --zookeeper 192.168.99.101:2181 --topic mykafka --from-beginning
+#ok,数据到消费端显示出来
+
+#建立远程大数据传输方案
+#/Users/moyong/project/env-myopensource/1-spring/12-spring/spring-kafka-demo
+#在创建Topic时候可以使用–partitions <numPartitions>指定分区数。也可以在server.properties配置文件中配置参数num.partitions来指定默认的分区数。
+#但有一点需要注意，为Topic创建分区时，分区数最好是broker数量的整数倍，这样才能是一个Topic的分区均匀的分布在整个Kafka集群中
+#kafka-topics.sh --create --zookeeper 192.168.99.101:2181 --replication-factor 1 --partitions 3 --topic mydebug

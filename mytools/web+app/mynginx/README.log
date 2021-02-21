@@ -1,0 +1,399 @@
+web（进度）
+=============================================================
+2016-08-22
+cd /Users/moyong/project/env-myopensource/3-tools/mytools/web+app/mynginx/www
+git config --global http.proxy http://127.0.0.1:8087/
+localhost:www moyong$ git push origin master
+
+
+2016-08-20
+manage 页面重构完成
+web页面重构完成：使用三层布局，逐层嵌套；
+http://127.0.0.1:88/formroutequery?html=web/web-index&query=users&page=0&size=3
+http://127.0.0.1:88/formroutequery?html=manage/my-users&query=users&query=avatar&page=0&size=3
+
+2016=08-18
+    图片显示：
+    1.图片预加载显示；
+    2.图片动态加载显示；
+
+layout 方法：
+http://127.0.0.1:88/formroutequery?html=studylayout/1view&query=users&page=0&size=3
+http://127.0.0.1:88/formroutequery?html=studylayout/2view&query=users&page=0&size=3
+http://127.0.0.1:88/formroutequery?html=studylayout/3-1page&query=users&page=0&size=3
+http://127.0.0.1:88/formroutequery?html=studylayout/3page&query=users&page=0&size=3
+
+index.html 页面
+http://127.0.0.1:88/formroutequery?html=manage/my-index&query=users&page=0&size=3
+users.html 页面
+http://127.0.0.1:88/formroutequery?html=manage/my-users&query=users&page=0&size=3
+
+模板目录重构，更加清晰合理。。。。。
+
+2016-08-17
+    datatable图片数据加载;
+        http://127.0.0.1:88/formroutequery?html=manage-users&query=users&page=0&size=3
+
+        预加载图像处理： <td>{{isempty(line.avatar) and '' or line.avatar.webpath }}</td>
+        ajaxsource: 图像处理 todo
+
+
+2016-08-16
+    datatable分页导航配置;
+    datatable首页数据预装;
+    deferLoading: 57,
+
+2016-08-11
+    单文件上传完成
+    http://127.0.0.1:88/upload-dir/1410493074315-sem转化率.png
+    http://192.168.0.119:9006/form/rest/singleSave
+
+
+    优化datatables for editor crud 适配 spring-boot rest 通用代码
+            editor = new $.fn.dataTable.Editor({
+
+
+                ajax: {
+                    data: function ( d ) {
+                        return JSON.stringify( d );
+                    },
+                    success: function (json) {
+                        success( json );
+                    },
+                    create: {
+                        contentType: 'application/json',
+                        data: function (d) {
+                            var key,value;
+                            for (var p in d.data) {
+                                key = p;
+                                value = d.data[p];
+                                console.log(JSON.stringify(value));
+                            }
+                            return JSON.stringify(value );
+                        },
+                        type: 'POST',
+                        url: '/extjsform/proxy/user?page=1&size=10'
+                    },
+                    edit: {
+                        contentType: 'application/json',
+                        data: function (d) {
+                            var key,value;
+                            for (var p in d.data) {
+                                key = p;
+                                value = d.data[p];
+                                console.log(JSON.stringify(value));
+                            }
+                            return JSON.stringify(value );
+                        },
+                        //PUT 全部更新 PTACH 部分更新
+                        type: 'PATCH',
+                        url: '/extjsform/proxy/user/_id_'
+                    },
+                    remove: {
+                        contentType: 'application/json',
+                        data: function (d) {
+                         return {};
+                        },
+                        type: 'DELETE',
+                        url: '/extjsform/proxy/user/_id_'
+                    }
+                },
+
+2016-08-08
+    js datatable for spring-rest 配置;
+    js jqgrid for spring-rest 配置；
+
+    spring-rest fot extjs 方案 应用于 datatable or jqgrid;
+
+    dtform： datatable页面单据展现
+    dtproxy：datatable数据处理，透传
+           http://127.0.0.1:88/extjsform/proxy/user?page=1&size=10
+
+2016-08-05
+    切换到docker for mac 环境
+    http://127.0.0.1:88//web/index.html
+    http://127.0.0.1:88/manage/index.html#
+    http://127.0.0.1:88/formroutequery?pkId=1&pkId=2&pkId=3&html=web-index&query=q0
+    http://127.0.0.1:88/formroutequery?pkId=1&pkId=2&pkId=3&html=manage-index&query=q0
+	<base href="http://127.0.0.1:88/web/" />
+    <base href="http://127.0.0.1:88/manage/" />
+
+    用户管理页面
+    http://127.0.0.1:88/formroutequery?pkId=1&pkId=2&pkId=3&html=manage-users&query=q0
+
+    模板变量
+    {(manage-footer.html,{plugin = 'manage-users-footer-plugins.html'})}
+    {[plugin]}
+
+    用户页面调试
+        {*cjson.encode(formvalue[formvalue.params.query]._embedded.user)*}
+
+
+2016-08-02
+   用户列表页面
+        1.页面框架
+            manage-users.html
+        2.内容框架
+            manage-users-content-wrap.html
+        3.具体内容列表
+            manage-users-content-wrap-list.html
+
+2016-07-29
+        http://192.168.99.101/formroutequery?pkId=1&pkId=2&pkId=3&html=manage-index&query=q0
+        后台页面拆解为模板与组件；
+        各组件可以直接渲染；
+        {*cjson.encode(formvalue)*}
+
+        前端页面拆解完成
+        http://192.168.99.101/formroutequery?pkId=1&pkId=2&pkId=3&html=web-index&query=q0
+
+
+2016-07-22
+        前端和后端选型并引入。
+        前端选型[前端要求秒入,跨屏]：manage
+        后端选型[跨屏]：web
+
+        http://192.168.99.101/manage/
+        http://192.168.99.101/web/
+
+        fonts.googleapis.com  替换为 fonts.useso.com ；解决google 不能访问页面渲染慢的问题。
+
+
+2016-07-15
+        调整路径完成跨域整合； 增删改查测试通过
+        http://192.168.99.101/extjsform/public/channel-lua.html
+        无filter
+        http://192.168.99.101/extjsform/proxy/channel_auth?_dc=1468549016138&sort=name%2CASC&sort=code%2CDESC&page=0&start=0&size=23
+        有filter
+        http://192.168.99.101/extjsform/proxy/channel_auth/1?html=route-json&query=q6&_dc=1467884593669&sort=name%2CASC&sort=code%2CDESC&page=0&filter=[{%22type%22:%22string%22,%22value%22:%22test%22,%22field%22:%22name%22},{%22type%22:%22string%22,%22value%22:%22test%22,%22field%22:%22code%22}]&start=0&size=23#
+
+        修改js 文件不及时生效：
+            文件删除之后，重新生成，缓存清除。
+
+
+2016-07-14
+    完成es-query 与 extjs 的整合。
+    todo:格式处理、总记录数，是否移植到extjs-proxy; 优化spring-boot 移除掉filter 的代码,升级spring-boot 的版本，进行测试；portlet menu 版本的代码处理；
+
+
+    重命名便于理解：
+        extjsform：页面单据展现
+        extjsproxy：数据处理，透传
+
+        http://192.168.99.101/extjsproxy/channel_auth?html=route-json&query=q6&_dc=1467884593669&sort=name%2CASC&sort=code%2CDESC&page=0&filter=[{"type":"string","value":"test","field":"name"},{"type":"string","value":"test","field":"code"}]&start=0&size=23
+        http://192.168.99.101/extjsproxy/channel_auth/filter?_dc=1468462279685&sort=name%2CASC&sort=code%2CDESC&page=0&filter=[{"type":"string","value":"abc","field":"name"}]&start=0&size=23
+
+        http://192.168.99.101/extjsproxy/public/channel-lua.html
+
+    todo:
+    进行结果的处理，最后与extjs 进行联调
+
+    {"DATA":
+        [{"deleted":null,"enabled":null,"createDate":"2016-07-14T00:00:00.000+0800","createBy":"","updateDate":"2016-07-14T09:55:50.000+0800","updateBy":"","name":"xyz","code":"xyz","pwd":"\u79d8\u94a5","tokenExpire":90,"iplist":"bb","ipBindtime":300,"ipTimeout":60,"connectCount":100,"limitBandwidth":"3000","status":false,
+            "pkId":4,"_links":{"self":{"href":"http://172.16.71.56:9006/form/rest/channel_auth/filter/channel_auth/4","templated":false}},"_embedded":{}},
+         {"deleted":null,"enabled":null,"createDate":"2016-07-14T00:00:00.000+0800","createBy":"system1","updateDate":"2016-07-14T09:48:29.000+0800","updateBy":"system2","name":"test","code":"test","pwd":"test","tokenExpire":1,"iplist":"192.168.59.103","ipBindtime":300,"ipTimeout":61,"connectCount":100,"limitBandwidth":"100","status":true,
+            "pkId":1,"_links":{"self":{"href":"http://172.16.71.56:9006/form/rest/channel_auth/filter/channel_auth/1","templated":false}},"_embedded":{}},
+         {"deleted":null,"enabled":null,"createDate":"2016-07-14T00:00:00.000+0800","createBy":"","updateDate":"2016-07-14T09:55:46.000+0800","updateBy":"","name":"abc","code":"abc","pwd":"\u79d8\u94a5","tokenExpire":90,"iplist":"aa","ipBindtime":300,"ipTimeout":60,"connectCount":100,"limitBandwidth":"2000","status":false,
+            "pkId":3,"_links":{"self":{"href":"http://172.16.71.56:9006/form/rest/channel_auth/filter/channel_auth/3","templated":false}},"_embedded":{}}],
+     "PAGE":{"size":23,"totalElements":3,"totalPages":1,"number":0}}
+
+
+    DATA: [
+        {
+            deleted: null,
+            code: "test",
+            pkId: 1,
+            pwd: "test",
+            connectCount: 100,
+            enabled: null,
+            limitBandwidth: "100",
+            ipBindtime: 300,
+            updateBy: "system2",
+            updateDate: "2016-07-14T09:48:29.000+0800",
+            createDate: "2016-07-14T00:00:00.000+0800",
+            tokenExpire: 1,
+            _links: {
+                self: {
+                href: "http://172.16.71.56/form/rest/channel_auth/1",
+                templated: false
+                }
+            },
+            name: "test",
+            _embedded: { },
+            iplist: "192.168.59.103",
+            createBy: "system1",
+            status: true,
+            ipTimeout: 61
+        }
+    ],
+    PAGE: {
+        page: {
+            totalElements: 30
+        }
+    }
+
+2016-07-13
+    http://192.168.99.101/formroutequery?_dc=1467884593669&query=q6&sort=name,ASC&sort=code,DESC&filter=%5B%7B%22type%22%3A%22string%22,%22value%22%3A%22test%22,%22field%22%3A%22name%22%7D,%7B%22type%22%3A%22string%22,%22value%22%3A%22test%22,%22field%22%3A%22code%22%7D%5D&start=0&html=route-json&page=0&size=23
+    http://192.168.99.101/formroutequery?pkId=1&pkId=2&html=route-json&query=q7
+
+    http://192.168.99.101/lua-extjs/channel_auth?_dc=1467884593669&sort=name%2CASC&sort=code%2CDESC&page=0&filter=[{%22type%22:%22string%22,%22value%22:%22test%22,%22field%22:%22name%22},{%22type%22:%22string%22,%22value%22:%22test%22,%22field%22:%22code%22}]&start=0&size=23
+
+    http://192.168.99.101/lua-extjs/channel_auth?html=route-json&query=q6&_dc=1467884593669&sort=name%2CASC&sort=code%2CDESC&page=0&filter=[{%22type%22:%22string%22,%22value%22:%22test%22,%22field%22:%22name%22},{%22type%22:%22string%22,%22value%22:%22test%22,%22field%22:%22code%22}]&start=0&size=23
+    html 指定渲染模板
+    query 制定查询语句
+    sort 排序参数，extjs 产生
+    filter 过滤条件，extjs 产生
+    start 开始记录数
+    size 页面尺寸
+
+
+
+2016-07-08
+    extjs filter for es-query 支持查询完成
+    需要重构代码，兼容其他查询，代码优化
+    http://192.168.99.101/formroutequery?html=route-json&query=q6&_dc=1467884593669&sort=name%2CASC&sort=code%2CDESC&page=0&filter=[{"type":"string","value":"test","field":"name"},{"type":"string","value":"test","field":"code"}]&start=0&size=23
+    数据获取端改造完成，下一步改造extjs 对获取json 的解析。
+
+2016-07-07
+   es 复合查询支持完成；下一步是extjs filter 直接查询支持
+   extjs filter 参数
+    _dc:1467776408383
+    sort:name,ASC
+    sort:code,DESC
+    page:0
+    filter:[{"type":"string","value":"12","field":"name"},{"type":"string","value":"abc1","field":"code"}]
+    start:0
+    size:23
+   -----------------------------------------------------------------------------------------------------
+   测试：extjs
+    输出页面json
+    http://192.168.99.101/formroutequery?html=route-form&query=q6&_dc=1467884593669&sort=name%2CASC&sort=code%2CDESC&page=0&filter=[{"type":"string","value":"test","field":"name"},{"type":"string","value":"test","field":"code"}]&start=0&size=23
+   -----------------------------------------------------------------------------------------------------
+    extjs需要转换的参数
+    sort:name,ASC
+    sort:code,DESC
+    filter:[{"type":"string","value":"12","field":"name"},{"type":"string","value":"abc1","field":"code"}]
+   -----------------------------------------------------------------------------------------------------
+       "sort": {
+         "code": {
+           "order": "asc"
+         },
+         "name": {
+           "order": "desc"
+         }
+       }
+   -----------------------------------------------------------------------------------------------------
+
+
+2016-07-07
+   -----------------------------------------------------------------------------------------------------
+    翻译为对应的es-query
+   -----------------------------------------------------------------------------------------------------
+    {
+       "query": {
+         "bool": {
+           "must": [
+             {
+               "term": {
+                 "name": "name"
+               }
+             },
+             {
+               "term": {
+                 "code": "code"
+               }
+             }
+           ]
+         }
+       },
+       "from": 0,
+       "size": 1,
+       "sort": {
+         "code": {
+           "order": "asc"
+         },
+         "name": {
+           "order": "desc"
+         }
+       }
+     }
+   -----------------------------------------------------------------------------------------------------
+   测试：
+   http://192.168.99.101/formroutequery?html=route-form&query=q5&namevalue=test&codevalue=test&size=10&start=0&XXX=%E7%94%B5%E8%B7%AF&PId=dllx0000
+   完成es POST 检索支持
+   -----------------------------------------------------------------------------------------------------
+
+    走extjs[get]->nginx-lua[post]->直接发送到 es;
+    {
+        "query": {
+          "bool": {
+            "must": {//必须符合以下条件
+              "term": {
+                "name": "test"
+              }
+            },
+            "should": {//满足其中某个条件
+              "term": {
+                "name": "test"
+              }
+            },
+            "must_not": {//不能符合以下条件
+              "term": {
+                "code": "test1"
+              }
+            }
+          }
+        },
+        "from": 0, //分页
+        "size": 1,
+        "sort": {  //排序
+          "code": {
+            "order": "desc"
+          }
+        }
+    }
+
+2016-05-23
+    升级到tengine-2.1.2,openresty1.9.7.4
+    todo tengine-2.1.2 不支持tcp
+
+2016-04-20
+    waf 定制配置文件,屏蔽镜像包的redis 与 tomcat 集群引用
+    mynginx/http.d/2-upstream.conf
+    mynginx/server.d/4-java.conf
+    mynginx/server.d/e-redis.conf
+
+
+2016-04-12
+    完成waf+naxsi 环境配置;初步测试完成;
+
+2016-04-11
+    增加nginx-naxsi-waf;在web端增强安全防范;
+
+2016-03-12
+http://192.168.99.101/formroutequery?html=route-form&query=q1&query=q4&PK=abc&BK=123&XXX=%E7%94%B5%E8%B7%AF&PId=dllx0000
+完成es POST 检索支持
+
+<hr/>
+
+
+开发快,性能高,入门容易.
+
+支持spring-boot rest 查询,增加url 路由配置,源自ruby on rails 的理念.
+1.配置查询语句与参数;
+2.完成url 参数的影射到配置文件,并且调用子查询完成查询;
+3.使用模板引擎,对json 格式进行页面渲染.
+
+2015-11-19
+不成熟,不采用.lua-restry-kafka client 采集nginx 日志送入到kafka
+
+### 进度
+
+> 高并发认证数据通道代码同步完成
+
+> 分阶段代码改造完成
+
+> 渠道接入管理代码,数据mysql2redis,
+
+>
+

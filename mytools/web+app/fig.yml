@@ -1,0 +1,136 @@
+#启动web,启动较慢，需要耐心等待一会儿
+##刷新：http://192.168.59.103/java/manager/status?org.apache.catalina.filters.CSRF_NONCE=66179530393A7744F81BD1EDAE5E6DF2
+##观察：Hostname的值与IP每次刷新都变动，说明集群成功。
+#http://192.168.99.101/java/myweb/
+#http://192.168.99.101/java/dbtest/
+#http://192.168.99.101/java/dbtest/token.jsp
+#http://192.168.99.101:8080/java/myweb/
+#http://192.168.99.101:8080/java/dbtest/
+#http://192.168.99.101:8080/manager/html  admin/admin
+#http://192.168.99.101/java/myweb/webjars/bootstrap/3.3.4/css/bootstrap.min.css
+
+# redis-cli -h 192.168.99.101  / keys *
+# mysql -ujava -pjava -h192.168.99.101 javatest /show tables;
+
+
+#docker run -i -t --rm -P  \
+#-v /Users/moyong/project/env-myopensource/3-tools/mytools/web+app/mynginx/www:/data/www/ \
+#-v /Users/moyong/docker-share/logs/web/:/usr/local/nginx/logs/ \
+#-v /Users/moyong/project/env-myopensource/3-tools/mytools/web+app/mynginx/nginx.conf:/usr/local/nginx/conf/nginx.conf \
+#-v /Users/moyong/project/env-myopensource/3-tools/mytools/web+app/mynginx/lua.d/:/usr/local/nginx/conf/lua.d/ \
+#-v /Users/moyong/project/env-myopensource/3-tools/mytools/web+app/mynginx/server.d/:/usr/local/nginx/conf/server.d/ \
+# supermy/docker-mynginx:2.1
+
+#docker run -i -t  -P  \
+#-v /Users/moyong/project/env-myopensource/3-tools/mytools/web+app/mynginx/www:/data/www/ \
+#-v /Users/moyong/docker-share/logs/web/:/usr/local/nginx/logs/ \
+#-v /Users/moyong/project/env-myopensource/3-tools/mytools/web+app/mynginx/nginx.conf:/usr/local/nginx/conf/nginx.conf \
+#-v /Users/moyong/project/env-myopensource/3-tools/mytools/web+app/mynginx/lua.d/:/usr/local/nginx/conf/lua.d/ \
+#-v /Users/moyong/project/env-myopensource/3-tools/mytools/web+app/mynginx/server.d/:/usr/local/nginx/conf/server.d/ \
+# --name data busybox
+#
+#docker run -i -t -P  --volumes-from data supermy/docker-mynginx:2.1
+
+
+web:
+  image: supermy/docker-mynginx:2.1
+  links:
+    #- springboot
+    - app1
+    - app2
+    - myredis:myredis
+  ports:
+    - "88:80"
+  volumes_from:
+    - dataWeb
+
+#常用工具集合
+dataWeb:
+  image: busybox
+  command: /bin/true
+  volumes:
+      - ./mynginx/www:/data/www/
+      #extjs4spring-rest 页面路径配置
+      - /Users/moyong/project/env-myopensource/1-spring/12-spring/rest-api/src/main/webapp/:/data/www/extjsform/:rw
+      - /Users/moyong/project/env-myopensource/1-spring/12-spring/rest-api/upload-dir/:/data/www/upload-dir/
+      - ./mynginx/www/templates:/data/www/templates/
+      - ./mynginx/logs/:/usr/local/nginx/logs/
+      - ./mynginx/nginx.conf:/usr/local/nginx/conf/nginx.conf #配置文件,fix.me
+      - ./mynginx/lua.d/:/usr/local/nginx/conf/lua.d/ #配置文件,fix.me
+      - ./mynginx/http.d/:/usr/local/nginx/conf/http.d/ #配置文件,fix.me
+      - ./mynginx/server.d/:/usr/local/nginx/conf/server.d/ #配置文件,fix.me
+      - ./mynginx/naxsi.d/:/usr/local/nginx/conf/naxsi.d/ #配置文件,fix.me
+      - ./mynginx/lua-lib/:/usr/local/nginx/conf/lua-lib/
+
+
+#/Users/moyong/docker-share/app/ 覆盖了管理目录导致，导致管理功能不可用
+dataApp:
+  image: busybox
+  command: /bin/true
+  volumes:
+      #- ./mytomcat/apps/:/tomcat/webapps/ #应用发布目录
+      - ./mytomcat/dbtest/:/home/dbtest/
+      - ./mytomcat/logs/:/tomcat/logs/
+
+
+#启动tomcat
+app1:
+  image: supermy/docker-mytomcat:7
+  environment:
+    TOMCAT_PASS: admin
+  links:
+    - dbinit
+    - db:mysql
+    - myredis:myredis
+  ports:
+    - "8080:8080"
+  volumes_from:
+    - dataApp
+
+#启动tomcat
+app2:
+  image: supermy/docker-mytomcat:7
+  environment:
+    TOMCAT_PASS: admin
+  links:
+    - dbinit
+    - db:mysql
+    - myredis:myredis
+  ports:
+    - "8081:8080"
+  volumes_from:
+    - dataApp
+
+
+myredis:
+  image: supermy/docker-myredis:3.5
+  ports:
+      - "6379"
+  environment:
+    ulimit: nofile=20480:40960
+
+db:
+  image: supermy/docker-mysql:latest
+  environment:
+    MYSQL_USER: java
+    MYSQL_PASSWORD: java
+    MYSQL_DATABASE: javatest
+    MYSQL_ROOT_PASSWORD: mysql
+  ports:
+    - "3306"
+
+dbinit:
+  image: supermy/docker-mysql:latest
+  volumes:
+    - .:/host
+  command: /bin/bash -c "sleep 8; mysql -u java --password=java -h mysql javatest < /host/mysql/init.sql; exit 0"
+  links:
+    - db:mysql
+
+
+#springboot:
+#  image: supermy/docker-springboot:latest
+#  links:
+#      - db:mysql
+#  ports:
+#      - "8080"

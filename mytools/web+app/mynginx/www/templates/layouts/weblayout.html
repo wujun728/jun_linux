@@ -1,0 +1,28 @@
+{% layout = "layouts/webbase.html" %}
+
+
+{-head_base-}
+{%
+local myconfig = ngx.shared.myconfig;
+local cfgDbQuery = cjson.decode(myconfig:get("cfgDbQuery"));
+local baseurl = cfgDbQuery.webbase.url;
+%}
+<base href="{* baseurl *}/web/" />
+<title>前端页面模板</title>
+{-head_base-}
+
+{-main-}
+
+<div class="container">
+    {* blocks.sidebar *}
+</div>
+
+
+
+    {* blocks.content *}
+
+
+{-main-}
+
+
+

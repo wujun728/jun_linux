@@ -1,0 +1,65 @@
+############################################
+#  producer config kafka
+###########################################
+
+#agent section
+producer.sources = s
+producer.channels = c
+producer.sinks = r r1
+
+#source section
+#producer.sources.s.type = seq
+producer.sources.s.type = exec
+producer.sources.s.command = tail -F /usr/local/var/log/nginx/access.log
+producer.sources.s.channels = c
+
+# Each sink's type must be defined
+producer.sinks.r.type = org.apache.flume.plugins.KafkaSink
+producer.sinks.r.metadata.broker.list=127.0.0.1:9092
+producer.sinks.r.partition.key=0
+producer.sinks.r.partitioner.class=org.apache.flume.plugins.SinglePartition
+producer.sinks.r.serializer.class=kafka.serializer.StringEncoder
+producer.sinks.r.request.required.acks=0
+producer.sinks.r.max.message.size=1000000
+producer.sinks.r.producer.type=sync
+producer.sinks.r.custom.encoding=UTF-8
+#producer.sinks.r.custom.topic.name=kafkaToptic
+producer.sinks.r.custom.topic.name=test
+
+producer.sinks.r1.type = logger
+
+#Specify the channel the sink should use
+producer.sinks.r.channel = c
+producer.sinks.r1.channel = c
+
+# Each channel's type is defined.
+producer.channels.c.type = memory
+producer.channels.c.capacity = 1000
+
+
+############################################
+#   consumer config  
+###########################################
+
+consumer.sources = s
+consumer.channels = c
+consumer.sinks = r
+
+consumer.sources.s.type = seq
+consumer.sources.s.channels = c
+consumer.sinks.r.type = logger
+
+consumer.sinks.r.channel = c
+consumer.channels.c.type = memory
+consumer.channels.c.capacity = 100
+
+consumer.sources.s.type = org.apache.flume.plugins.KafkaSource
+consumer.sources.s.zookeeper.connect=127.0.0.1:2181
+consumer.sources.s.group.id=testGroup
+consumer.sources.s.zookeeper.session.timeout.ms=400
+consumer.sources.s.zookeeper.sync.time.ms=200
+consumer.sources.s.auto.commit.interval.ms=1000
+consumer.sources.s.custom.topic.name=kafkaToptic
+consumer.sources.s.custom.thread.per.consumer=4
+
+#bin/flume-ng agent --conf conf --conf-file conf/flume.conf.kafka --name producer -Dflume.root.logger=INFO,console
