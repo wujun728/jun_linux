@@ -14,12 +14,7 @@
 
 	<modules>		
 		<module>jun_datasource</module>
-	<!--	<module>ssh_generator</module>
-	  <module>ssm_generator</module>
-		<module>ssm_boot_generator</module>
-		<module>jdbc_generator</module>
-		 -->
-  </modules>
+	</modules>
 
 	<dependencies>
 		<dependency>

@@ -2,43 +2,6 @@
 
 
  
- 
-1 生产环境部署
-https://blog.csdn.net/qq_25843323/article/details/81513044
- 
-2 Linux下的环境部署
-https://blog.csdn.net/rentian1/article/details/78839724
- 
-Jun_linux 环境架构：
-Jboss
-Linux
-         CentOS
-                   gcc
-         RPM源
-https://www.cnblogs.com/wdrain/articles/11528354.html
-         centos6
-https://blog.51cto.com/murongqingqqq/1574932
-https://blog.csdn.net/liang19890820/article/details/52093653
-         centos7
-https://blog.csdn.net/babyxue/article/details/80970526
-https://blog.csdn.net/qq_39135287/article/details/83993574
-                  
-JDK
-         JDK8
-                   RPM
-https://blog.csdn.net/qq_44543508/article/details/108864424
-                   tar.gz
-https://blog.csdn.net/axing2015/article/details/83614800
-https://cloud.tencent.com/developer/article/1447083
-Tomcat
-         tar.gz
-https://blog.csdn.net/ThinkWon/article/details/102717537
-https://myxu.github.io/2018/04/28/CentOS7-%E5%AE%89%E8%A3%85Tomcat9/
-         docker
-https://www.runoob.com/docker/docker-install-tomcat.html
-        
-                  
-Docker
          docker安装
 https://www.runoob.com/docker/centos-docker-install.html
 https://bbs.huaweicloud.com/blogs/242272
