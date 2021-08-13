@@ -1,8 +1,15 @@
 有些时候，git 仓库累积了太多无用的历史更改，导致 clone 文件过大。如果确定历史更改没有意义，可以采用下述方法清空历史，
 
 
+git checkout --orphan latest_branch2
+git add -A
+git commit -am "commit message"
+git branch -D master
+git branch -m master
+git push -f origin master 
 
- 
+
+ http://hub.fastgit.org
 
 1) 先 clone 项目到本地目录 (以名为 mylearning 的仓库为例)
 
