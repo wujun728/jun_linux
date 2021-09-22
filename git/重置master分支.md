@@ -1,5 +1,5 @@
 重置master分支：
-git checkout --orphan latest_branch2
+git checkout --orphan latest_branch
 git add -A
 git commit -am "commit message"
 git branch -D master
