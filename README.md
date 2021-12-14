@@ -1,7 +1,5 @@
 #jun_linux 常用开发环境工具
 
-
-
 docker安装
 https://www.runoob.com/docker/centos-docker-install.html
 https://bbs.huaweicloud.com/blogs/242272
@@ -51,7 +49,6 @@ RabbitMQ
 Kafka
 Zookeeper
 
-
 Hadoop
 ElectricSerarch
 
@@ -90,7 +87,6 @@ Zookeeper
 
 Blog
 https://qiankunli.github.io/2021/06/14/learn_mq.html
-
 
 1 生产环境部署
 https://blog.csdn.net/qq_25843323/article/details/81513044
@@ -184,7 +180,6 @@ https://www.huaweicloud.com/articles/8357425.html
 rpm
 https://www.linuxidc.com/Linux/2018-05/152261.htm
 Dubbo
-Dubbo
 https://www.linuxidc.com/Linux/2017-05/143494.htm
 dubbo+zk
 https://blog.csdn.net/weixin_45861518/article/details/107653377
@@ -232,7 +227,6 @@ Zookeeper
 
 Blog
 https://qiankunli.github.io/2021/06/14/learn_mq.html
-
 
 Date 2021-07-12 ---------------------
 
