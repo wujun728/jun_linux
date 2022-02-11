@@ -1,27 +1,27 @@
-#jun_linux 常用开发环境工具
-
-docker安装
-https://www.runoob.com/docker/centos-docker-install.html
-https://bbs.huaweicloud.com/blogs/242272
-docker ubuntu
-https://www.runoob.com/docker/docker-install-ubuntu.html
-docker centos
-https://www.runoob.com/docker/docker-install-centos.html
-Nginx
-https://www.runoob.com/docker/docker-install-nginx.html
-NodeJS
-https://www.runoob.com/docker/docker-install-node.html
-PHP
-https://www.runoob.com/docker/docker-install-php.html
-MySQL
-https://www.runoob.com/docker/docker-install-mysql.html
-Tomcat
-https://www.runoob.com/docker/docker-install-tomcat.html
-Python
-https://www.runoob.com/docker/docker-install-python.html
-Redis
-https://www.runoob.com/docker/docker-install-redis.html
-MongoDB
+#jun_linux 常用开发环境工具  
+  
+docker安装  
+https://www.runoob.com/docker/centos-docker-install.html  
+https://bbs.huaweicloud.com/blogs/242272   
+docker ubuntu  
+https://www.runoob.com/docker/docker-install-ubuntu.html  
+docker centos  
+https://www.runoob.com/docker/docker-install-centos.html  
+Nginx  
+https://www.runoob.com/docker/docker-install-nginx.html  
+NodeJS  
+https://www.runoob.com/docker/docker-install-node.html  
+PHP  
+https://www.runoob.com/docker/docker-install-php.html  
+MySQL  
+https://www.runoob.com/docker/docker-install-mysql.html  
+Tomcat  
+https://www.runoob.com/docker/docker-install-tomcat.html  
+Python  
+https://www.runoob.com/docker/docker-install-python.html   
+Redis  
+https://www.runoob.com/docker/docker-install-redis.html  
+MongoDB  
 https://www.runoob.com/docker/docker-install-mongodb.html
 Apache
 https://www.runoob.com/docker/docker-install-apache.html
