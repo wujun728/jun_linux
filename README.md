@@ -39,11 +39,7 @@ https://blog.csdn.net/wonderful_life_mrchi/article/details/105939858
         
 Redis
 https://blog.csdn.net/sl1992/article/details/106017157
-
  https://github.com/alibaba/COLA  
-
-
-
 Nginx
 Apache
 Dubbo
@@ -52,10 +48,8 @@ ActiveMQ
 RabbitMQ
 Kafka
 Zookeeper
-
 Hadoop
 ElectricSerarch
-
 CentOS
 HBuilderX
 LVS
@@ -86,18 +80,13 @@ Svn
 Tomcat
 Wordpress
 Zookeeper
-
 软件架构
-
 Blog
 https://qiankunli.github.io/2021/06/14/learn_mq.html
-
 1 生产环境部署
 https://blog.csdn.net/qq_25843323/article/details/81513044
-
 2 Linux下的环境部署
 https://blog.csdn.net/rentian1/article/details/78839724
-
 Jun_linux 环境架构：
 Jboss
 Linux
@@ -167,7 +156,6 @@ https://blog.csdn.net/wonderful_life_mrchi/article/details/105939858
         
 Redis
 https://blog.csdn.net/sl1992/article/details/106017157
-
         
 note_20200710 时间：
 Nginx
@@ -187,7 +175,6 @@ Dubbo
 https://www.linuxidc.com/Linux/2017-05/143494.htm
 dubbo+zk
 https://blog.csdn.net/weixin_45861518/article/details/107653377
-
 SpringCloud
 ActiveMQ
 RabbitMQ
@@ -195,7 +182,6 @@ Kafka
 Zookeeper
 Hadoop
 ElectricSerarch
-
 CentOS
 HBuilderX
 LVS
@@ -226,14 +212,10 @@ Svn
 Tomcat
 Wordpress
 Zookeeper
-
 软件架构
-
 Blog
 https://qiankunli.github.io/2021/06/14/learn_mq.html
-
 Date 2021-07-12 ---------------------
-
 SpringCloud
 https://blog.csdn.net/qq_36589864/article/details/108081869
 https://cloud.tencent.com/developer/article/1651088
@@ -267,7 +249,6 @@ https://cloud.tencent.com/developer/article/1412653
                    docker
 https://www.cnblogs.com/qdhxhz/p/11096682.html
         
-
 ElectricSerarch
 docker
 https://www.cnblogs.com/hahahehexixihoho/p/11613524.html
@@ -288,7 +269,6 @@ https://qiankunli.github.io/2021/06/14/learn_mq.html
 https://github.com/MrQuJL/product-recommendation-system
 https://github.com/linger2012/recommendation-algorithm-implemented-by-java
 https://github.com/bystc/MovieRecommender
-
 CentOS7
 LVS
 MsSQL
@@ -322,9 +302,7 @@ BASE
          六边形
 DDD
          云原生
-
 Date 2021-07-12 --------------------- 下
-
 CentOS7
 https://blog.csdn.net/babyxue/article/details/80970526
 https://blog.csdn.net/qq_39135287/article/details/83993574
@@ -369,7 +347,6 @@ tar.gz
 https://blog.csdn.net/u010889616/article/details/47145239
 win32
 https://blog.csdn.net/say_hi_andhelloworld/article/details/86062102
-
 Docker
 WIN32
 https://www.cnblogs.com/luyanjie/p/10424386.html
@@ -397,7 +374,6 @@ https://www.cnblogs.com/provence666/p/10987156.html
 https://blog.csdn.net/wo541075754/article/details/107528318
 Gcc
 https://blog.csdn.net/alan_gaohaodong/article/details/79656177
-
 Svn
 YUM
 https://www.jianshu.com/p/334404ba805e
@@ -415,7 +391,6 @@ yum
 https://segmentfault.com/a/1190000021278114
 docker
 https://segmentfault.com/a/1190000021593151
-
 Redis       
 tar.gz
 https://www.cnblogs.com/zhang-guansheng/p/14647271.html
@@ -437,9 +412,6 @@ https://segmentfault.com/a/1190000037682150
 PHP
 docker
 https://blog.csdn.net/Srodong/article/details/105030387
-
-
-
 架构设计理论：CAP，BASE，5+1，六边形，DDD，云原生
 分层架构：MVC架构，六边形架构，洋葱架构
 事件驱动架构
