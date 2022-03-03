@@ -1,0 +1,149 @@
+#
+# @see https://github.com/khs1994-php/pcit/blob/master/docs/SUMMARY.md
+#
+
+languages: php
+
+# cache:
+#   directories:
+#   - cache
+
+workspace:
+  base: /app
+  # path: .
+  path: src
+
+pipeline:
+
+  # install dep
+  install:
+    # image: composer:${COMPOSER_VERSION}
+    image: khs1994/php:7.2.13-composer-alpine
+    shell: bash
+    commands:
+      - pwd
+      - composer config -g repo.packagist composer https://packagist.laravel-china.org
+      # 由于 composer 镜像缺少某些扩展，故忽略这些
+      - composer install -q --ignore-platform-reqs
+      # - composer update -q --ignore-platform-reqs
+
+  # test script
+  script:
+    image: khs1994/php:${PHP_VERSION}-fpm-alpine
+    pull: true
+    shell: bash
+    environment:
+      - CI_REDIS_HOST=redis
+      - CI_REDIS_PORT=6379
+      - CI_MYSQL_HOST=mysql
+      - CI_MYSQL_PORT=3306
+      - CI_MYSQL_USERNAME=root
+      - CI_MYSQL_PASSWORD=mytest
+      - CI_MYSQL_DBNAME=test
+    commands:
+      - pwd
+      - mv ${PHP_INI_DIR}/conf.d/docker-php-ext-xdebug.ini.default ${PHP_INI_DIR}/conf.d/docker-php-ext-xdebug.ini
+      # 服务初始化需要时间，这里延迟执行
+      - sleep 30
+      - vendor/bin/phpunit --coverage-clover=coverage.xml
+    when:
+      # platform: linux/amd64
+      # platform:  [ linux/*, windows/amd64 ]
+
+      # status: changed
+      # status:  [ failure, success ]
+
+      # event: tag
+      # event: [push, pull_request, tag, deployment]
+      event: [push, pull_request, tag]
+
+      # branch: master
+      # branch: prefix/*
+      # branch: [master, develop]
+      # branch:
+      #   include: [ master, release/* ]
+      #   exclude: [ release/1.0.0, release/1.1.* ]
+
+  # when tag push build docker image
+  publish_php:
+    image: ci_docker_build
+    # registry: docker.khs1994.com
+    repo: khs1994/php
+    tags: ${PHP_VERSION}-pro-${CI_TAG}-alpine
+    # target: php
+    build_args:
+      - key=value
+    # dockerfile: Dockerfile
+    # dockerfile: path/to/Dockerfile
+    when:
+      event: tag
+
+  after_success:
+    image: khs1994/php:7.2.13-composer-alpine
+    shell: bash
+    when:
+      status: success
+    commands:
+      # please set env CODECOV_TOKEN=XXX
+      - bash <(curl -s https://codecov.io/bash)
+
+  after_failure:
+    image: bash
+    when:
+      status: failure
+    commands:
+      - echo "build failure"
+
+  changed:
+    image: bash
+    when:
+      status: changed
+    commands:
+      - echo "build status changed"
+
+services:
+  mysql:
+    image: mysql:${MYSQL_VERSION}
+    environment:
+      - MYSQL_DATABASE=test
+      - MYSQL_ROOT_PASSWORD=mytest
+    # entrypoint: [ "mysqld" ]
+    command: [ "--character-set-server=utf8mb4", "--default-authentication-plugin=mysql_native_password" ]
+
+  # postgresql:
+  #   image: postgres:${POSTGRESQL_VERSION}
+  #   environment:
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_DB=test
+
+  redis:
+    image: redis:${REDIS_VERSION}-alpine
+    command: ["--bind", "0.0.0.0"]
+
+  # mongodb:
+  #   image: mongo:${MONGODB_VERSION}
+  #   command: [ --smallfiles ]
+
+matrix:
+  COMPOSER_VERSION:
+    - 1.8.0
+  PHP_VERSION:
+    - 7.2.13
+    - 7.1.25
+    # - 7.0.33
+    # - 5.6.39
+  NGINX_VERSION:
+    - 1.15.7
+  REDIS_VERSION:
+    - 5.0.3
+  MYSQL_VERSION:
+    # - 8.0.11
+    - 5.7.22
+  MONGODB_VERSION:
+    - 3.7.3
+  POSTGRESQL_VERSION:
+    - 10.3-alpine
+
+# branches:
+#   include: [ master, dev, feature/* ]
+#   exclude: [ release/1.0.0, release/1.1.* ]

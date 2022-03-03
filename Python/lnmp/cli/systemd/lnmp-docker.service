@@ -1,0 +1,20 @@
+[Unit]
+Description=Start LNMP Within 2 minutes Powered by Docker Compose
+Documentation=https://docs.lnmp.khs1994.com
+
+[Service]
+WorkingDirectory=/data/lnmp
+# WorkingDirectory=/home/core/lnmp
+
+Environment=LNMP_PATH=/data/lnmp
+# Environment=LNMP_PATH=/home/core/lnmp
+Environment=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/bin
+EnvironmentFile=/data/lnmp/.env
+
+ExecStartPre=/usr/bin/docker info
+ExecStart=/data/lnmp/lnmp-docker up --systemd
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/data/lnmp/lnmp-docker down
+
+[Install]
+WantedBy=multi-user.target

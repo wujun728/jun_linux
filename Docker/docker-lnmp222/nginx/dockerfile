@@ -1,0 +1,2 @@
+FROM nginx:latest
+MAINTAINER navas <545922113@qq.com>

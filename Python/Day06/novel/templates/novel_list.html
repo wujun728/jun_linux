@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>星辰变</title>
+</head>
+<body>
+<h2>《星辰变》</h2>
+<ul>
+{% for novel in novel_list %}
+    <a href="/chapter/{{novel.id}} "><li>{{ novel.title }}</li></a>
+
+{% endfor %}
+</ul>
+</body>
+</html>

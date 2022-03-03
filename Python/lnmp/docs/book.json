@@ -1,0 +1,31 @@
+{
+  "title": "LNMP Docker 支持文档",
+  "author": "khs1994.com",
+  "description": "khs1994-docker lnmp",
+  "language": "zh-hans",
+  "links": {
+    "sidebar": {
+      "Home": "//lnmp.khs1994.com",
+      "GitHub":"https://github.com/khs1994-docker/lnmp"
+    }
+  },
+  "plugins": [
+    "-sharing",
+    "-highlight",
+    "-livereload",
+    "tbfed-pagefooter@git+https://github.com/khs1994/gitbook-plugin-tbfed-pagefooter.git",
+    "prism"
+  ],
+  "pluginsConfig": {
+    "prism": {
+      "css": [
+        "prismjs/themes/prism-solarizedlight.css"
+      ]
+    },
+    "tbfed-pagefooter": {
+      "copyright": "&copy 2018 khs1994.com",
+      "modify_label": "修订时间：",
+      "modify_format": "YYYY-MM-DD HH:mm:ss"
+    }
+  }
+}

@@ -1,0 +1,66 @@
+.DS_Store
+.idea
+.vscode
+data
+
+# docker-composer
+
+docker-compose
+docker-compose-Darwin-x86_64
+docker-compose-Linux-x86_64
+docker-production.*.yml
+docker-compose.include.yml
+
+# cache
+
+*.stackdump
+
+# env
+.env
+.env.*
+
+.env.backup
+.env.ps1
+
+!.env.example
+!.env.example.ps1
+
+# LinuxKit
+
+lnmp-cmdline
+lnmp-kernel
+lnmp-state
+*.img
+
+# composer
+
+vendor
+composer.lock
+
+# example test
+
+*.example.test.yml
+
+# tmp
+
+tmp
+
+# python
+
+__pycache__
+
+# debug info
+
+debug.md
+
+*.sum
+*.exe
+
+logs
+
+# clusterkit
+
+/docker-cluster.*
+
+/lnmp-custom-script
+/lnmp-custom-script.ps1

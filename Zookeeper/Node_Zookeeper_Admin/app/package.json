@@ -1,0 +1,13 @@
+{
+  "name": "Zookeeper管理器",
+  "node-main":"server/app.js",
+  "main": "http://127.0.0.1:3000/",  
+  "window": {
+    "icon": "app.ico",
+	"width" 	: 880,
+	"height"	: 625,
+	"toolbar"	: false
+  },"webkit": {
+    "plugin": true
+  }
+}

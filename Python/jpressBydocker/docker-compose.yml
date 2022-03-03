@@ -1,0 +1,39 @@
+﻿
+version: '3.3'
+
+services:
+    jpress:
+        build: ./tomcat
+        depends_on:
+        - db
+        volumes:
+        - ./tomcat/jpress:/usr/local/tomcat/webapps
+        restart: always
+        ports:
+        - "8080:8080"
+        
+    db:
+        build: ./mysql
+        environment:
+           MYSQL_ROOT_PASSWORD: 'AScsaw@ddcc'
+           MYSQL_DATABASE: 'jpress'
+           MYSQL_USER: 'jpress'
+           MYSQL_PASSWORD: 'jpress_db_password'
+        volumes:
+        - ./mysql/data:/var/lib/mysql
+        restart: always
+
+    nginx:
+        image: nginx:1.13
+        volumes:
+        - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+        - ./nginx/cert:/etc/nginx/cert
+        - ./tomcat/jpress/ROOT/static:/etc/nginx/statics/static
+        - ./tomcat/jpress/ROOT/templates:/etc/nginx/statics/templates
+        ports:
+        - "80:80"
+        - "443:443"
+        restart: always
+
+
+

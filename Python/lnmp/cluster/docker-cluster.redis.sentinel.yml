@@ -1,0 +1,308 @@
+version: "3.7"
+
+#
+# Redis Sentinel (S)
+#
+# 6 node: 1 master 3 slave 2 sentinel
+#
+#
+# @link https://github.com/TomCzHen/redis-sentinel-sample
+#
+# @link https://redis.io/topics/sentinel#sentinel-docker-nat-and-possible-issues
+#
+
+#
+# Example Port
+#
+# Master 20000
+#
+# Slave 20001 20002 20003
+#
+# Sentinel 21000 21001
+#
+
+#
+# master aof
+# slave rdb
+#
+
+x-common:
+  &default-common
+  image: redis:5.0.3-alpine
+  # restart: always
+  environment:
+    - REDIS_HOST=${CLUSTERKIT_REDIS_S_HOST:-192.168.199.100}
+  env_file:
+    - ./cli/timezone.env
+  networks:
+    cluster_redis_s:
+      # ipv4_address: 172.15.0.305
+  secrets:
+    - source: cluster_redis_s_redis_conf
+      target: /redis.conf.default
+    - source: cluster_redis_s_entrypoint
+      target: /docker-entrypoint.redis.sh
+      mode: 0555
+
+x-deploy:
+  &default-deploy
+  restart_policy:
+    condition: any
+    delay: 5s
+    max_attempts: 5
+    window: 123s
+  update_config:
+    parallelism: 2
+    delay: 10s
+    order: stop-first
+
+x-labels:
+  &default-labels
+  labels:
+    - "${LNMP_DOMAIN:-com.khs1994.lnmp}=true"
+    - "${LNMP_DOMAIN:-com.khs1994.lnmp}.clusterkit=true"
+    - "${LNMP_DOMAIN:-com.khs1994.lnmp}.app.env=clusterkit_redis_sentinel"
+
+services:
+
+  redis_sentinel_master-1:
+    << : *default-common
+    << : *default-labels
+    ports:
+      - "20000:20000"
+    entrypoint: /docker-entrypoint.redis.sh
+    command: [
+      "redis-server",
+      "/data/redis.conf",
+      "--daemonize no",
+      "--bind 0.0.0.0",
+      "--port 20000",
+      "--replica-announce-ip ${CLUSTERKIT_REDIS_S_HOST:-192.168.199.100}",
+      "--replica-announce-port 20000",
+      "--appendonly yes",
+      # "--save \"\""
+      "--aof-use-rdb-preamble yes"
+      ]
+    volumes:
+      - cluster_redis_s_master-1-data:/data
+    deploy:
+      << : *default-deploy
+      << : *default-labels
+      placement:
+        constraints: [node.role == manager]
+      # resources:
+      #   limits:
+      #     cpus: '0.50'
+      #     memory: 50M
+      #   reservations:
+      #     cpus: '0.25'
+      #     memory: 20M
+
+  redis_sentinel_slave-1:
+    &redis_slave
+    << : *default-common
+    << : *default-labels
+    depends_on:
+      - redis_sentinel_master-1
+    entrypoint: /docker-entrypoint.redis.sh
+    command: [
+      "redis-server",
+      "/data/redis.conf",
+      "--daemonize no",
+      "--bind 0.0.0.0",
+      "--port 20001",
+      "--replicaof redis_sentinel_master-1 20000",
+      "--replica-announce-ip ${CLUSTERKIT_REDIS_S_HOST:-192.168.199.100}",
+      "--replica-announce-port 20001",
+      "--appendonly yes",
+      # "--save \"\"",
+      "--aof-use-rdb-preamble yes"
+      ]
+    volumes:
+      - cluster_redis_s_slave-1-data:/data
+    deploy:
+      << : *default-deploy
+      << : *default-labels
+      # placement:
+      #   constraints: [node.role == manager]
+      # resources:
+      #   limits:
+      #     cpus: '0.50'
+      #     memory: 50M
+      #   reservations:
+      #     cpus: '0.25'
+      #     memory: 20M
+    ports:
+      - "20001:20001"
+
+  redis_sentinel_slave-2:
+    << : *redis_slave
+    << : *default-common
+    << : *default-labels
+    ports:
+      - "20002:20002"
+    command: [
+      "redis-server",
+      "/data/redis.conf",
+      "--daemonize no",
+      "--bind 0.0.0.0",
+      "--port 20002",
+      "--replicaof redis_sentinel_master-1 20000",
+      "--replica-announce-ip ${CLUSTERKIT_REDIS_S_HOST:-192.168.199.100}",
+      "--replica-announce-port 20002",
+      "--appendonly yes",
+      # "--save \"\"",
+      "--aof-use-rdb-preamble yes"
+      ]
+    volumes:
+      - cluster_redis_s_slave-2-data:/data
+
+  redis_sentinel_slave-3:
+    << : *default-common
+    << : *default-labels
+    depends_on:
+      - redis_sentinel_master-1
+    ports:
+      - "20003:20003"
+    entrypoint: /docker-entrypoint.redis.sh
+    command: [
+      "redis-server",
+      "/data/redis.conf",
+      "--daemonize no",
+      "--bind 0.0.0.0",
+      "--port 20003",
+      "--replicaof redis_sentinel_master-1 20000",
+      "--replica-announce-ip ${CLUSTERKIT_REDIS_S_HOST:-192.168.199.100}",
+      "--replica-announce-port 20003",
+      "--appendonly yes",
+      # "--save \"\"",
+      "--aof-use-rdb-preamble yes"
+      ]
+    volumes:
+      - cluster_redis_s_slave-3-data:/data
+    deploy:
+      << : *default-deploy
+      << : *default-labels
+      # placement:
+      #   constraints: [node.role == manager]
+      # resources:
+      #   limits:
+      #     cpus: '0.50'
+      #     memory: 50M
+      #   reservations:
+      #     cpus: '0.25'
+      #     memory: 20M
+
+  redis_sentinel_sentinel-1:
+    << : *default-common
+    << : *default-labels
+    depends_on:
+      - redis_sentinel_master-1
+    ports:
+      - "21000:21000"
+    entrypoint: /docker-entrypoint.sentinel.sh
+    environment:
+      - SENTINEL_PORT=21000
+      - SENTINEL_HOST=${CLUSTERKIT_REDIS_S_HOST:-192.168.199.100}
+      - SENTINEL_MASTER_HOST=redis_sentinel_master-1
+      - SENTINEL_MASTER_PORT=20000
+      - SENTINEL_NUM=2
+    command: [
+      "--daemonize no",
+      "--bind 0.0.0.0",
+      "--port 21000"
+      ]
+    volumes:
+      - cluster_redis_s_sentinel-1-data:/data
+    deploy:
+      << : *default-deploy
+      << : *default-labels
+      replicas: 1
+      # resources:
+      #   limits:
+      #     cpus: '0.50'
+      #     memory: 50M
+      #   reservations:
+      #     cpus: '0.25'
+      #     memory: 20M
+    secrets:
+      - source: cluster_redis_s_sentinel_entrypoint
+        target: /docker-entrypoint.sentinel.sh
+        mode: 0555
+
+  redis_sentinel_sentinel-2:
+    << : *default-common
+    << : *default-labels
+    depends_on:
+      - redis_sentinel_master-1
+    ports:
+      - "21001:21001"
+    entrypoint: /docker-entrypoint.sentinel.sh
+    environment:
+      - SENTINEL_PORT=21001
+      - SENTINEL_HOST=${CLUSTERKIT_REDIS_S_HOST:-192.168.199.100}
+      - SENTINEL_MASTER_HOST=redis_sentinel_master-1
+      - SENTINEL_MASTER_PORT=20000
+      - SENTINEL_NUM=2
+    command: [
+      "--daemonize no",
+      "--bind 0.0.0.0",
+      "--port 21001"
+      ]
+    volumes:
+      - cluster_redis_s_sentinel-2-data:/data
+    deploy:
+      << : *default-deploy
+      << : *default-labels
+      replicas: 1
+      # resources:
+      #   limits:
+      #     cpus: '0.50'
+      #     memory: 50M
+      #   reservations:
+      #     cpus: '0.25'
+      #     memory: 20M
+    secrets:
+      - source: cluster_redis_s_sentinel_entrypoint
+        target: /docker-entrypoint.sentinel.sh
+        mode: 0555
+
+networks:
+  cluster_redis_s:
+    << : *default-labels
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.15.0.3/24
+
+secrets:
+  cluster_redis_s_redis_conf:
+    << : *default-labels
+    file: ./config/redis/redis.conf
+
+  cluster_redis_s_sentinel_entrypoint:
+    << : *default-labels
+    file: ./cluster/redis.sentinel/docker-entrypoint.sentinel.sh
+
+  cluster_redis_s_entrypoint:
+    << : *default-labels
+    file: ./cluster/redis.sentinel/docker-entrypoint.redis.sh
+
+volumes:
+  cluster_redis_s_master-1-data:
+    << : *default-labels
+
+  cluster_redis_s_slave-1-data:
+    << : *default-labels
+
+  cluster_redis_s_slave-2-data:
+    << : *default-labels
+
+  cluster_redis_s_slave-3-data:
+    << : *default-labels
+
+  cluster_redis_s_sentinel-1-data:
+    << : *default-labels
+
+  cluster_redis_s_sentinel-2-data:
+    << : *default-labels

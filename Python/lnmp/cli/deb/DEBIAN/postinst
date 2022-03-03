@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+cd /data/lnmp
+
+./lnmp-docker

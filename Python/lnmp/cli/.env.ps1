@@ -1,0 +1,1 @@
+$global:LNMP_DOCKER_VERSION="v18.09"

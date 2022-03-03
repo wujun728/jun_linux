@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+echo -e "
+
+----------------------------------------------------------------------
+
+Thanks for using khs1994-docker/lnmp !
+
+Please find the official documentation for khs1994-docker/lnmp here:
+* https://github.com/khs1994-docker/lnmp/tree/master/docs
+
+Meet issue? please see:
+* https://github.com/khs1994-docker/lnmp/issues
+
+----------------------------------------------------------------------
+
+"

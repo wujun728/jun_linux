@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+echo
+echo "Meet issue? Please see https://github.com/khs1994-docker/lnmp/issues "
+echo

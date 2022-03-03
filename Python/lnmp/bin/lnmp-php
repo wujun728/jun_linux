@@ -1,0 +1,107 @@
+#!/usr/bin/env bash
+
+set -e
+
+docker network inspect lnmp_backend > /dev/null 2>&1 || (docker network create lnmp_backend; CRETAT=true)
+
+if ! [ "${APP_ENV}" = "production" ];then
+  APP_ENV=development
+fi
+
+if [ $# = 0 ];then
+  COMMAND=-h
+else
+  COMMAND="$@"
+fi
+
+DIR="$( cd "$( dirname "$0"  )" && pwd  )"
+
+if ! [ -f $DIR/../log/php/cli_error.log ];then
+  touch $DIR/../log/php/cli_error.log
+fi
+
+. $DIR/.arch
+
+. $DIR/../.env
+
+# -S 参数需要容器暴露端口
+
+S_ERROR(){
+  echo "lnmp-php [options] -S <addr>:<port> [-t docroot] [router]"
+  exit 1
+}
+
+if [ "$1" = '-S' ];then
+
+  if [ -z "$2" ];then S_ERROR; fi
+
+  echo "$2" | grep : > /dev/null 2>&1
+
+  if ! [ "$?" = '0' ];then S_ERROR; fi
+
+  ADDR=`echo "$2" | cut -d : -f 1`
+  PORT=`echo "$2" | cut -d : -f 2`
+
+  if [ -z "$PORT" ];then S_ERROR; fi
+
+  shift 2
+
+  exec docker run --init -it --rm \
+    --mount type=bind,src=$PWD,target=/app,consistency=cached \
+    --mount src=lnmp_composer_cache-data,target=/tmp/cache \
+    --mount type=bind,src=$DIR/../config/php/${PHP_INI:-php.development.ini},target=/usr/local/etc/php/php.ini \
+    --mount type=bind,src=$DIR/../log/php/cli_error.log,target=/var/log/php/php_errors.log \
+    --network lnmp_backend \
+    --entrypoint php \
+    -e APP_ENV=${APP_ENV} \
+    -e TZ=${TZ} \
+    -p $ADDR:$PORT:$PORT \
+    ${DOCKER_IMAGE}:${TAG} \
+    -d zend_extension=xdebug -d error_log=/var/log/php/php_errors.log -S 0.0.0.0:$PORT "$@" || \
+    docker run --init -it --rm \
+      --mount type=bind,src=$PWD,target=/app,consistency=cached \
+      --mount src=lnmp_composer_cache-data,target=/tmp/cache \
+      --mount type=bind,src=$DIR/../config/php/${PHP_INI:-php.development.ini},target=/usr/local/etc/php/php.ini \
+      --mount type=bind,src=$DIR/../log/php/cli_error.log,target=/var/log/php/php_errors.log \
+      --network lnmp_backend \
+      --entrypoint php \
+      -e APP_ENV=${APP_ENV} \
+      -e TZ=${TZ} \
+      -p $ADDR:$PORT:$PORT \
+      ${DOCKER_IMAGE}:${TAG} \
+      -d zend_extension=xdebug -d error_log=/var/log/php/php_errors.log -S 0.0.0.0:$PORT "$@"
+
+fi
+
+#
+# @link https://github.com/khs1994-docker/lnmp/issues/280
+#
+# @link https://github.com/moby/moby/issues/2838#issuecomment-29205965
+#
+
+docker run --init -it --rm \
+  --mount type=bind,src=$PWD,target=/app,consistency=cached \
+  --mount src=lnmp_composer_cache-data,target=/tmp/cache \
+  --mount type=bind,src=$DIR/../config/php/${PHP_INI:-php.development.ini},target=/usr/local/etc/php/php.ini \
+  --mount type=bind,src=$DIR/../log/php/cli_error.log,target=/var/log/php/php_errors.log \
+  --network lnmp_backend \
+  --entrypoint php \
+  -e TZ=${TZ} \
+  -e APP_ENV=${APP_ENV} \
+  ${DOCKER_IMAGE}:${TAG} \
+  -d zend_extension=xdebug -d error_log=/var/log/php/php_errors.log $COMMAND || \
+  docker run --init -it --rm \
+    --mount type=bind,src=$PWD,target=/app,consistency=cached \
+    --mount src=lnmp_composer_cache-data,target=/tmp/cache \
+    --mount type=bind,src=$DIR/../config/php/${PHP_INI:-php.development.ini},target=/usr/local/etc/php/php.ini \
+    --mount type=bind,src=$DIR/../log/php/cli_error.log,target=/var/log/php/php_errors.log \
+    --entrypoint php \
+    -e TZ=${TZ} \
+    -e APP_ENV=${APP_ENV} \
+    ${DOCKER_IMAGE}:${TAG} \
+    -d zend_extension=xdebug -d error_log=/var/log/php/php_errors.log $COMMAND
+
+
+if ! [ -z "$CREATE" ];then
+  docker network rm lnmp_backend > /dev/null 2>&1
+fi

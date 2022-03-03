@@ -1,0 +1,12 @@
+kind: PriorityClass
+apiVersion: scheduling.k8s.io/v1alpha1
+metadata:                                             #必选，元数据
+  name: string                                        #必选，Pod名称
+  namespace: string                                   #必选，Pod所属的命名空间
+  labels:                                             #自定义标签
+    name: string                                      #自定义标签名字
+  annotations:                                        #自定义注释列表
+    name: string
+value: number                                          #值越高，优先级越高,小于或等于10亿的任何32位整数值,没有优先级的Pod的PriorityClassName为零
+globalDefault: boolean                                 #是否默认,一个namespace中只有一个为默认
+description: string                                    #描述

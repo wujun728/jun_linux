@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+#
+# https://github.com/mysql/mysql-server
+#
+
+set -e
+
+docker network inspect lnmp_backend > /dev/null 2>&1 || (docker network create lnmp_backend; CRETAT=true)
+
+DIR="$( cd "$( dirname "$0"  )" && pwd  )"
+
+source $DIR/.arch
+
+docker run -it --rm \
+    --network lnmp_backend \
+    --entrypoint mysql \
+    -e TZ=${TZ} \
+    mysql:${LNMP_MYSQL_VERSION:-8.0.13} \
+    "$@" || docker run -it --rm \
+    --entrypoint mysql \
+    -e TZ=${TZ} \
+    mysql:${LNMP_MYSQL_VERSION:-8.0.13} \
+    "$@"
+
+if ! [ -z "$CREATE" ];then
+    docker network rm lnmp_backend > /dev/null 2>&1
+fi

@@ -1,0 +1,23 @@
+    cd mvp
+
+    COMPOSE_ARGS=" -f docker-compose.yml -p jenkins"
+
+    sudo docker-compose $COMPOSE_ARGS stop 
+    sudo docker-compose $COMPOSE_ARGS rm -fv
+
+    sudo docker-compose $COMPOSE_ARGS build
+    sudo docker-compose $COMPOSE_ARGS up -d
+
+    sleep 5
+
+    CODE=$(sudo docker exec jenkins_portal_1 curl -sL -w %{http_code} 127.0.0.1:8080 -o /dev/null) || true
+
+    if [ $CODE -eq 200 ]; then
+        IMG=$(grep image docker-compose.yml | cut -d: -f2-3 | xargs)
+        for img in $IMG; do
+            sudo docker tag $img domain.com:5000/${img##*/}
+            sudo docker push domain.com:5000/${img##*/}
+        done
+        
+        echo "Site returned " $CODE
+    fi

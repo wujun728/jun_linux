@@ -1,0 +1,123 @@
+/* CSS Document */
+body,img,h1,h2,h3,h4,h5,h6,p,ul,li,dl,dd,dt,input,big,select{ border:none; padding:0; margin:0; list-style:none; font: 14px "微软雅黑","Microsoft Yahei","Hiragino Sans GB",tahoma,arial,"宋体"; }
+body{ width:100%}
+a{ color:#202020; text-decoration: none}
+a:Hover{ text-decoration:underline; color:#e90127}
+.fl{ float:left}
+.fr{ float:right}
+.cl{ clear:both}
+ 
+ 
+.bk30,.bk20,.bk10,.bk50{ height:20px; overflow:hidden; clear:both}
+.bk10{ height:10px}
+.bk30{ height:30px}
+.bk50{ height:50px}
+
+.wauto{ width:1200px; margin:0 auto;}
+ 
+
+.ease{-webkit-transition:all .5s ease-in-out; -moz-transition:all .5s ease-in-out; -o-transition:all .5s ease-in-out; transition:all .5s ease-in-out}
+
+#header{ height:60px; line-height:60px; background:#353739; position:fixed; z-index:9; width:100%; top:0}
+.logo{ width:250px; height:40px; margin:10px 0 0}
+.nav li{ float:left}
+.nav li a{ display:block; height:60px; line-height:60px; padding:0 15px; font-size:16px; color:#d2d2d2}
+.nav li a:hover{ color:#fff; text-decoration:none}
+
+.nav li p{ height:30px; line-height:30px; background:#2E2E2E; color:#ccc; margin:15px 0 0; padding:0 15px; font-weight:bold; border-radius:3px}
+.nav li p span{ color:#E8251E}
+
+.slide{ position:relative; margin:60px 0 0}
+.slide .bd{ position:relative; height:570px; overflow:hidden}
+.slide .bd li{ position:absolute; left:0; height:100%; width:100%}
+.slide .bd li a{ display:block; height:100%; width:100%}
+
+.slidePage{ position:absolute; z-index:2; text-align:center; width:100%; left:0; top:90%; height:15px}
+.slidePage a{ background:url("img/base_ico.png")/*tpa=https://dn-vzdl-static.qbox.me/img/base_ico.png*/ no-repeat -20px -16px; width:15px; height:15px;  margin-right:5px; display:inline-table}
+.slidePage a.on{ background-position:0 -16px}
+
+
+.service{ width:100%;overflow:hidden; box-shadow:0 2px 3px #dededf}
+.service dl{ float:left; width:25%; text-align:center; line-height:24px; padding:40px 0;}
+.service dl dt{ font-size:18px; padding-top:10px;}
+.service dl dd{ color:#888; }
+.fs_img{ width:56px; height:56px; margin:0 auto; }
+.img_jszc{ background:url("img/yunwei.jpg")/*tpa=https://dn-vzdl-static.qbox.me/img/yunwei.jpg*/ no-repeat -10px -255px;}
+.img_jfss{ background:url("img/yunwei.jpg")/*tpa=https://dn-vzdl-static.qbox.me/img/yunwei.jpg*/ no-repeat -66px -255px;}
+.img_mdme{ background:url("img/yunwei.jpg")/*tpa=https://dn-vzdl-static.qbox.me/img/yunwei.jpg*/ no-repeat -120px -255px;}
+.img_dcfwbz{ background:url("img/yunwei.jpg")/*tpa=https://dn-vzdl-static.qbox.me/img/yunwei.jpg*/ no-repeat -178px -255px;}
+
+.yunwei{}
+.yunwei li{ float:left; width:340px; display:inline; margin:30px 0 0 30px; background:#fff; box-shadow:0px 1px 6px #ddd; border:2px solid #fff; padding:20px 18px}
+.yunwei li.s1,.yunwei li.s4{ margin-left:0}
+.yunwei li .img{width:117px; height:117px; margin:20px auto 0; background:url("img/yunwei.jpg")/*tpa=https://dn-vzdl-static.qbox.me/img/yunwei.jpg*/ no-repeat}
+.yunwei li .tit{ height:30px; line-height:30px;font-size:24px; margin:10px 0 0}
+.yunwei li .des{ line-height:25px; height:25px; overflow:hidden; font-size:16px; color:#808080; margin:10px 0 0}
+.yunwei li .price{ height:60px; line-height:60px;height:50px; line-height:50px; font-size:18px; padding:10px 0 0}
+.yunwei li .price b{ color:#e8251e; font-size:38px; font-weight:normal; padding:0 5px 0 0} 
+.yunwei li .buy{ height:70px; line-height:70px; text-align:center; padding:20px 0 0}
+.yunwei li .buy a.bnt_bor{ border:1px solid #c0c0c0; color:#404040; padding:10px 35px; border-radius:3px}
+.yunwei li:hover{ border-color:#e8251e}
+.yunwei li:hover .img{ background-position:0 -130px}
+
+.ctit{ height:45px; line-height:45px; text-align:center; font-size:38px; color:#202020; background: url("img/titlebg.gif")/*tpa=https://dn-vzdl-static.qbox.me/img/titlebg.gif*/ repeat-x 0 center}
+.ctit span{ background:#fff; padding:0 25px}
+.yw_des{ background: url("img/re-bg.png")/*tpa=https://dn-vzdl-static.qbox.me/img/re-bg.png*/ repeat; height:320px; padding:10px}
+.yw_des .inner{ background:#fff url("img/gp_01_04.jpg")/*tpa=https://dn-vzdl-static.qbox.me/img/gp_01_04.jpg*/ no-repeat 800px center; height:280px; border-radius:5px; box-shadow:0 0 3px #ddd; padding:20px 0}
+.yw_des .inner .con{ width:680px; padding:0 25px; line-height:30px; font-size:16px}
+.yw_des .inner .con p{ line-height:30px; text-indent:2em; font-size:16px}
+
+.yunwei li.s2 .img{ background-position:-131px 0}
+.yunwei li.s2:hover .img{ background-position:-131px -130px}
+.yunwei li.s3 .img{ background-position:-264px 0}
+.yunwei li.s3:hover .img{ background-position:-264px -130px}
+.yunwei li.s4 .img{ background-position:-385px 0}
+.yunwei li.s4:hover .img{ background-position:-385px -130px}
+.yunwei li.s5 .img{ background-position:-507px 0}
+.yunwei li.s5:hover .img{ background-position:-507px -130px}
+.yunwei li.s6 .img{ background-position:-637px 0}
+.yunwei li.s6:hover .img{ background-position:-637px -130px}
+
+.liucheng{ background:url("img/liucheng.jpg")/*tpa=https://dn-vzdl-static.qbox.me/img/liucheng.jpg*/ no-repeat center 0; height:220px}
+
+
+.brand_list li{ width:300px; float:left; display:inline; text-align:center; height:180px } 
+.brand_list li .img{ height:105px; text-align:center;overflow:hidden; margin:20px 20px 0}
+.brand_list li .con{ padding:0 0 20px;}
+.brand_list li .con h1{ height:35px; line-height:35px; font-size:16px}
+.brand_list li a{display:block; width:100%; height:100%;box-shadow:0 0 15px #e8e8e8 inset;-webkit-transition:all .3s ease-in-out; -moz-transition:all .3s ease-in-out; -o-transition:all .3s ease-in-out; transition:all .3s ease-in-out; border:1px solid #eee; }
+.brand_list li a span{ font-family: Arial, Helvetica, sans-serif; color:#e90127; font-size:14px}
+.brand_list li a:hover{ text-decoration:none;box-shadow:0 0 15px #bbb; border-color:#ddd} 
+
+.linkf { line-height:30px}
+.linkf a{ padding:0 10px}
+
+.footer{ background:#202020; border-top:3px solid #e8251e; height:60px; line-height:60px; color:#c0c0c0} 
+.footer a{ color:#c0c0c0}
+.footer a:hover{ color:#fff}
+
+/*客服*/
+.kf{ position:fixed; right:-232px; top:90px; z-index:9999999;
+_position:absolute;
+_bottom:auto;
+_top:expression(eval(document.documentElement.scrollTop+document.documentElement.clientHeight-this.offsetHeight-(parseInt(this.currentStyle.marginTop,10)||0)-(parseInt(this.currentStyle.marginBottom,10)||0)));
+_margin-bottom:10px; width:230px}
+.menu{ width:32px; position:absolute; left:-34px; top:100px}
+.menu a{ width:31px; height:130px; background: url("img/service_float.png")/*tpa=https://dn-vzdl-static.qbox.me/img/service_float.png*/ no-repeat; display:block; float:right; color:#fff; font-size:18px; text-align:center; padding:10px 0 0}
+.kfBox{ width:230px; border:1px solid #e8e8e8; background:#fff; float:right; box-shadow:0px 1px 2px #d2d2d2}
+ 
+.kfList{ color:#202020; font-size:14px; line-height:30px;height:auto; overflow:hidden}
+.kfList span{font-size:16px; display:block;height:50px; line-height:50px; text-align:center; margin:0 20px}
+.kfList .kfBox2 { width:225px; float:left;}
+.kfList p{ vertical-align:middle; margin:5px 0 0; padding:0 15px}
+ 
+.kfBox .but1,.kfBox .but_online{ width:88px; height:30px; line-height:30px; font-size:12px; text-indent:29px;color:#fff;display:inline-block; text-decoration:none; margin-left:7px}
+.kfBox .but1{ background:#fff url("img/zxkf2.png")/*tpa=https://dn-vzdl-static.qbox.me/img/zxkf2.png*/ no-repeat 30px 0; text-align: center; color:#e8251e; font-size:16px; border-radius:3px; width:186px; padding:5px 0; border:1px solid #e8251e}
+.kfBox .but_online{ background:url("img/kf_online.png")/*tpa=https://dn-vzdl-static.qbox.me/img/kf_online.png*/ no-repeat; color:#666}
+.kfBox .but_offline{ color:#333; width:92px; height:22px; line-height:22px; font-size:12px; text-indent:21px; background:url("img/kf_offline.png")/*tpa=https://dn-vzdl-static.qbox.me/img/kf_offline.png*/ repeat-x; display:inline-block; text-decoration:none;}
+.kfBox .font1 { color:#0098e4; font-size:20px; font-family:Verdana;}
+.kfBox .text{ color:#666; width:125px; line-height:20px; font-size:12px; float:right; margin-top:7px;}
+.kfBox .text a{ color:#25516A; text-decoration:underline;}
+.kfBox .text2{ color:#00b0ec; font-size:16px; padding:10px; font-family:Verdana; float:left;}
+.kftel{ height:50px; line-height:50px; color:#666;font-size:16px; border-bottom:1px solid #ddd; margin:0 20px; }
+.kftel b{  padding:0 5px; font-size:16px; font-weight:normal; color:#E8251E; font-family:Arial, Helvetica, sans-serif; font-weight:bold}

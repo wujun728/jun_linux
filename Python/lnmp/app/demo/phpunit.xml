@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit>
+    <testsuites>
+        <testsuite name="Feature">
+            <directory>tests/{{ EXAMPLE_FOLDER_NAME_EXAMPLE }}</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./src</directory>
+        <exclude>
+            <directory suffix=".php">./src/{{ EXAMPLE_FOLDER_NAME_EXAMPLE }}/Console</directory>
+            <file>./src/{{ EXAMPLE_FOLDER_NAME_EXAMPLE }}/Support/ServiceProvider.php</file>
+            <file>./src/{{ EXAMPLE_FOLDER_NAME_EXAMPLE }}/Support/Facade.php</file>
+        </exclude>
+        </whitelist>
+    </filter>
+    <groups>
+        <exclude>
+            <group>dont-test</group>
+        </exclude>
+    </groups>
+    <php>
+        <env name="APP_ENV" value="testing"/>
+    </php>
+</phpunit>

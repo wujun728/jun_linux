@@ -1,0 +1,10 @@
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: test                                          #名称
+provisioner: kubernetes.io/no-provisioner             #提供者,详见:https://kubernetes.io/docs/concepts/storage/storage-classes/的Provisioner节点
+parameters:                                           #参数
+  user: "root"
+reclaimPolicy: Retain|Recycle|Delete                  #回收策略
+mountOptions:                                         #挂载选项
+  - debug

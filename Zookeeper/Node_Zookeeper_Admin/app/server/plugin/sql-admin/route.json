@@ -1,0 +1,14 @@
+{
+    "/sql-admin":{
+        "view": "index.html",
+		"action":"index.js",
+		"method":"index"
+    },
+	"/sql-admin-tables":{
+		"request":"post",
+        "view": "index.html",
+		"action":"index.js",
+		"method":"tables"
+    }
+	
+}

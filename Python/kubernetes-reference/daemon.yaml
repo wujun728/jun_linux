@@ -1,0 +1,23 @@
+kind: DaemonSet
+apiVersion: extensions/v1beta1
+metadata:                                             #必选，元数据
+  name: string                                        #必选，Pod名称
+  namespace: string                                   #必选，Pod所属的命名空间
+  labels:                                             #自定义标签
+    name: string                                      #自定义标签名字
+  annotations:                                        #自定义注释列表
+    name: string
+spec:
+  minReadySeconds: number                             #应该准备好的最小秒数
+  revisionHistoryLimit: number                        #修订历史记录条数
+  updateStrategy:
+    type: OnDelete|RollingUpdate                      #OnDelete只有在手动删除旧的DaemonSet Pod时，才会创建新的DaemonSetPod
+                                                      #RollingUpdate滚动跟新
+    rollingUpdate:
+      maxUnavailable: number                          #最大不可用数量百分比
+  selector:                                           #应用此deployment的选择器
+    matchExpressions:                                 #匹配表达式
+    matchLabels:                                      #label匹配方式
+      key1: string
+  template:                                           #描述deployment中的pod节点模板
+    #<节点内容参照pod.yaml>
