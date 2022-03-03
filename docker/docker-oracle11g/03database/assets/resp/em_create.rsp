@@ -1,5 +1,0 @@
-SID=orcl
-PORT=1521
-SYS_PWD=oracle
-SYSMAN_PWD=oracle
-DBSNMP_PWD=oracle

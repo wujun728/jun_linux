@@ -1,3 +1,0 @@
-FROM mysql:latest
-MAINTAINER navas <545922113@qq.com>
-ENV TZ "Asia/Shanghai"

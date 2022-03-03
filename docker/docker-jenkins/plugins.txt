@@ -1,6 +1,0 @@
-authentication-tokens:latest
-scm-api:latest
-git-client:latest
-git:latest
-docker-commons:latest
-docker-build-step:latest
