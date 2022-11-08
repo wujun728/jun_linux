@@ -1,1 +1,0 @@
-docker stats webapp_data_1 webapp_mytomcat1_1 webapp_mytomcat2_1 webapp_web_1  webapp_memcache2_1 webapp_memcache1_1

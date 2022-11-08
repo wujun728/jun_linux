@@ -1,0 +1,20 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:                                             #必选，元数据
+  name: string                                        #必选，Pod名称
+  namespace: string                                   #必选，Pod所属的命名空间
+  labels:                                             #自定义标签
+    name: string                                      #自定义标签名字
+  annotations:                                        #自定义注释列表
+    name: string
+spec:
+  resources:                                          #定义需要的存储空间
+    requests:
+      storage: 1G
+  accessModes:                                        #访问模式
+    - ReadWriteMany
+  selector:                                           #选择器
+    matchLabels:
+      key1: string
+  volumeName: string                                  #volume名称
+  storageClassName: string                            #(可选)存储类名称

@@ -1,0 +1,5 @@
+echo "ulimit -SHn 102400" >> /etc/rc.local
+cat >> /etc/security/limits.conf << EOF
+*           soft   nofile       65535
+*           hard   nofile       65535
+EOF

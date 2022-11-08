@@ -1,7 +1,0 @@
-*
-!default.sql
-!.gitignore
-!backup.sh
-!restore.sh
-!demo.*
-!wechat.sql

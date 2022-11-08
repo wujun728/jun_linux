@@ -1,0 +1,16 @@
+FROM centos:7.1.1503
+
+COPY software/WS_MQ_LINUX_ON_X86_64_7.5.0.2_IMG.tar.gz /software/WS_MQ_LINUX_ON_X86_64_7.5.0.2_IMG.tar.gz
+
+RUN yum install -y tar
+RUN cd /software && tar xzf WS_MQ_LINUX_ON_X86_64_7.5.0.2_IMG.tar.gz && ./mqlicense.sh -accept -text_only && rpm -ivh MQSeriesRuntime-*.rpm MQSeriesServer-*.rpm && rm -rf /software
+
+RUN yum install -y python-setuptools && easy_install supervisor && mkdir -p /var/log/supervisor
+
+COPY supervisord.conf /usr/etc/supervisord.conf
+COPY start_queue_manager.sh /
+RUN chmod +x /start_queue_manager.sh
+
+EXPOSE 1414
+
+CMD ["/usr/bin/supervisord"]

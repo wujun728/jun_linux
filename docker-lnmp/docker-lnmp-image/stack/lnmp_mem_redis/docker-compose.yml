@@ -1,0 +1,27 @@
+php:
+    build: ../../resource/php/5.6
+    ports:
+      - "9000:9000"
+    links:
+      - "memcache"
+      - "redis"
+    volumes:
+      - /alidata/opt/php:/alidata/opt/php
+nginx:
+    build: ../../resource/nginx/1.9.14
+    ports:
+      - "80:80"
+    links:
+      - "php"
+    volumes:
+      - /alidata/opt:/alidata/opt
+      - /alidata/opt/www:/alidata/opt/www
+      - /alidata/log/nginx:/alidata/log/nginx
+memcache:
+    build: ../../resource/memcache
+    ports:
+      - "11211:11211"
+redis:
+    build: ../../resource/redis
+    ports:
+      - "6379:6379"

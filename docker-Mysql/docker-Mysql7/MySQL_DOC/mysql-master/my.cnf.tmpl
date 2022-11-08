@@ -1,0 +1,96 @@
+# Copyright (c) 2014, 2016, Oracle and/or its affiliates. All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
+
+#
+# The MySQL  Server configuration file.
+#
+# For explanations see
+# http://dev.mysql.com/doc/mysql/en/server-system-variables.html
+
+[mysqld]
+pid-file        = /var/run/mysqld/mysqld.pid
+socket          = /var/run/mysqld/mysqld.sock
+datadir         = /var/lib/mysql
+
+# Disabling symbolic-links is recommended to prevent assorted security risks
+symbolic-links=0
+
+# don't reverse lookup hostnames, they are usually another container
+skip-host-cache
+skip-name-resolve
+
+
+# 2016-11 Added by Ku8manager team
+# parameters for MySQL MASTER role --begin--
+server-id        = 1
+log-bin-index    = /var/lib/mysql/mysql-bin.index
+log-bin          = /var/lib/mysql/mysql-bin
+# parameters for MySQL MASTER role --end--
+
+
+# timestamp columns can be null
+explicit_defaults_for_timestamp=on
+
+event_scheduler=ON
+expire_logs_days = 1
+
+
+# some paramaters are ONLY for SLAVE role, setting for MASTER does not take effect.
+# but when MASTER becomes SLAVE, these parameters will take effect.
+
+# Performance paramaters, need to adjust as needed
+#max_connections = 10000
+#innodb_buffer_pool_size = 10G
+#max_allowed_packet=200M
+#sort_buffer_size=100M
+#read_buffer_size=100M
+#read_rnd_buffer_size=100M
+#table_open_cache=4096
+#
+#sync_binlog=0
+#innodb_flush_log_at_trx_commit=2
+#sync_relay_log=0
+#log_slave_updates=1
+#
+#sync-master-info=1000
+#sync-relay-log=1000
+#sync-relay-log-info=1000
+#
+#slave-parallel-type=LOGICAL_CLOCK
+#slave-parallel-workers=16
+#master_info_repository=TABLE
+#relay_log_info_repository=TABLE
+#relay_log_recovery=ON
+#
+##every table belonsg to different tablespace
+#innodb_file_per_table=1
+#
+#innodb_flush_method=O_DIRECT
+#innodb_thread_concurrency=48
+#
+#
+##master需要同步的数据库（多数据库用逗号，隔开）
+#binlog-do-db=dbs
+#
+##master不同步库（多数据库用逗号，隔开）
+#binlog-ignore-db = mysql
+#binlog-ignore-db = performance_schema
+#binlog-ignore-db = information_schema
+#
+##slave同步范围设置
+#replicate-ignore-db = mysql
+#replicate-ignore-db = performance_schema
+#replicate-ignore-db = information_schema
+#replicate-do-db = dbs

@@ -1,1 +1,0 @@
-time mongo  192.168.59.103:27017/test --quiet test-performance.js

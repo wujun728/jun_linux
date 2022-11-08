@@ -1,0 +1,5 @@
+for sun in `chkconfig --list|grep 3:on|awk '{print $1}'`;do chkconfig --level 3 $sun off;done
+
+for sun in crond rsyslog sshd network iptables;do chkconfig --level 3 $sun on;done
+
+chkconfig --list|grep 3:on

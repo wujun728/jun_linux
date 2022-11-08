@@ -1,5 +1,0 @@
-error_log= /var/log/php/error.log
-
-; 你可以在这里自定义 php 配置
-
-; extension=tideways_xhprof.so

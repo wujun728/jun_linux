@@ -1,0 +1,28 @@
+version: '3'
+services:
+    docker-lnp:
+        #build: .
+        image: komazhang/lnp
+        ports:
+            - "80"
+        environment:
+            # 可选的自定义 nginx 虚拟机 server_name
+            SERVER_NAME: local.docker-lnp.org
+            DOCUMENT_ROOT: /var/www
+        volumes:
+            # 这里和Dockerfile中暴露出来的卷保持一致
+            - /data/www/local:/var/www
+
+    # 以下内容为可选项，用来配置Mysql Docker
+    #     depends_on:
+    #         - mysql
+    #     links:
+    #         - mysql
+    # mysql:
+    #     image: 'mysql:5.6'
+    #     environment:
+    #         MYSQL_ROOT_PASSWORD: 123456
+    #         TZ: Asia/Hong_Kong
+    #     ports:
+    #         - "3306"
+

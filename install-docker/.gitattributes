@@ -1,0 +1,3 @@
+*.rpm binary
+*.deb binary
+docker-compose-* binary

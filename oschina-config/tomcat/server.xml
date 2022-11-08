@@ -1,0 +1,36 @@
+<!-- Tomcat 8 -->
+<Server port="9006" shutdown="SHUTDOWN">
+
+  <Service name="Catalina">
+      
+    <Executor name="tomcatThreadPool" namePrefix="HTTP-9082-exec-" prestartminSpareThreads="true"
+        maxThreads="1000" maxQueueSize="100" minSpareThreads="50" maxIdleTime="10000"/>
+      
+    <Connector port="9082" protocol="org.apache.coyote.http11.Http11NioProtocol"
+        connectionTimeout="5000" redirectPort="443" proxyPort="443" executor="tomcatThreadPool" URIEncoding="ISO8859_1"/>
+
+    <!--Connector SSLEnabled="true" clientAuth="false"
+        disableUploadTimeout="true" enableLookups="false" maxThreads="100"
+        port="9442" keystoreFile="/data/oschina/webapp/WEB-INF/conf/oschina.keystore" keystorePass="oschina123"
+        protocol="org.apache.coyote.http11.Http11NioProtocol" scheme="https"
+        secure="true" sslProtocol="TLS" /-->
+
+    <Engine name="Catalina" defaultHost="localhost">
+      <Host name="localhost"  appBase="webapps">
+          
+        <Valve className="org.apache.catalina.valves.RemoteIpValve"
+              remoteIpHeader="x-real-ip"
+              proxiesHeader="x-forwarded-by"
+              protocolHeader="x-forwarded-proto" />
+          
+        <Context docBase="/data/oschina/webapp" path="" 
+                 reloadable="false" 
+                 sessionCookiePath="/" 
+                 sessionCookieName="OSCHINA_SESSION" 
+                 useHttpOnly="true" >
+            <Resources allowLinking="true"></Resources>
+        </Context>
+     </Host>
+    </Engine>
+  </Service>
+</Server>

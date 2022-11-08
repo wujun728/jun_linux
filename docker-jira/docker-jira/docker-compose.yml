@@ -1,0 +1,28 @@
+version: '2'
+services:
+   db:
+     image: mysql:5.6
+     command: --character-set-server=utf8  --collation-server=utf8_bin
+     volumes:
+       - /var/jira/shared/db_data:/var/lib/mysql
+       - /var/jira/shared/db_logs:/var/log/mysql
+     restart: always
+     environment:
+        MYSQL_ROOT_PASSWORD: myjirarootpwd
+        MYSQL_DATABASE: jira
+        MYSQL_USER: jira
+        MYSQL_PASSWORD: jira
+
+   jira:
+     depends_on:
+       - db
+     image: registry.aliyuncs.com/bansh/jira:latest
+     volumes:
+       - /var/jira/shared/jira_data:/var/atlassian/jira
+       - /var/jira/shared/jira_logs:/opt/atlassian/jira/logs
+     ports:
+       - "8090:8080"
+     restart: always
+     environment:
+       DB_HOST: db:3306
+       DB_PASSWORD: jira

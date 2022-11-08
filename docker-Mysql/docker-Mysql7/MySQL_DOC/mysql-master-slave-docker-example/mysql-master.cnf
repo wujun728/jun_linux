@@ -1,0 +1,5 @@
+[mysqld]
+server_id=1
+binlog_format=ROW
+gtid_mode=ON
+enforce-gtid-consistency=true

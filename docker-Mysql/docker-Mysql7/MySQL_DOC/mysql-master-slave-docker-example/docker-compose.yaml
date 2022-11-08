@@ -1,0 +1,37 @@
+version: '3.7'
+
+services:
+  mysql-master:
+    image: 'mysql:8.0'
+    ports:
+      - '3307:3306'
+    networks:
+      - mysqlnet
+    volumes:
+      - type: bind
+        source: ./mysql-master.cnf
+        target: /etc/mysql/conf.d/mysql-master.cnf
+    environment:
+     - MYSQL_ROOT_PASSWORD=my_root_password
+     - MYSQL_USER=my_user
+     - MYSQL_PASSWORD=my_database_password
+     - MYSQL_DATABASE=my_database
+    command: ["--log-bin=my"]
+
+  mysql-slave:
+    image: 'mysql:8.0'
+    ports:
+      - '3308:3306'
+    networks:
+      - mysqlnet
+    volumes:
+      - type: bind
+        source: ./mysql-slave-1.cnf
+        target: /etc/mysql/conf.d/mysql-slave-1.cnf      
+    environment:
+     - MYSQL_ROOT_PASSWORD=my_root_password
+    command: ["--skip-log-bin", "--skip-log-slave-updates", "--skip-slave-start"]
+    
+networks:
+  mysqlnet:
+    driver: overlay

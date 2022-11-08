@@ -1,0 +1,88 @@
+#!/bin/bash
+PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
+export PATH
+
+# Check if user is root
+if [ $(id -u) != "0" ]; then
+    printf "Error: You must be root to run this script!\n"
+    exit 1
+fi
+
+printf "=========================================================================\n"
+printf "Manager for LNMT V0.1  ,  Written by Xiao Dong \n"
+printf "=========================================================================\n"
+printf "LNMT is a tool to auto-compile & install Nginx + MySQL + Tomcat on Linux \n"
+printf "This script is a tool to Manage status of LNMT \n"
+printf "For more information please visit http://lnmt.org \n"
+printf "\n"
+printf "Usage: ~/lnmt {start|stop|reload|restart|kill|status}\n"
+printf "=========================================================================\n"
+
+startLnmt()
+{
+    printf "Starting LNMT...\n"
+    /etc/init.d/nginx start
+	
+	/etc/init.d/mysql start
+
+    /etc/init.d/tomcat start
+}
+
+stopLnmt()
+{
+    printf "Stoping LNMT...\n"
+    /etc/init.d/nginx stop
+
+    /etc/init.d/tomcat stop
+
+    /etc/init.d/mysql stop
+}
+
+reloadLnmt()
+{
+    printf "Reload LNMT(Without Tomcat)...\n"
+    /etc/init.d/nginx reload
+	
+    /etc/init.d/mysql reload
+}
+
+killLnmt()
+{
+    killall nginx
+	killall java
+	killall mysqld
+}
+
+runStatus()
+{
+    /etc/init.d/nginx status
+	
+	/etc/init.d/mysql status
+
+    /etc/init.d/tomcat status
+}
+
+case "$1" in
+	start)
+		startLnmt
+		;;
+	stop)
+		stopLnmt
+		;;
+	restart)
+		stopLnmt
+		startLnmt
+		;;
+	reload)
+		reloadLnmt
+		;;
+	kill)
+		killLnmt
+		;;
+	status)
+		runStatus
+		;;
+	*)
+		printf "Usage: ~/lnmt {start|stop|reload|restart|kill|status}\n"
+esac
+exit

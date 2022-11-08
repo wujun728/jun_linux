@@ -1,0 +1,6 @@
+[root@c64 ~]# sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config   #修改配置文件则永久生效，但是必须要重启系统。
+[root@c64 ~]# grep SELINUX=disabled /etc/selinux/config
+SELINUX=disabled     #查看更改后的结果
+[root@c64 ~]# setenforce 0   #临时生效命令
+[root@c64 ~]# getenforce      #查看selinux当前状态
+Permissive

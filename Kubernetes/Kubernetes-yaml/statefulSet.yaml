@@ -1,0 +1,33 @@
+kind: StatefulSet                                     #StatefulSets稳定(GA)为1.9
+apiVersion: apps/v1beta2
+metadata:                                             #必选，元数据
+  name: string                                        #必选，Pod名称
+  namespace: string                                   #必选，Pod所属的命名空间
+  labels:                                             #自定义标签
+    name: string                                      #自定义标签名字
+  annotations:                                        #自定义注释列表
+    name: string
+spec:
+  podManagementPolicy: OrderedReady|Parallel          #pod管理策略,OrderedReady:按照顺序管理;Parallel:并行管理;
+  serviceName: string                                 #服务名称-nubmer表示service名称
+  updateStrategy:
+    type: OnDelete|RollingUpdate                      #更新策略,OnDelete:StatefulSet控制器不会自动更新StatefulSet中的Pod,用户必须手动删除Pod以使控制器创建反映对StatefulSet所做修改的新Pod.spec.template
+                                                      #RollingUpdate:滚动更新
+    rollingUpdate:
+      partition: number                               #如果指定了一个分区，当StatefulSet被更新时，所有具有大于或等于该分区的序数的Pod将.spec.template被更新。所有具有小于分区的序号的豆荚不会被更新，即使它们被删除，它们也会在以前的版本中被重新创建。
+  volumeClaimTemplates:                               #存储卷模板
+    - metadata:
+        name: string
+      spec:                                           #模板描述
+        accessModes: ["ReadWriteOnce","ReadOnlyMany","ReadWriteMany"]
+                                                      #访问模式,ReadWriteOnce:只有一个能读写;ReadOnlyMany:只能读;ReadWriteMany:任意读写
+        storageClassName: classNameAsString           #详见<StorageClass.yaml>
+        selector:
+          matchLabels:
+            key1: value1                              #选择PersistentVolume
+        resources:                                    #存储类需要的大小
+          requests:
+            storage: 1G
+  template:
+    #<节点值同pod.yaml>
+

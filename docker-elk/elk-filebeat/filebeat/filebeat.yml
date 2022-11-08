@@ -1,0 +1,13 @@
+filebeat:
+  prospectors:
+    -
+      paths:
+        - "/var/log/nginx/access.log"
+      document_type: nginx-access
+    -
+      paths:
+        - "/var/log/nginx/error.log"
+      document_type: nginx-error
+output:
+  logstash:
+    hosts: ["localhost:5044"]

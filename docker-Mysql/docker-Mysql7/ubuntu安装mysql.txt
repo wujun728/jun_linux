@@ -1,0 +1,80 @@
+查看是否安装mysql 需要管理员权限
+	netstat -tap|grep mysql
+apt安装mysql
+	sudo apt-get install mysql-server mysql-client
+	如果安装失败,尝试使用 apt-get update
+	安装过程中弹出一个界面要求输入mysql的root 密码,一定要输入.
+	然后要求确认再输入一边.等到mysql 完成.
+	默认安装目录:/usr/local/mysql
+查看是否安装成功
+	netstat -tap|grep mysql来查看系统是否已经有了mysql服务
+
+修改配置文件
+	vim /etc/mysql/my.cnf
+	修改id 地址
+启动数据库
+	
+	启动
+	/etc/init.d/mysql start
+	停止
+	/etc/init.d/mysql stop
+	重启
+	/etc/init.d/mysql restart
+
+	或者:
+	   ./support-files/mysql.server start 
+	
+登录数据库:
+	mysql -u root -p 敲入回车
+	提示输入密码
+数据库操作:
+	1.创建数据库
+		create database 数据库名;
+		例如:创建一个名为itcast的数据库
+		mysql> create database itcast;
+	2.显示所有的数据库
+		show databases;
+		mysql>show databases;
+	3.删除输入库
+		drop database 数据库名;
+		例如: 删除itcast 数据库名
+		drop database itcast;
+	4.连接数据库
+		use 数据库名
+		例如: 连接itcast 数据库
+		mysql>use itcast;
+	5.查看当前使用的数据库
+		select database();
+		mysql>select database();
+	6.查看数据库表的信息
+		mysql>show tables;
+	7.退出
+		quit 或者eixt
+
+注意:
+	如果你想连接你的mysql的时候发生这个错误：
+
+	ERROR 1130: Host '192.168.1.3' is not allowed to connect to this MySQL server
+
+	解决方法：
+	1。 改表法。可能是你的帐号不允许从远程登陆，只能在localhost。
+	这个时候只要在localhost的那台电脑，登入mysql后，更改 "mysql"
+	 数据库里的 "user" 表里的 "host" 项，从"localhost"改称"%"
+	登录mysql
+		mysql -u root -p
+	使用mysql 数据库
+		mysql>use mysql;
+	使用update命令
+		mysql>update user set host = '%' where user = 'root';
+	使用select命令
+		mysql>select host, user from user;
+	最后:
+		如果执行update语句时出现ERROR 1062 (23000): Duplicate entry '%-root' for key 'PRIMARY' 错误，说明有多个ROOT用户纪录在USER表中了.
+
+		需要select host from user where user = 'root';
+
+		查看一下host是否已经有了%这个值，有了就可以了.
+	
+
+
+	

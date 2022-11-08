@@ -1,0 +1,23 @@
+kind: Service
+apiVersion: v1
+metadata:                                             #必选，元数据
+  name: string                                        #必选，Pod名称
+  namespace: string                                   #必选，Pod所属的命名空间
+  labels:                                             #自定义标签
+    name: string                                      #自定义标签名字
+  annotations:                                        #自定义注释列表
+    name: string
+spec:
+  type: ClusterIP|NodePort|LoadBalancer|ExternalName  #ClusterIP:在集群内部IP上公开该服务,选择此值使服务只能从群集内访问.这是默认的ServiceType.
+                                                      #NodePort:静态端口(the NodePort)上显示每个节点的IP上的服务
+                                                      #LoadBalancer:使用云提供商的负载均衡器在外部公开该服务
+                                                      #ExternalName:将服务映射到externalName字段的内容(例如foo.bar.example.com),通过返回CNAME记录的值.没有任何代理建立
+  sessionAffinity:                                    #TODO:暂未完成此节点
+  clusterIP: 1.2.3.4                                  #service请求的ip地址,当ip设置为None时,则表示无头服务
+  selector:                                           #标签
+    key1: string
+  ports:
+    - port: number                                    #service端口
+      protocol: TCP|UDP                               #service端口的协议
+      targetPort: number                              #目标端口,即访问的pod的端口,targetPort可以是一个字符串,指的是后端的端口名称Pods
+      nodePort: number                                #宿主机端口

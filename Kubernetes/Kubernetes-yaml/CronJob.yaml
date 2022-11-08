@@ -1,0 +1,19 @@
+kind: CronJob
+apiVersion: batch/v2alpha1
+metadata:                                             #必选，元数据
+  name: string                                        #必选，Pod名称
+  namespace: string                                   #必选，Pod所属的命名空间
+  labels:                                             #自定义标签
+    name: string                                      #自定义标签名字
+  annotations:                                        #自定义注释列表
+    name: string
+spec:
+  schedule: "*/1 * * * *"                             #Cron格式的字符串 秒 分 时 天 月
+  startingDeadlineSeconds: number                     #它表示如果由于任何原因错过了预定的时间，则开始工作的最后期限（以秒为单位）
+  concurrencyPolicy: Allow|Forbid|Replace             #并发策略,Allow:允许同时运行作业(默认);Forbid:禁止并发运行，如果前一个还没有完成则跳过下一个运行
+                                                      #Replace:取消当前正在运行的作业，并用新的替换它
+  suspend: boolean                                    #如果设置为true，所有后续执行将被暂停
+  successfulJobsHistoryLimit: number                  #保留多少已成功完成的作业,默认3
+  failedJobsHistoryLimit: number                      #保留多少失败的作业,默认1
+  jobTemplate:
+    #<详见job.yaml>

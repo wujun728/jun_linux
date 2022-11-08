@@ -1,0 +1,5 @@
+#!/usr/bin/python
+# EASY-INSTALL-SCRIPT: 'xlsx2csv==0.7.2','xlsx2csv'
+__requires__ = 'xlsx2csv==0.7.2'
+import pkg_resources
+pkg_resources.run_script('xlsx2csv==0.7.2', 'xlsx2csv')

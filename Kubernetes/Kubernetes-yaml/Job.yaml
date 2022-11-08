@@ -1,0 +1,24 @@
+kind: Job
+apiVersion: batch/v1
+metadata:                                             #必选，元数据
+  name: string                                        #必选，Pod名称
+  namespace: string                                   #必选，Pod所属的命名空间
+  labels:                                             #自定义标签
+    name: string                                      #自定义标签名字
+  annotations:                                        #自定义注释列表
+    name: string
+spec:
+  completions: number                                 #任务运行次数,固定完成计数,非零的正值
+  parallelism: number                                 #并行性,并行任务数量
+  backoffLimit: number                                #失败重试次数,默认为6
+  activeDeadlineSeconds: number                       #任务运行超时时间,单位:秒 超过指定时间未完成的job会以DeadlineExceeded原因停止
+  selector:
+    #不建议使用此标签
+  template:
+    metadata:
+      #<参照metadata节点>
+    spec:
+      restartPolicy: Never|OnFailure                  #只能取值Never|OnFailure,OnFailure:在出现故障时其内部重启容器,而不是创建
+      containers:
+        - name: string
+          image: string

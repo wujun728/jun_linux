@@ -1,0 +1,22 @@
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:                                             #必选，元数据
+  name: string                                        #必选，Pod名称
+  namespace: string                                   #必选，Pod所属的命名空间
+  labels:                                             #自定义标签
+    name: string                                      #自定义标签名字
+  annotations:                                        #自定义注释列表
+    key1: string
+spec:
+  tls:
+    - secretName: string                              #存放证书的秘密名称
+      hosts:
+        - string                                      #域名列表
+  rules:
+    - host: string                                    #域名例如foo.bar.com
+      http:
+        paths:
+          - path: string
+            backend:
+              servicePort: number
+              serviceName: string

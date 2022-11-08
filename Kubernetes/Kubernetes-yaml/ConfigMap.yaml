@@ -1,0 +1,11 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:                                             #必选，元数据
+  name: string                                        #必选，Pod名称
+  namespace: string                                   #必选，Pod所属的命名空间
+  labels:                                             #自定义标签
+    name: string                                      #自定义标签名字
+  annotations:                                        #自定义注释列表
+    key1: string
+data:
+  file1.txt: FileContent                              #配置中的文件

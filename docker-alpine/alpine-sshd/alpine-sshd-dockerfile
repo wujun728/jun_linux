@@ -1,0 +1,58 @@
+# from frolvlad/alpine-glibc:latest(alpine-3.8)
+FROM myharbor.com/library/alpine:3.8-glibc
+
+# maintainer
+MAINTAINER "rancococ" <rancococ@qq.com>
+
+# set arg info
+ARG ALPINE_VER=v3.8
+ARG GOSU_VER=1.10
+ARG GOSU_ARCH=amd64
+ARG GOSU_URL=https://github.com/tianon/gosu/releases/download/${GOSU_VER}/gosu-${GOSU_ARCH}
+
+# copy script
+COPY docker-entrypoint.sh /
+
+# install repositories and packages : curl bash openssh wget net-tools gettext zip unzip tzdata ncurses
+RUN echo -e "https://mirrors.aliyun.com/alpine/${ALPINE_VER}/main\nhttps://mirrors.aliyun.com/alpine/${ALPINE_VER}/community" > /etc/apk/repositories && \
+    apk --update add curl bash openssh wget net-tools gettext zip unzip tzdata ncurses && \
+    rm -rf /var/cache/apk/* && \
+    wget -c -O /usr/local/bin/gosu --no-cookies --no-check-certificate "${GOSU_URL}" && \
+    ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key -N '' && \
+    ssh-keygen -t dsa -f /etc/ssh/ssh_host_dsa_key  -N '' && \
+    ssh-keygen -t ecdsa -f /etc/ssh/ssh_host_ecdsa_key -N '' && \
+    ssh-keygen -t ed25519 -f /etc/ssh/ssh_host_ed25519_key  -N '' && \
+    sed -i 's/#UseDNS.*/UseDNS no/g' /etc/ssh/sshd_config && \
+    sed -i "s/#PermitRootLogin.*/PermitRootLogin yes/g" /etc/ssh/sshd_config && \
+    sed -i "s/#AuthorizedKeysFile/AuthorizedKeysFile/g" /etc/ssh/sshd_config && \
+    mkdir -p /root/.ssh && chown root.root /root && chmod 700 /root/.ssh && \
+    echo "Asia/Shanghai" > /etc/timezone && \
+    ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
+    sed -i 's/root:x:0:0:root:\/root:\/bin\/ash/root:x:0:0:root:\/root:\/bin\/bash/g' /etc/passwd && \
+    addgroup -S myapp && \
+    adduser -S -G myapp -h /home/myapp -s /bin/bash myapp && \
+    echo -e '123456\n123456' | passwd myapp && \
+    echo -e 'admin\nadmin' | passwd root && \
+    mkdir -p /data/myapp && \
+    chown -R myapp:myapp /data && \
+    chmod +x /usr/local/bin/gosu && \
+    chmod +x /docker-entrypoint.sh
+
+# set environment
+ENV TZ "Asia/Shanghai"
+ENV TERM xterm
+
+# set work home
+WORKDIR /data/myapp
+
+# expose port 22
+EXPOSE 22
+
+# stop signal
+STOPSIGNAL SIGTERM
+
+# entry point
+ENTRYPOINT ["/docker-entrypoint.sh"]
+
+# default command
+CMD ["ls", "-a"]

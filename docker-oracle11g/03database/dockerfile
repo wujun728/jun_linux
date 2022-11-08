@@ -1,0 +1,27 @@
+FROM 192.168.8.251/library/oracle-11g-ee:installed
+
+ENV USERNAME="test"
+ENV PASSWORD="test"
+
+ENV ENABLE_EM="false"
+
+ADD entrypoint.sh /entrypoint.sh
+
+ADD assets /assets
+
+RUN chmod -R 755 /assets
+
+RUN chmod 755 /entrypoint.sh
+
+RUN /assets/net_create.sh
+
+RUN /assets/db_create.sh
+
+EXPOSE 1521
+EXPOSE 1158
+
+VOLUME ["/entrypoint-initdb.d"]
+
+ENTRYPOINT ["/entrypoint.sh"]
+
+CMD [""]

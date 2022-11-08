@@ -1,0 +1,20 @@
+FROM 192.168.8.251/library/oraclelinux:7
+
+RUN rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-oracle && \
+    yum -y install oracle-rdbms-server-11gR2-preinstall passwd openssl wget net-tools gettext zip unzip && \
+    yum clean all && \
+    rm -rf /var/lib/{cache,log} /var/log/lastlog && \
+    echo "Create /u01/app dir..." && \
+    mkdir -p -m 755 /u01/app/dpdump && \
+    mkdir -p -m 755 /u01/app/oradata && \
+    mkdir -p -m 755 /u01/app/oraInventory && \
+    mkdir -p -m 755 /u01/app/oracle && \
+    mkdir -p -m 755 /u01/app/oracle/product/11.2.0/dbhome_1 && \
+    chown -R oracle:oinstall /u01 && \
+    echo "Delete limits cause of docker limits issue" && \
+    cat /etc/security/limits.conf | grep -v oracle | tee /etc/security/limits.conf
+
+ENV TZ "Asia/Shanghai"
+ENV TERM xterm
+
+WORKDIR /u01/app

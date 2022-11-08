@@ -1,0 +1,16 @@
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding                           #资源类型,ClusterRoleBinding是针对集群的权限绑定,如果针对单个namespace,则应使用RoleBinding
+metadata:
+  name: string
+roleRef:                                           #引用的角色
+  apiGroup: rbac.authorization.k8s.io              #apiGroup名称
+  kind: ClusterRole                                #引用的角色类型
+                                                   #ClusterRoleBinding中使用ClusterRole:集群的权限绑定,权限都是跨namespace的
+                                                   #ClusterRoleBinding中使用Role:namespace的权限绑定,权限都是不跨namespace的
+                                                   #RoleBinding中使用ClusterRole:namespace的权限绑定,权限都是不跨namespace的
+                                                   #RoleBinding中使用Role:namespace的权限绑定,权限都是不跨namespace的
+  name: string                                     #角色的名字
+subjects:
+- kind: ServiceAccount                             #收到权限的资源,可选[ServiceAccount,User,Group]
+  name: string                                     #名称
+  namespace: string                                #对应的namespace

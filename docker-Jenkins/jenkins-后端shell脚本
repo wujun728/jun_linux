@@ -1,0 +1,22 @@
+export BUILD_ID=bshf
+BAK_DIR=/bshf/bak/manage
+TOMCAT_NAME=tomcat-8.0.43_manage
+TOMCAT_DIR=/bshf/devTools/$TOMCAT_NAME
+SERVICE_PACKAGE=manage
+SERVICE_NAME=$SERVICE_PACKAGE\.war
+JENKINS_PATH=/root/.jenkins/jobs/rd-manage/workspace/manage-web/target
+MY_FILE=$TOMCAT_DIR/webapps/$SERVICE_NAME
+
+P_ID=`ps -ef|grep tomcat-8.0.43_manage/bin/bootstrap.jar | grep java | awk '{print $2}'`
+if [ -f "$MY_FILE" ]; then
+ mv $MY_FILE $BAK_DIR/$SERVICE_NAME.$(date +%Y%m%d)
+ echo "=====copy done====="
+fi
+mv $JENKINS_PATH/$SERVICE_NAME $TOMCAT_DIR/webapps
+if [ "$P_ID" != "" ]; then 
+ kill -9 $P_ID
+ echo "============kill done============="
+fi
+sleep 3
+rm -rf $TOMCAT_DIR/webapps/$SERVICE_PACKAGE
+sh $TOMCAT_DIR/bin/startup.sh

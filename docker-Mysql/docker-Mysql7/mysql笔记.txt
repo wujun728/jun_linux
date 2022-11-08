@@ -1,0 +1,309 @@
+SQL structed query language
+
+连接MYSQL服务器：mysql -uroot -proot
+
+数据库的操作：创建，查看，修改，删除
+	*创建：
+		创建一个名称为mydb1的数据库。
+			create database mydb1;
+		创建一个使用utf-8字符集的mydb2数据库。
+			create database mydb2 character set utf8;
+		创建一个使用utf-8字符集，并带校对规则的mydb3数据库。
+			create database mydb2 character set utf8 collate utf8_general_ci;
+	*查看:
+		显示所有数据库
+			show databases;
+		显示创建数据库的语句信息
+			show create database mydb2;
+	*修改:
+		修改mydb1的字符集为gbk(不能修改数据库名)
+			alter database mydb1 character set utf8;	
+	*删除:
+		删除数据库mydb2
+			drop database mydb1;
+
+表的操作：创建，查看，修改，删除
+	*创建：
+		根据实体类Person创建表person
+			Person {
+				int id;
+				String name;
+			}
+			create table person(
+				id int,
+				name varchar(20)
+			);
+		mysql中的数据类型：
+			bit 1位　但可以指定位数，如：bit<3>
+			int 2字节 可以指定最大位数，如：int<4>　最大为4位的整数
+			float 2个字节　可以指定最大的位数和最大的小数位数，如：float<5,2> 最大为一个５位的数，小数位最多2位
+			double　4个字节　可以指定最大的位数和最大的小数位数，如：float<6,4> 最大为一个6位的数，小数位最多4位
+			char　必须指定字符数,如char(5) 为不可变字符　即使存储的内容为'ab',也是用5个字符的空间存储这个数据
+			varchar　必须指定字符数,如varchar(5) 为可变字符　如果存储的内容为'ab',占用2个字符的空间；如果为'abc',则占用3个字符的空间
+			text: 大文本(大字符串)
+			blob：二进制大数据　如图片，音频文件，视频文件
+			date: 日期　如：'1921-01-02'
+			datetime: 日期时间　如：'1921-01-02 12:23:43'
+			timeStamp: 时间戳，自动赋值为当前日期时间
+			
+		创建一个员工表
+			create table employee(
+				id int,
+				name varchar(20),
+				sex bit,
+				birthday date,
+				entry_date date,
+				job varchar(20),
+				salary double,
+				resume text
+			);
+	*查看：
+		查看所有的表：
+			show tables;
+		查看指定表的创建语句
+			show create table employee;
+		显示指定表的结构：
+			desc employee;
+	*删除：
+		删除employee表
+		drop table employee;
+	*修改表：
+		增加一个字段：alter table worker add column height double;
+		修改一个字段：alter table worker modify column height float;
+		删除一个字段：alter table worker drop column height;
+		更改表名：rename table employee to worker;
+		修改表的字符集:alter table worker character set gbk;
+	
+表数据的CRUD
+	*C(create增加数据) Insert语句 
+		新建Employee表并表中添加一些记录
+			create table employee(
+				id int,
+				name varchar(20),
+				sex bit,
+				birthday date,
+				salary double,
+				entry_date date,
+				resume text
+			);
+			insert into employee(name,id,sex,birthday,salary,entry_date,resume) values('张三',1,1,'1983-09-21',15000,'2012-06-24','一个大牛');
+			insert into employee(id,name,sex,birthday,salary,entry_date,resume) values(2,'李四',1,'1984-09-21',10000,'2012-07-24','一个中牛');
+			insert into employee(id,name,sex,birthday,salary,entry_date,resume) values(3,'王五',0,'1985-09-21',7000,'2012-08-24','一个小牛');
+	
+	*U(update更新数据) Update语句 
+		将所有员工薪水都增加500元。
+			update employee set salary=salary+500;
+		将王五的员工薪水修改为10000元，resume改为也是一个中牛
+			update employee set salary=10000,resume='也是一个中牛' where name='王五';
+	*D(drop删除数据) Delete语句 
+		删除表中姓名为王五的记录。
+			delete from employee where name='王五';
+		删除表中所有记录。
+			delete from employee; --可以有条件，但删除所有记录差了一点
+		使用truncate删除表中记录。
+			truncate employee;--无条件 效率高
+	
+	*R(Retrieve查找数据) Select语句	
+		准备环境：
+			create table student(
+				id int,
+				name varchar(20),
+				chinese int,
+				english int,
+				math int
+			);
+
+			insert into student(id,name,chinese,english,math) values(1,'何东',80,85,90);
+			insert into student(id,name,chinese,english,math) values(2,'权筝',90,95,95);
+			insert into student(id,name,chinese,english,math) values(3,'何南',80,96,96);
+			insert into student(id,name,chinese,english,math) values(4,'叶坦',81,97,85);
+			insert into student(id,name,chinese,english,math) values(5,'何西',85,84,90);
+			insert into student(id,name,chinese,english,math) values(6,'丁香',92,85,87);
+			insert into student(id,name,chinese,english,math) values(7,'何北',75,81,80);
+			insert into student(id,name,chinese,english,math) values(8,'唐娇',77,80,79);
+			insert into student(id,name,chinese,english,math) values(9,'任知了',95,85,85);
+			insert into student(id,name,chinese,english,math) values(10,'王越',94,85,84);
+
+		查询表中所有学生的信息。
+			select * from student;
+		查询表中所有学生的姓名和对应的英语成绩。
+			select name,english from student;
+		过滤表中重复数据。
+			select english from student;
+			select DISTINCT english from student;
+			select DISTINCT english,name from student;
+
+			select english+chinese+math from student;
+			select english+chinese+math as 总分 from student;
+			select name,english+chinese+math as 总分 from student;
+
+		在所有学生英语分数上加10分特长分。
+			select name,english+10 from student;
+		统计每个学生的总分。
+			select english+chinese+math from student;
+		使用别名表示学生分数
+			select name,english+chinese+math as 总分 from student;
+			select name,english+chinese+math 总分 from student;
+
+		查询姓名为何东的学生成绩
+			select * from student where name='何东';
+		查询英语成绩大于90分的同学
+			select * from student where english>90;
+		查询总分大于250分的所有同学
+			select * from student where english+chinese+math>250;
+
+		查询英语分数在 85－95之间的同学。
+			select * from student where english>=85 and english<=95;
+			select * from student where english between 85 and 95;
+		查询数学分数为84,90,91的同学。
+			select * from student where math=84 or math=90 or math=91;
+			select * from student where math in(84,90,91);
+		查询所有姓何的学生成绩。
+			select * from student where name like '何%';
+		查询数学分>85，语文分>90的同学。
+			select * from student where math>85 and chinese>90;
+
+		对数学成绩排序后输出。
+			select * from student order by math;
+		对总分排序后输出，然后再按从高到低的顺序输出
+			select * from student order by math+chinese+english desc;
+		对姓何的学生成绩排序输出
+			select * from student where name like '何%' order by math+chinese+english desc;
+			select name, math+chinese+english from student where name like '何%' order by math+chinese+english desc;
+
+		统计一个班级共有多少学生？
+			select count(*) from student;
+		统计数学成绩大于90的学生有多少个？
+			select count(*) from student where math>90;
+		统计总分大于250的人数有多少？
+			select count(*) from student where math+chinese+english>250;
+
+		统计一个班级数学总成绩？
+			select sum(math) from student;
+		统计一个班级语文、英语、数学各科的总成绩
+			select sum(math), sum(chinese), sum(english) from student;
+		统计一个班级语文、英语、数学的成绩总和
+			select sum(math+chinese+english)from student;
+			select sum(math)+sum(chinese)+sum(english) from student;
+
+		求一个班级数学平均分？
+			select avg(math) from student;
+		求一个班级总分平均分
+			select avg(math+chinese+english)from student;
+			select avg(math)+avg(chinese)+avg(english) from student;
+
+		求班级最高分和最低分
+			select max(math+chinese+english),min(math+chinese+english) from student;
+	
+		查出各个班的总分，最高分
+			准备环境
+				给表添加一个字段：alter table student add column class_id int;
+				更新表：
+					update student set class_id=1 where id<=5;
+					update student set class_id=2 where id>5;
+			select sum(math+chinese+english),max(math+chinese+english) from student group by class_id;
+
+		查询出班级总分大于1300分的班级ID
+			select class_id from student group by class_id having sum(math+chinese+english)>1300;
+
+表的约束　　
+	*定义主键约束　primary key:不允许为空，不允许重复
+
+	*定义主键自动增长　auto_increment
+
+	*定义唯一约束　unique
+
+	*定义非空约束　not null
+
+	*定义外键约束　constraint ordersid_FK foreign key(ordersid) references orders(id)
+
+	*删除主键：alter table tablename drop primary key ;
+	
+数据的备份与恢复：
+	*准备数据：
+		create database mydb1;
+		use mydb1;
+		create table user(
+			id int,
+			name varchar(20)
+		);
+		insert into user(id,name) values(1,'Tom');
+		select * from user;
+	*备份：
+		mysqldump -uroot -p mydb1>d:\test.sql;--备份数据库里的数据
+
+	*恢复；
+		mysql -uroot -p mydb1<d:\test.sql
+		source d:\test.sql(在mysql客户端上执行)
+	
+多表查询与子查询：
+	准备环境：
+		部门表
+			CREATE TABLE DEPARTMENT(
+			   department_id int primary key auto_increment,       
+			   name varchar
+			);
+		职位表
+			CREATE TABLE LOCATION (
+			   location_id int PRIMARY KEY auto_increment,       
+			   name varchar
+			);
+		员工表
+			CREATE TABLE EMPLOYEES(
+			   employee_id int PRIMARY KEY auto_increment,       
+			   department_id int,       
+			   location_id int,       
+			   first_name varchar,       
+			   last_name varchar,       
+			   salary double,
+			   hire_date date     
+			);
+
+		向department表中添加数据			 
+			insert into department(name) values ('人事');
+			insert into department(name) values ('财务');
+			insert into department(name) values ('后勤');
+			insert into department(name) values ('公关');
+			insert into department(name) values ('研发');
+		
+		向location表中添加数据
+			insert into location(name) values ('总经理');
+			insert into location(name) values ('经理');
+			insert into location(name) values ('主管');
+			insert into location(name) values ('组长');
+			insert into location(name) values ('职员');
+		向employees表中添加数据
+			insert into employees(department_id,location_id , first_name, last_name, salary,hire_date)
+				   values (1,1, 'A', 'z', 50000, '2005-02-21');       
+			insert into employees(department_id,location_id, first_name, last_name, salary,hire_date)
+				   values (1,2, 'B', 'x', 20000, '2009-03-21');       
+			insert into employees(department_id,location_id , first_name, last_name, salary,hire_date)
+				   values (2,3, 'C', 'v', 10000, '2009-08-23');       
+			insert into employees(department_id,location_id, first_name, last_name, salary,hire_date)
+				   values (4,2, 'D', 'n', 30000, '2004-09-28');       
+			insert into employees(department_id,location_id, first_name, last_name, salary,hire_date)
+				   values (3,5, 'E', 'm', 3000, '2009-04-11');       
+			insert into employees(department_id,location_id, first_name, last_name, salary,hire_date)
+				   values (5,5, 'F', 'l', 5000, '2008-03-11');       
+			insert into employees(department_id,location_id, first_name, last_name, salary,hire_date)
+				   values (5,3, 'G', 'p', 20000, '2005-05-09');       
+			insert into employees(department_id,location_id, first_name, last_name, salary,hire_date)
+				   values (5,4, 'H', 'o', 8000, '2006-07-21');       
+			insert into employees(department_id,location_id, first_name, last_name, salary,hire_date)
+				   values (5,5, 'I', 'u', 6000, '2006-09-21');       
+			insert into employees(department_id,location_id, first_name, last_name, salary,hire_date)
+				   values (5,5, 'J', 'y', 5500, '2007-08-21');       
+			insert into employees(department_id,location_id, first_name, last_name, salary,hire_date)
+				   values (5,5, 'K', 't', 6500, '2006-12-21');       
+			insert into employees(department_id,location_id, first_name, last_name, salary,hire_date)
+				   values (5,1, 'L', 'r', 100000, '2001-05-21'); 
+	练习：	
+	--多表查询：查出姓z的员工的所有信息
+		select * from employees e, department d, location l 
+			where e.[department_id]=d.[department_id] and e.[location_id]=l.[location_id] and e.[last_name]='z';
+	--单行子查询: 查出所有工资大于平均工资的员工信息 
+		select * from employees where salary >(select avg(salary) from employees) 
+	--多行子查询: 查出所有所有姓z的部门名称 
+		select name from department where department_id in (select department_id from employees where last_name='z');
+
+

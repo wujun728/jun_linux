@@ -1,0 +1,15 @@
+1, vi /etc/hosts, 添加机器名到127.0.0.1那行，例如：
+
+	127.0.0.1 newname localhost.lcoaldomain
+
+2, vi /etc/sysconfig/network, 修改HOSTNAME, 例如：
+
+	HOSTNAME=newname
+ 
+ 
+vi /etc/resolv.conf   #修改DNS信息
+nameserver 114.114.114.114
+nameserver 8.8.8.8
+
+
+service network restart   #重启网卡，生效

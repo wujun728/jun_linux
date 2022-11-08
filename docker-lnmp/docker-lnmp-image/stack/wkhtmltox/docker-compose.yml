@@ -1,0 +1,5 @@
+wkhtmltox:
+    build: ../../resource/wkhtmltox/0.13.0
+    volumes:
+      - /usr/local/bin:/usr/local/bin
+

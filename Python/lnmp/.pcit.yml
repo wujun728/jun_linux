@@ -1,9 +1,0 @@
-workspace:
-  base: /data/lnmp
-
-pipeline:
-  test_cli:
-    image: khs1994/php:7.2.13-composer-alpine
-    commands:
-      - pwd
-      - bash lnmp-docker

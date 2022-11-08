@@ -1,8 +1,0 @@
-{
-    "/report":{
-        "view": "index.html",
-		"action":"report.js",
-		"method":"report"
-    }
-	
-}

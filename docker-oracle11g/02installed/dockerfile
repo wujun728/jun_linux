@@ -1,0 +1,12 @@
+FROM 192.168.8.251/library/oracle-11g-ee:preinstall
+
+ARG INSTALL_ZIP1=http://192.168.8.100/oracle11g/p13390677_112040_Linux-x86-64_1of7.zip
+ARG INSTALL_ZIP2=http://192.168.8.100/oracle11g/p13390677_112040_Linux-x86-64_2of7.zip
+
+ADD assets /assets
+
+RUN chmod -R 755 /assets
+
+RUN /assets/set_profile.sh
+
+RUN /assets/db_install.sh

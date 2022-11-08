@@ -1,2 +1,0 @@
-# docker-alpine
-docker-alpine

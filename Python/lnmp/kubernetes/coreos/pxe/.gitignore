@@ -1,5 +1,0 @@
-*.yaml
-*.yml
-!*.example.yaml
-!*.example.yml
-*.ign
