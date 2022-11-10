@@ -33,6 +33,7 @@ maxexcloo/nginx-php       Docker framework container with Nginx and ...   57    
 
 ```
 $ docker pull nginx:latest
+docker pull nginx:1.23.2
 ```
 
 [![img](https://www.runoob.com/wp-content/uploads/2016/06/docker-nginx3.png)](https://www.runoob.com/wp-content/uploads/2016/06/docker-nginx3.png)
@@ -55,6 +56,8 @@ $ docker images
 
 ```
 $ docker run --name nginx-test -p 8080:80 -d nginx
+docker run --name nginx-proxy777 -p 80:80 -d nginx:1.23.2
+docker run --name nginx-proxy -p 80:80 -v /home/nginx/nginx.conf:/etc/nginx/nginx.conf:rw -d nginx:1.23.2
 ```
 
 参数说明：
@@ -70,3 +73,98 @@ $ docker run --name nginx-test -p 8080:80 -d nginx
 最后我们可以通过浏览器可以直接访问 8080 端口的 nginx 服务：
 
 [![img](https://www.runoob.com/wp-content/uploads/2016/06/docker-nginx6.png)](https://www.runoob.com/wp-content/uploads/2016/06/docker-nginx6.png)
+
+
+
+
+===========================================
+
+  docker run \
+  --name nginx80 \
+   -p 80:80  -it -d \
+  -v /home/nginx/html:/usr/share/nginx/html \
+  -v /home/nginx/conf/nginx.conf:/etc/nginx/nginx.conf \
+  -v /home/nginx/conf/conf.d:/etc/nginx/conf.d:ro \
+  -v /home/nginx/log:/var/log/nginx \
+  nginx:1.23.2
+
+
+
+===========================================
+ 
+
+Docker安装Nginx挂载宿主机文件及nginx.conf文件配置
+
+
+
+1.docker 启动nginx
+从启动nginx命令说起：
+docker run --restart=always --name=nginx -it -p 80:80 -v /opt/nginx/conf/conf.d:/etc/nginx/conf.d -v /opt/nginx/conf/nginx.conf:/etc/nginx/nginx.conf -v /opt/nginx/log:/var/log/nginx -v /opt/nginx/html:/usr/share/nginx/html -d nginx:latest
+
+===========================================
+
+
+
+===========================================
+
+
+
+命令	描述
+-v /opt/nginx/conf/conf.d:/etc/nginx/conf.d	挂载该路径下的nginx配置文件
+-v /opt/nginx/conf/nginx.conf:/etc/nginx/nginx.conf	挂载nginx.conf配置文件
+-v /opt/nginx/log:/var/log/nginx	挂载nginx日志文件
+-v /opt/nginx/html:/usr/share/nginx/html	挂载nginx内容
+
+
+
+#nginx也可以是容器id
+docker cp nginx:/etc/nginx/conf.d/default.conf ./ ###这里是将容器内文件复制到本地当前目录
+docker cp ./default.conf nginx:/etc/nginx/conf.d/ ###这里是将本地当前目录的default.conf复制到容器内指定目录
+
+2.访问nginx主页
+因为映射的80端口，所以在浏览器访问服务器IP，但是网页显示404.NotFound
+查看/opt/nginx/log目录下error.log日志文件，显示
+“/etc/nginx/html/index.html” is not found (2: No such file or directory)
+
+
+进入运行的nginx容器：docker exec -it 容器ID /bin/bash
+在容器内进入/etc/nginx目录下,创建html文件夹：mkdir html
+在html目录下创建index.html文件：touch index.html
+index.html内容如下：
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+
+再次在浏览器访问服务器IP，网页正常显示
+
+3.nginx的配置
+在/opt/nginx/conf下新建配置文件nginx.conf，文件内容如下
+
+ 见附件nginx.conf
+
+
+
+*include ./conf.d/*.conf指包含/opt/nginx/conf/conf.d/目录下所有的配置文件
+所以在/opt/nginx/conf/conf.d目录下新建适用于自己服务的conf配置文件
+需要注意的是配置文件中不要用 l o c a l h o s t ，而是用服务器 I P 代替 l o c a l h o s t \color{#FF0000}{需要注意的是配置文件中不要用localhost，而是用服务器IP代替localhost}需要注意的是配置文件中不要用localhost，而是用服务器IP代替localhost
