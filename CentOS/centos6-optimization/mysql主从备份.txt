@@ -1,0 +1,43 @@
+
+
+两台机器： 
+master:192.168.76.7 
+slave :192.168.76.10
+
+106.186.18.145
+106.186.124.30
+
+master、slave 所有的数据都一致
+
+master： 
+
+mysql> GRANT REPLICATION SLAVE ON *.* TO 'repl'@'106.186.124.30' IDENTIFIED BY '123456repl'; 
+mysql> flush privileges;
+
+# master
+server-id                      = 1
+binlog-do-db                   = wap
+binlog-ignore-db               = mysql,information_schema,performance_schema,test
+
+restart master
+
+show master status\G;
+
+
+# slave
+server-id                      = 2
+replicate-do-db                = wap
+replicate-ignore-db            = mysql,information_schema,performance_schema,test
+
+restart slave
+
+
+ slave上指定master为主： 
+ 
+ mysql> CHANGE MASTER TO MASTER_HOST='106.186.18.145', MASTER_USER='repl', MASTER_PASSWORD='123456repl';
+ 
+ 
+ mysql> START SLAVE; 
+
+
+show slave status\G;

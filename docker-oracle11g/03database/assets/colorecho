@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+ccred='\033[0;31m'
+ccgreen='\033[0;32m'
+ccyellow='\033[0;33m'
+ccblue='\033[0;34m'
+ccend='\033[0m'
+
+echo_red() {
+    echo -e "${ccred}$@${ccend}"
+}
+
+echo_green() {
+    echo -e "${ccgreen}$@${ccend}"
+}
+
+echo_yellow() {
+    echo -e "${ccyellow}$@${ccend}"
+}
+
+echo_blue() {
+    echo -e "${ccblue}$@${ccend}"
+}

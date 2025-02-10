@@ -1,0 +1,10 @@
+npm install
+npm run build
+DIST_DIR=/bshf/programe/clinic/dist
+BAK_DIR=/bshf/bak/fe-clinic
+if [ -d "$DIST_DIR" ]; then
+ mv $DIST_DIR $BAK_DIR/dist-$(date +%Y%m%d)
+ echo "=====copy done====="
+fi
+rm -rf $DIST_DIR
+mv /root/.jenkins/jobs/fe-clinic/workspace/dist /bshf/programe/clinic

@@ -1,0 +1,67 @@
+2. 两台机器： 
+master1:192.168.76.7 
+master2:192.168.76.10
+
+4. 两台机器上都建立用户，并赋予复制权限： 
+master1： 
+//1.mysql> CREATE USER 'repl'@'192.168.76.10'; 
+2.mysql> GRANT REPLICATION SLAVE ON *.* TO 'repl'@'192.168.76.10' IDENTIFIED BY '123456'; 
+master2： 
+//1.mysql> CREATE USER 'repl'@'192.168.76.7'; 
+2.mysql> GRANT REPLICATION SLAVE ON *.* TO 'repl'@'192.168.76.7' IDENTIFIED BY '123456'; 
+host是随便设置的，只要是对方可以连接上即可。权限方面，只需要有REPLICATION SLAVE权限即可。
+
+
+master1 my.cnf：
+
+[mysqld]
+server-id = 1
+log-bin=/data0/mysql/binlog/binlog
+binlog-do-db = test
+binlog-ignore-db=mysql
+#主主需加入的部分
+log-slave-updates
+sync_binlog=1
+auto_increment_offset=1
+auto_increment_increment=2
+replicate-do-db = test
+replicate-ignore-db = mysql,information_schema
+
+master2 my.cnf：
+
+[mysqld]
+server-id = 2
+log-bin = /data0/mysql/binlog/binlog
+replicate-do-db = test
+replicate-ignore-db = mysql,information_schema
+#主主需要加入部分
+binlog-do-db = test
+binlog-ignore-db=mysql
+log-slave-updates
+sync_binlog=1
+auto_increment_offset=2
+auto_increment_increment=2
+
+
+
+分别重启服务器A、B上的mysql服务
+
+分别在服务器A、B上查看做为主服务器状态
+show master status
+
+
+8. master1上指定master2为主： 
+ mysql> CHANGE MASTER TO MASTER_HOST='192.168.76.10', MASTER_USER='repl', MASTER_PASSWORD='123456'; 
+ Query OK, 0 rows affected (0.19 sec) 
+
+
+ mysql> START SLAVE; 
+ Query OK, 0 rows affected (0.00 sec) 
+
+ 9. master2上指定master1为主： 
+ mysql> CHANGE MASTER TO MASTER_HOST='192.168.76.7', MASTER_USER='repl', MASTER_PASSWORD='123456'; 
+ Query OK, 0 rows affected (0.18 sec) 
+
+
+ mysql> START SLAVE; 
+ Query OK, 0 rows affected (0.00 sec)

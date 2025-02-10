@@ -1,0 +1,53 @@
+version: "3"
+services:
+  # 设置 mysql_master 服务
+  mysql_master:
+    image: mysql:${MYSQL_VERSION}
+    container_name: mysql-master-${MYSQL_VERSION}
+    environment:
+      - TZ=Asia/Shanghai
+      # 配置mysql root 账号密码
+      - MYSQL_ROOT_PASSWORD=Secret2017~
+    command:
+      --default-authentication-plugin=mysql_native_password
+    ports:
+      - "33061:3306"
+    volumes:
+      - ./conf/master/my.cnf:/etc/mysql/my.cnf
+      - /data/project2021/ginskeleton/mysql8_master/data:/var/lib/mysql
+      - /data/project2021/ginskeleton/mysql8_master/files:/var/lib/mysql-files
+    restart: "always"
+    networks:
+      - mysql-net
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 100000
+        hard: 200000
+  # 设置 mysql_slave 服务
+  mysql_slave:
+    image: mysql:${MYSQL_VERSION}
+    container_name: mysql-slave-${MYSQL_VERSION}
+    environment:
+      - TZ=Asia/Shanghai
+      # 配置mysql root 账号密码
+      - MYSQL_ROOT_PASSWORD=Secret2017~
+    command:
+      --default-authentication-plugin=mysql_native_password
+    ports:
+      - "33062:3306"
+    volumes:
+      - ./conf/slave/my.cnf:/etc/mysql/my.cnf
+      - /data/project2021/ginskeleton/mysql8_slave/data:/var/lib/mysql
+      - /data/project2021/ginskeleton/mysql8_slave/files:/var/lib/mysql-files
+    restart: "always"
+    networks:
+      - mysql-net
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 100000
+        hard: 200000
+networks:
+  mysql-net:
+    driver: bridge

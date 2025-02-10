@@ -1,0 +1,5 @@
+[root@c64 ~]# useradd web
+[root@c64 ~]# echo "123456"|passwd --stdin web&&history -c
+[root@c64 ~]# visudo
+在root    ALL=(ALL)    ALL此行下，添加如下内容
+web    ALL=(ALL)    ALL

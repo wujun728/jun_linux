@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tomcat-users>
+    <user username="docker" password="docker" roles="manager-gui,admin-gui,manager-script"/>
+</tomcat-users>

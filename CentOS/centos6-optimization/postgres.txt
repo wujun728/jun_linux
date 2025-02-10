@@ -1,0 +1,66 @@
+安装源
+yum localinstall http://yum.postgresql.org/9.4/redhat/rhel-6-x86_64/pgdg-centos94-9.4-1.noarch.rpm
+
+安装数据库
+yum install postgresql94-server postgresql94-contrib
+
+初始化数据库
+service postgresql-9.4 initdb
+
+启动数据库
+service postgresql-9.4 start
+
+加入开机启动
+chkconfig postgresql-9.4 on
+
+切换账户
+su postgres
+
+进入数据库
+psql
+
+修改密码
+ALTER USER postgres WITH PASSWORD '123456';
+select * from pg_shadow ;
+
+退出数据库
+\q
+
+nano /var/lib/pgsql/9.4/data/postgresql.conf
+监听连接 
+listen_addresses = 'localhost'
+port = 5432
+max_connections = 500
+打开约束排除 
+constraint_exclusion = partition # on, off, or partition
+自动维护
+autovacuum = on
+归档
+wal_level = archive
+archive_mode = on
+archive_command = 'cp %p /home/data/%f'
+
+nano /var/lib/pgsql/9.4/data/pg_hba.conf 
+[...]
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+
+# "local" is for Unix domain socket connections only
+local   all             all                                     md5
+# IPv4 local connections:
+host    all             all             127.0.0.1/32            md5
+host    all             all             192.81.130.0/24         md5
+# IPv6 local connections:
+host    all             all             ::1/128                 md5
+[...]
+
+
+添加用户和数据库
+sudo su - postgres
+createdb test
+psql test
+CREATE ROLE testuser WITH SUPERUSER LOGIN PASSWORD 'test';
+grant all privileges on database test to testuser;
+
+导入导出
+$ PGPASSWORD="123456" pg_restore -U postgres -d test < pgsql.sql
+$ PGPASSWORD="123456" pg_dump -U postgres -O -x -Fc test > pgsql.sql

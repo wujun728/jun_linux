@@ -1,0 +1,46 @@
+1、yum install fail2ban
+
+
+2、fail2ban.conf说明 
+
+vim /etc/fail2ban/fail2ban.conf
+
+内有三行定义内容： 
+
+[Definition]
+loglevel = 3 #定义日志输出级别
+logtarget = SYSLOG #定义日志目标，由syslog服务管理
+socket = /var/run/fail2ban/fail2ban.sock #设置socket文件，用于和后台的守护进程通讯
+
+修改： 
+
+logtarget = /var/log/fail2ban.log
+
+
+4、编辑全局配置文件 
+这里设置为，如果同一个IP在10分钟内登录错误5次就ban IP一个星期。 
+
+vim /etc/fail2ban/jail.conf
+
+找到[DEFAULT]区块，修改以下内容： 
+
+bantime = 86400 #设置IP禁止时间(秒)，值为-1，代表永远禁止
+findtime = 600 #设置在多少时间(秒)范围内达到最大尝试次数
+
+找到[ssh-iptables]区块，修改以下内容： 
+
+maxretry = 5 #设置ssh允许尝试次数
+
+5、启动fail2ban 
+
+service fail2ban start
+
+6、设置开机自启动 
+
+chkconfig fail2ban on
+
+
+PS：除了iptables，还有其它可以用于fail2ban的软件 
+shorewall：iptables防火墙配置工具 
+TCP Wrapper：限制连接来源的工具 
+Gamin：实时监视文件或文件夹变动的工具

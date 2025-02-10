@@ -1,0 +1,3 @@
+use ubuntu
+location
+/etc/apache2

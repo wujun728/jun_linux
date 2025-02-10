@@ -1,0 +1,68 @@
+version: "3.8"
+services:
+  elasticsearch:
+    image: elasticsearch:${ELK_VERSION}
+    container_name: elasticsearch-${ELK_VERSION}
+    environment:
+      - TZ=Asia/Shanghai
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      # - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - 9200:9200
+      - 127.0.0.1:9300:9300
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - /etc/timezone:/etc/timezone
+      - ./elasticsearch/config/:/usr/share/elasticsearch/config/
+      - ./elasticsearch/data/:/usr/share/elasticsearch/data/
+      - ./elasticsearch/logs/:/usr/share/elasticsearch/logs/
+    networks:
+      - elk-net
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+  logstash:
+    image: logstash:${ELK_VERSION}
+    container_name: logstash-${ELK_VERSION}
+    environment:
+      - TZ=Asia/Shanghai
+    depends_on:
+      - elasticsearch
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - /etc/timezone:/etc/timezone
+      - ./logstash/pipeline/:/usr/share/logstash/pipeline/
+      - ./logstash/config/:/usr/share/logstash/config
+      - ./logstash/db_geoLite2_city/:/usr/share/logstash/db_geoLite2_city
+      # 被采集的日志文件往往要求都是实时性的，所以必须映射目录，不要映射文件，否则文件变化 logstash 不会实时采集，只有每次启动的时候才会采集
+      # - /home/wwwlogs/project2021/test.log:/usr/share/wwwlogs/project2021/test.log # 该方式当文件发生变化时，logstash 不会实时采集，原因参见避坑指南链接 ↓ ↓ ↓
+      # 避坑指南参见：https://blog.csdn.net/biao0309/article/details/105186106
+      - /home/wwwlogs/project2021/:/usr/share/wwwlogs/project2021/
+    networks:
+      - elk-net
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+  kibana:
+    image: kibana:${ELK_VERSION}
+    container_name: kibana-${ELK_VERSION}
+    depends_on:
+      - elasticsearch
+    ports:
+      - "5601:5601"
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - /etc/timezone:/etc/timezone
+      - ./kibana/config/:/usr/share/kibana/config/
+    networks:
+      - elk-net
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+networks:
+  elk-net:
+    driver: bridge

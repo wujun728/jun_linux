@@ -1,0 +1,6 @@
+cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+
+ntpdate time.windows.com
+
+echo "* 4 * * * /usr/sbin/ntpdate 210.72.145.44 > /dev/null 2>&1" >> /var/spool/cron/root
+service crond restart

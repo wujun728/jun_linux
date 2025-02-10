@@ -1,0 +1,19 @@
+yum install git
+
+http://code.google.com/p/go/downloads/list
+
+解压缩到 /usr/local/go
+
+mkdir /usr/local/golib
+
+设置环境变量:
+vi ~/.bashrc 
+
+export GOROOT=/usr/local/go
+export GOPATH=/usr/local/golib
+export GOOS=linux
+export GOARCH=amd64
+export GOBIN=$GOROOT/bin
+export PATH=$GOBIN:$PATH
+
+source ~/.bashrc

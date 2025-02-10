@@ -1,0 +1,117 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "order.fullname" . }}
+  labels:
+    {{- include "order.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "order.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "order.labels" . | nindent 8 }}
+	{{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          - name: TZ
+            value: "Asia/Shanghai"
+          - name: spring.datasource.driver-class-name
+            value: "com.mysql.cj.jdbc.Driver"
+          - name: spring.datasource.url
+            value: "jdbc:mysql://mysql-primary:3306/cloud?useSSL=false&characterEncoding=utf-8&allowPublicKeyRetrieval=true&useUnicode=true"
+          - name: spring.datasource.username
+            value: root
+          - name: spring.datasource.password
+            valueFrom:
+              secretKeyRef:
+                name: mysql
+                key: mysql-root-password    
+          - name: spring.rabbitmq.host
+            value: rabbitmq
+          - name: spring.rabbitmq.port
+            value: "5672"
+          - name: spring.rabbitmq.username
+            value: admin 
+          - name: spring.rabbitmq.password
+            valueFrom: 
+              secretKeyRef:
+                name: rabbitmq
+                key: rabbitmq-password
+          - name: grpc.user.server.name
+            value: user
+          - name: grpc.user.server.port
+            value: "9090"
+          - name: grpc.product.server.name
+            value: product
+          - name: grpc.product.server.port
+            value: "9090"
+
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 3
+          readinessProbe:
+            tcpSocket:
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 3
+            successThreshold: 1
+            failureThreshold: 5
+          startupProbe:
+            tcpSocket:
+              port: http
+            initialDelaySeconds: 50
+            periodSeconds: 3
+            successThreshold: 1
+            failureThreshold: 5
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          {{- with .Values.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
