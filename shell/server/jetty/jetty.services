@@ -1,0 +1,13 @@
+[Unit]
+Description=jetty.service
+After=network.target
+
+[Service]
+ExecStart=/usr/local/datang/jetty/jetty.sh start
+ExecStop=/usr/local/datang/jetty/jetty.sh stop
+ExecReload=/usr/local/datang/jetty/jetty.sh restart
+Type=forking
+PrivateTmp=true  
+
+[Install]
+WantedBy=multi-user.target

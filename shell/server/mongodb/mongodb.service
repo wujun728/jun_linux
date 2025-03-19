@@ -1,0 +1,13 @@
+[Unit]
+Description=mongodb
+After=network.target remote-fs.target nss-lookup.target
+
+[Service]
+Type=forking
+ExecStart=/usr/local/mongodb/bin/mongod --config /usr/local/mongodb/conf/mongodb.conf
+ExecStop=/usr/local/mongodb/bin/mongod --config /usr/local/mongodb/conf/mongodb.conf --shutdown
+ExecReload=/bin/kill -s HUP $MAINPID
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
